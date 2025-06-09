@@ -194,38 +194,36 @@
 
       // NEW: Send to Google Sheet
       const formData = collectFormData();
-      const cars = collectCars();
-      const { totalPrice, originalPrice } = calculatePrice(cars);
 
-      const submission = {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        phone: formData.phone,
-        area: formData.area,
-        buildingNumber: formData.buildingNumber,
-        totalCars: formData.totalCars,
+const submission = {
+  firstName: formData.firstName,
+  lastName: formData.lastName,
+  phone: formData.phone,
+  area: formData.area,
+  buildingNumber: formData.buildingNumber,
+  totalCars: formData.totalCars,
+  
+  car0Brand: formData["car[0][brand]"] || "",
+  car0Model: formData["car[0][model]"] || "",
+  car0Color: formData["car[0][color]"] || "",
+  car0Plate: formData["car[0][plate]"] || "",
+  car0Plan: formData["car[0][plan]"] || "",
+  car0AvailableFrom: formData["car[0][availableFrom]"] || "",
+  car0DoneBy: formData["car[0][doneBy]"] || "",
+  car0Notes: formData["car[0][notes]"] || "",
 
-        car0Brand: formData["car[0][brand]"] || "",
-        car0Model: formData["car[0][model]"] || "",
-        car0Color: formData["car[0][color]"] || "",
-        car0Plate: formData["car[0][plate]"] || "",
-        car0Plan: formData["car[0][plan]"] || "",
-        car0AvailableFrom: formData["car[0][availableFrom]"] || "",
-        car0DoneBy: formData["car[0][doneBy]"] || "",
-        car0Notes: formData["car[0][notes]"] || "",
+  car1Brand: formData["car[1][brand]"] || "",
+  car1Model: formData["car[1][model]"] || "",
+  car1Color: formData["car[1][color]"] || "",
+  car1Plate: formData["car[1][plate]"] || "",
+  car1Plan: formData["car[1][plan]"] || "",
+  car1AvailableFrom: formData["car[1][availableFrom]"] || "",
+  car1DoneBy: formData["car[1][doneBy]"] || "",
+  car1Notes: formData["car[1][notes]"] || "",
 
-        car1Brand: formData["car[1][brand]"] || "",
-        car1Model: formData["car[1][model]"] || "",
-        car1Color: formData["car[1][color]"] || "",
-        car1Plate: formData["car[1][plate]"] || "",
-        car1Plan: formData["car[1][plan]"] || "",
-        car1AvailableFrom: formData["car[1][availableFrom]"] || "",
-        car1DoneBy: formData["car[1][doneBy]"] || "",
-        car1Notes: formData["car[1][notes]"] || "",
-
-        startDate: formData["startDate"] || "",
-        submittedAt: new Date().toLocaleString()
-      };
+  startDate: formData.startDate,
+  submittedAt: new Date().toLocaleString()
+};
 
       sendDataToGoogleSheet(submission);
     }
