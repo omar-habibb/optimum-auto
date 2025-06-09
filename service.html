@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Our Service - Optimum Auto</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sticky Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="index.html" class="text-xl font-bold">Optimum Auto</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="service.html">Our Service</a></li>
+        <li><a href="subscribe.html">Subscribe</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Our Service Section -->
+  <section class="py-20 px-6 bg-gray-50">
+    <div class="container">
+      <h2 class="text-3xl font-bold mb-8 text-center">Our Service</h2>
+      <p class="mb-8 leading-relaxed text-center max-w-3xl mx-auto">
+        At Optimum Auto, we deliver professional, top-quality exterior car washes directly to your location with unmatched care and attention to detail.
+        We use high-quality water and foam sprayers, along with special microfiber towels that protect your car’s body and paint — ensuring a spotless, scratch-free finish every time.
+        Our trained team works silently and efficiently, respecting both your car and your surroundings.
+      </p>
+      <div class="grid grid-cols-4 gap-6">
+        <div class="feature-card">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Mobile service at your location
+        </div>
+        <div class="feature-card">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Silent, professional operation
+        </div>
+        <div class="feature-card">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Specialized tools for safe, flawless results
+        </div>
+        <div class="feature-card">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Gentle, scratch-free cleaning
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black text-white py-8">
+    <div class="container text-center">
+      <p>&copy; <span id="year"></span> Optimum Auto. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
