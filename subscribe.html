@@ -131,6 +131,7 @@
   </form>
 </div>
 
+
 <script>
   const steps = document.querySelectorAll(".step");
   let currentStep = 0;
@@ -169,66 +170,68 @@
   }
 
   document.querySelectorAll(".btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const direction = btn.textContent === "Next" ? 1 : -1;
+    btn.addEventListener("click", () => {
+      const direction = btn.textContent === "Next" ? 1 : -1;
 
-    if (direction === 1 && !validateStep(currentStep)) return;
+      if (direction === 1 && !validateStep(currentStep)) return;
 
-    steps[currentStep].classList.add("hidden");
+      steps[currentStep].classList.add("hidden");
 
-    if (direction === 1 && currentStep < steps.length - 1) {
-      currentStep++;
-    } else if (direction === -1 && currentStep > 0) {
-      currentStep--;
-    }
+      if (direction === 1 && currentStep < steps.length - 1) {
+        currentStep++;
+      } else if (direction === -1 && currentStep > 0) {
+        currentStep--;
+      }
 
-    steps[currentStep].classList.remove("hidden");
+      steps[currentStep].classList.remove("hidden");
 
-    if (currentStep === 1) generateCarFields();
-    if (currentStep === 2) {
-      const cars = collectCars();
-      generateSummary(cars);
-    }
-    if (currentStep === 3) {
-      saveData();
+      if (currentStep === 1) generateCarFields();
+      if (currentStep === 2) {
+        const cars = collectCars();
+        generateSummary(cars);
+      }
+      if (currentStep === 3) {
+        saveData();
 
-      // NEW: Send to Google Sheet
-      const formData = collectFormData();
+        // Collect and send to Google Sheet
+        const formDataObj = collectFormData();
+        const cars = collectCars();
+        const { totalPrice, originalPrice } = calculatePrice(cars);
 
-const submission = {
-  firstName: formData.firstName,
-  lastName: formData.lastName,
-  phone: formData.phone,
-  area: formData.area,
-  buildingNumber: formData.buildingNumber,
-  totalCars: formData.totalCars,
-  
-  car0Brand: formData["car[0][brand]"] || "",
-  car0Model: formData["car[0][model]"] || "",
-  car0Color: formData["car[0][color]"] || "",
-  car0Plate: formData["car[0][plate]"] || "",
-  car0Plan: formData["car[0][plan]"] || "",
-  car0AvailableFrom: formData["car[0][availableFrom]"] || "",
-  car0DoneBy: formData["car[0][doneBy]"] || "",
-  car0Notes: formData["car[0][notes]"] || "",
+        const submission = {
+          firstName: formDataObj.firstName,
+          lastName: formDataObj.lastName,
+          phone: formDataObj.phone,
+          area: formDataObj.area,
+          buildingNumber: formDataObj.buildingNumber,
+          totalCars: formDataObj.totalCars,
 
-  car1Brand: formData["car[1][brand]"] || "",
-  car1Model: formData["car[1][model]"] || "",
-  car1Color: formData["car[1][color]"] || "",
-  car1Plate: formData["car[1][plate]"] || "",
-  car1Plan: formData["car[1][plan]"] || "",
-  car1AvailableFrom: formData["car[1][availableFrom]"] || "",
-  car1DoneBy: formData["car[1][doneBy]"] || "",
-  car1Notes: formData["car[1][notes]"] || "",
+          car0Brand: formDataObj["car[0][brand]"] || "",
+          car0Model: formDataObj["car[0][model]"] || "",
+          car0Color: formDataObj["car[0][color]"] || "",
+          car0Plate: formDataObj["car[0][plate]"] || "",
+          car0Plan: formDataObj["car[0][plan]"] || "",
+          car0AvailableFrom: formDataObj["car[0][availableFrom]"] || "",
+          car0DoneBy: formDataObj["car[0][doneBy]"] || "",
+          car0Notes: formDataObj["car[0][notes]"] || "",
 
-  startDate: formData.startDate,
-  submittedAt: new Date().toLocaleString()
-};
+          car1Brand: formDataObj["car[1][brand]"] || "",
+          car1Model: formDataObj["car[1][model]"] || "",
+          car1Color: formDataObj["car[1][color]"] || "",
+          car1Plate: formDataObj["car[1][plate]"] || "",
+          car1Plan: formDataObj["car[1][plan]"] || "",
+          car1AvailableFrom: formDataObj["car[1][availableFrom]"] || "",
+          car1DoneBy: formDataObj["car[1][doneBy]"] || "",
+          car1Notes: formDataObj["car[1][notes]"] || "",
 
-      sendDataToGoogleSheet(submission);
-    }
+          startDate: formDataObj.startDate || "",
+          submittedAt: new Date().toLocaleString()
+        };
+
+        sendDataToGoogleSheet(submission);
+      }
+    });
   });
-});
 
   function validateStep(stepIndex) {
     const step = steps[stepIndex];
@@ -334,6 +337,41 @@ const submission = {
     return cars;
   }
 
+  function calculatePrice(cars = []) {
+    let totalPrice = 0;
+    let originalPrice = 0;
+
+    const sixDayCars = cars.filter(c => c.plan === "6");
+    const threeDayCars = cars.filter(c => c.plan === "3");
+
+    if (sixDayCars.length === 1) {
+      totalPrice += 800;
+      originalPrice += 800;
+    } else if (sixDayCars.length === 2) {
+      totalPrice += 750 * 2;
+      originalPrice += 800 * 2;
+    } else if (sixDayCars.length >= 3) {
+      totalPrice += 700 * sixDayCars.length;
+      originalPrice += 800 * sixDayCars.length;
+    }
+
+    if (threeDayCars.length === 1) {
+      totalPrice += 450;
+      originalPrice += 450;
+    } else if (threeDayCars.length === 2) {
+      totalPrice += 400 * 2;
+      originalPrice += 450 * 2;
+    } else if (threeDayCars.length >= 3) {
+      totalPrice += 350 * threeDayCars.length;
+      originalPrice += 450 * threeDayCars.length;
+    }
+
+    return {
+      totalPrice: parseFloat(totalPrice.toFixed(2)),
+      originalPrice: parseFloat(originalPrice.toFixed(2))
+    };
+  }
+
   function generateSummary(cars) {
     const container = document.getElementById("summaryContainer");
     container.innerHTML = "<h4>Your Selection</h4>";
@@ -366,50 +404,33 @@ const submission = {
     `;
   }
 
-  function calculatePrice(cars = []) {
-    let totalPrice = 0;
-    let originalPrice = 0;
-
-    const sixDayCars = cars.filter(c => c.plan === "6");
-    const threeDayCars = cars.filter(c => c.plan === "3");
-
-    // Handle 6-day washes
-    if (sixDayCars.length === 1) {
-      totalPrice += 800;
-      originalPrice += 800;
-    } else if (sixDayCars.length === 2) {
-      totalPrice += 750 * 2;
-      originalPrice += 800 * 2;
-    } else if (sixDayCars.length >= 3) {
-      totalPrice += 700 * sixDayCars.length;
-      originalPrice += 800 * sixDayCars.length;
-    }
-
-    // Handle 3-day washes
-    if (threeDayCars.length === 1) {
-      totalPrice += 450;
-      originalPrice += 450;
-    } else if (threeDayCars.length === 2) {
-      totalPrice += 400 * 2;
-      originalPrice += 450 * 2;
-    } else if (threeDayCars.length >= 3) {
-      totalPrice += 350 * threeDayCars.length;
-      originalPrice += 450 * threeDayCars.length;
-    }
-
-    return {
-      totalPrice: parseFloat(totalPrice.toFixed(2)),
-      originalPrice: parseFloat(originalPrice.toFixed(2))
-    };
-  }
-
-  function saveData() {
-    const data = {};
+  function collectFormData() {
+    const formData = {};
     const inputs = document.querySelectorAll("input, select, textarea");
 
     inputs.forEach(input => {
       if (input.name.includes("car[")) {
-        const match = input.name.match(/car\$(\d+)\$\.(.*)/);
+        const match = input.name.match(/car\$(\d+)\$\.(.+)/);
+        if (match) {
+          const index = match[1];
+          const key = match[2];
+          formData[`car[${index}][${key}]`] = input.value;
+        }
+      } else {
+        formData[input.name] = input.value;
+      }
+    });
+
+    return formData;
+  }
+
+  function saveData() {
+    const inputs = document.querySelectorAll("input, select, textarea");
+    const data = {};
+
+    inputs.forEach(input => {
+      if (input.name.includes("car[")) {
+        const match = input.name.match(/car\$(\d+)\$\.(.+)/);
         if (match) {
           const index = parseInt(match[1]);
           const key = match[2];
@@ -425,6 +446,25 @@ const submission = {
     localStorage.setItem("optimumAuto", JSON.stringify(data));
   }
 
+  async function sendDataToGoogleSheet(data) {
+    const url = "YOUR_GOOGLE_SCRIPT_URL"; // Replace with your Apps Script URL
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      console.log("Data sent to Google Sheets:", data);
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
+  }
+
   function restartForm() {
     localStorage.removeItem("optimumAuto");
     location.reload();
@@ -433,51 +473,6 @@ const submission = {
   function toTitleCase(str) {
     return str.replace(/\w+/g, w => w[0].toUpperCase() + w.slice(1));
   }
-
-  function collectCars() {
-  const container = document.getElementById("carDetailsContainer");
-  const totalCars = parseInt(document.querySelector("[name='totalCars']").value) || 1;
-  const cars = [];
-
-  for (let i = 0; i < totalCars; i++) {
-    const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
-    const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
-    const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
-    const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
-    const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
-    const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
-    const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
-    const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
-
-    if (brand || model || color || plate || plan) {
-      cars.push({ brand, model, color, plate, plan, availableFrom, doneBy, notes });
-    }
-  }
-
-  return cars;
-}
-async function sendDataToGoogleSheet(data) {
-  const url = "https://script.google.com/macros/s/AKfycbxgwnmD7U1_t-M_4ZoO2nXofBxf8f64NmUy3pJn8FbGCttS5Sf-6Ppzou43_GUKT7Fo/exec"; // Replace with real URL from Apps Script
-
-  try {
-    const response = await fetch(url, {
-      method: "POST",
-      mode: "cors",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to send data");
-    }
-
-    console.log("Data sent successfully!");
-  } catch (error) {
-    console.error("Error sending data:", error);
-  }
-}
 </script>
 
 </body>
