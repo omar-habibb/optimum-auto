@@ -192,8 +192,6 @@
       }
       if (currentStep === 3) {
         saveData();
-
-        // Collect all data and send to Google Sheets
         const submission = buildSubmissionObject();
         sendDataToGoogleSheet(submission);
       }
@@ -212,73 +210,64 @@
     return true;
   }
 
- function generateCarFields() {
-  const container = document.getElementById("carDetailsContainer");
-  const totalCars = parseInt(document.querySelector("[name='totalCars']").value) || 1;
+  function generateCarFields() {
+    const container = document.getElementById("carDetailsContainer");
+    const totalCars = Math.min(parseInt(document.querySelector("[name='totalCars']").value) || 1, 15);
 
-  // Save existing values before clearing
-  const savedCars = [];
-  for (let i = 0; i < Math.min(totalCars, 15); i++) {
-    const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
-    const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
-    const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
-    const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
-    const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
-    const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
-    const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
-    const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
+    // Save existing values before clearing
+    const savedCars = [];
+    for (let i = 0; i < totalCars; i++) {
+      const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
+      const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
+      const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
+      const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
+      const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
+      const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
+      const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
+      const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
 
-    savedCars.push({ brand, model, color, plate, plan, availableFrom, doneBy, notes });
-  }
-
-  container.innerHTML = "";
-
-  for (let i = 0; i < Math.min(totalCars, 15); i++) {
-    const div = document.createElement("div");
-    div.className = "car-section";
-    div.innerHTML = `
-      <h4>Car ${i+1}</h4>
-      <input type="text" name="car[${i}][brand]" placeholder="Brand" value="${savedCars[i]?.brand || ''}" required />
-      <input type="text" name="car[${i}][model]" placeholder="Model" value="${savedCars[i]?.model || ''}" required />
-      <input type="text" name="car[${i}][color]" placeholder="Color" value="${savedCars[i]?.color || ''}" required />
-      <input type="text" name="car[${i}][plate]" placeholder="Plate Number" value="${savedCars[i]?.plate || ''}" required />
-
-      <label>
-        Wash Plan:
-        <select name="car[${i}][plan]" required>
-          <option value="">Select Plan</option>
-          <option value="6" ${savedCars[i]?.plan === "6" ? "selected" : ""}>6 Days/Week</option>
-          <option value="3" ${savedCars[i]?.plan === "3" ? "selected" : ""}>3 Days/Week</option>
-        </select>
-      </label>
-
-      <label>
-        Available From:
-        <select name="car[${i}][availableFrom]">
-          ${Array.from({ length: 8 }, (_, i) => i + 1).map(h => `<option>${h}:00 AM</option>`).join("")}
-        </select>
-      </label>
-
-      <label>
-        Need Done By:
-        <select name="car[${i}][doneBy]">
-          ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option>${h}:30 AM</option>`).join("")}
-        </select>
-      </label>
-
-      <textarea name="car[${i}][notes]" placeholder="Notes about this car (optional)">${savedCars[i]?.notes || ''}</textarea>
-    `;
-    container.appendChild(div);
-
-    if (savedCars[i]) {
-      const availableFromInput = container.querySelector(`[name='car[${i}][availableFrom]']`);
-      if (availableFromInput && savedCars[i].availableFrom) availableFromInput.value = savedCars[i].availableFrom;
-
-      const doneByInput = container.querySelector(`[name='car[${i}][doneBy]']`);
-      if (doneByInput && savedCars[i].doneBy) doneByInput.value = savedCars[i].doneBy;
+      savedCars.push({ brand, model, color, plate, plan, availableFrom, doneBy, notes });
     }
-  }
-}
+
+    container.innerHTML = "";
+
+    for (let i = 0; i < totalCars; i++) {
+      const div = document.createElement("div");
+      div.className = "car-section";
+      div.innerHTML = `
+        <h4>Car ${i+1}</h4>
+        <input type="text" name="car[${i}][brand]" placeholder="Brand" value="${savedCars[i]?.brand || ''}" required />
+        <input type="text" name="car[${i}][model]" placeholder="Model" value="${savedCars[i]?.model || ''}" required />
+        <input type="text" name="car[${i}][color]" placeholder="Color" value="${savedCars[i]?.color || ''}" required />
+        <input type="text" name="car[${i}][plate]" placeholder="Plate Number" value="${savedCars[i]?.plate || ''}" required />
+
+        <label>
+          Wash Plan:
+          <select name="car[${i}][plan]" required>
+            <option value="">Select Plan</option>
+            <option value="6" ${savedCars[i]?.plan === "6" ? "selected" : ""}>6 Days/Week</option>
+            <option value="3" ${savedCars[i]?.plan === "3" ? "selected" : ""}>3 Days/Week</option>
+          </select>
+        </label>
+
+        <label>
+          Available From:
+          <select name="car[${i}][availableFrom]">
+            ${Array.from({ length: 8 }, (_, i) => i + 1).map(h => `<option>${h}:00 AM</option>`).join("")}
+          </select>
+        </label>
+
+        <label>
+          Need Done By:
+          <select name="car[${i}][doneBy]">
+            ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option>${h}:30 AM</option>`).join("")}
+          </select>
+        </label>
+
+        <textarea name="car[${i}][notes]" placeholder="Notes about this car (optional)">${savedCars[i]?.notes || ''}</textarea>
+      `;
+      container.appendChild(div);
+    }
 
     // Restore time selections
     for (let i = 0; i < totalCars; i++) {
@@ -291,85 +280,35 @@
   }
 
   function collectCars() {
-  const container = document.getElementById("carDetailsContainer");
-  const totalCars = Math.min(parseInt(document.querySelector("[name='totalCars']").value) || 1, 15);
-  const cars = [];
+    const container = document.getElementById("carDetailsContainer");
+    const totalCars = Math.min(parseInt(document.querySelector("[name='totalCars']").value) || 1, 15);
+    const cars = [];
 
-  for (let i = 0; i < totalCars; i++) {
-    const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
-    const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
-    const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
-    const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
-    const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
-    const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
-    const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
-    const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
+    for (let i = 0; i < totalCars; i++) {
+      const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
+      const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
+      const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
+      const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
+      const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
+      const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
+      const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
+      const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
 
-    if (brand || model || color || plate || plan) {
-      cars.push({
-        brand,
-        model,
-        color,
-        plate,
-        plan,
-        availableFrom,
-        doneBy,
-        notes
-      });
+      if (brand || model || color || plate || plan) {
+        cars.push({
+          brand,
+          model,
+          color,
+          plate,
+          plan,
+          availableFrom,
+          doneBy,
+          notes
+        });
+      }
     }
-  }
 
-  return cars;
-}
-
-  function buildSubmissionObject() {
-    const customerInfo = {
-      firstName: document.querySelector("[name='firstName']")?.value || "",
-      lastName: document.querySelector("[name='lastName']")?.value || "",
-      phone: document.querySelector("[name='phone']")?.value || "",
-      area: document.querySelector("[name='area']")?.value || "",
-      buildingNumber: document.querySelector("[name='buildingNumber']")?.value || "",
-      totalCars: document.querySelector("[name='totalCars']")?.value || "",
-      startDate: document.querySelector("[name='startDate']")?.value || ""
-    };
-
-    const cars = collectCars();
-
-    // Flatten car data into submission object
-    const submission = { ...customerInfo };
-    cars.forEach((car, index) => {
-      submission[`car${index}Brand`] = car.brand;
-      submission[`car${index}Model`] = car.model;
-      submission[`car${index}Color`] = car.color;
-      submission[`car${index}Plate`] = car.plate;
-      submission[`car${index}Plan`] = car.plan;
-      submission[`car${index}AvailableFrom`] = car.availableFrom;
-      submission[`car${index}DoneBy`] = car.doneBy;
-      submission[`car${index}Notes`] = car.notes;
-    });
-
-    submission.submittedAt = new Date().toLocaleString();
-
-    return submission;
-  }
-
-  async function sendDataToGoogleSheet(data) {
-    const url = "https://script.google.com/macros/s/AKfycbxgwnmD7U1_t-M_4ZoO2nXofBxf8f64NmUy3pJn8FbGCttS5Sf-6Ppzou43_GUKT7Fo/exec"; // Replace with your actual Apps Script URL
-
-    try {
-      const response = await fetch(url, {
-        method: "POST",
-        mode: "no-cors",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-
-      console.log("Data sent:", data);
-    } catch (error) {
-      console.error("Error sending data:", error);
-    }
+    return cars;
   }
 
   function calculatePrice(cars = []) {
@@ -437,6 +376,55 @@
       <div class="summary-item"><strong>Offer Price:</strong> EGP ${totalPrice.toFixed(2)}</div>
       <div class="summary-item"><strong>You Save:</strong> EGP ${saved}</div>
     `;
+  }
+
+  function buildSubmissionObject() {
+    const customerInfo = {
+      firstName: document.querySelector("[name='firstName']")?.value || "",
+      lastName: document.querySelector("[name='lastName']")?.value || "",
+      phone: document.querySelector("[name='phone']")?.value || "",
+      area: document.querySelector("[name='area']")?.value || "",
+      buildingNumber: document.querySelector("[name='buildingNumber']")?.value || "",
+      totalCars: document.querySelector("[name='totalCars']")?.value || "",
+      startDate: document.querySelector("[name='startDate']")?.value || ""
+    };
+
+    const cars = collectCars();
+
+    // Flatten car data into submission object
+    const submission = { ...customerInfo };
+    cars.forEach((car, index) => {
+      submission[`car${index}Brand`] = car.brand;
+      submission[`car${index}Model`] = car.model;
+      submission[`car${index}Color`] = car.color;
+      submission[`car${index}Plate`] = car.plate;
+      submission[`car${index}Plan`] = car.plan;
+      submission[`car${index}AvailableFrom`] = car.availableFrom;
+      submission[`car${index}DoneBy`] = car.doneBy;
+      submission[`car${index}Notes`] = car.notes;
+    });
+
+    submission.submittedAt = new Date().toLocaleString();
+    return submission;
+  }
+
+  async function sendDataToGoogleSheet(data) {
+    const url = "YOUR_GOOGLE_SCRIPT_URL"; // Replace with real URL later
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      console.log("Data sent:", data);
+    } catch (error) {
+      console.error("Error sending data:", error);
+    }
   }
 
   function collectFormData() {
