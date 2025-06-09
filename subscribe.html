@@ -379,35 +379,34 @@
   }
 
   function buildSubmissionObject() {
-    const customerInfo = {
-      firstName: document.querySelector("[name='firstName']")?.value || "",
-      lastName: document.querySelector("[name='lastName']")?.value || "",
-      phone: document.querySelector("[name='phone']")?.value || "",
-      area: document.querySelector("[name='area']")?.value || "",
-      buildingNumber: document.querySelector("[name='buildingNumber']")?.value || "",
-      totalCars: document.querySelector("[name='totalCars']")?.value || "",
-      startDate: document.querySelector("[name='startDate']")?.value || ""
-    };
+  const customerInfo = {
+    firstName: document.querySelector("[name='firstName']")?.value || "",
+    lastName: document.querySelector("[name='lastName']")?.value || "",
+    phone: document.querySelector("[name='phone']")?.value || "",
+    area: document.querySelector("[name='area']")?.value || "",
+    buildingNumber: document.querySelector("[name='buildingNumber']")?.value || "",
+    totalCars: document.querySelector("[name='totalCars']")?.value || "",
+    startDate: document.querySelector("[name='startDate']")?.value || ""
+  };
 
-    const cars = collectCars();
+  const cars = collectCars();
 
-    // Flatten car data into submission object
-    const submission = { ...customerInfo };
-    cars.forEach((car, index) => {
-      submission[`car${index}Brand`] = car.brand;
-      submission[`car${index}Model`] = car.model;
-      submission[`car${index}Color`] = car.color;
-      submission[`car${index}Plate`] = car.plate;
-      submission[`car${index}Plan`] = car.plan;
-      submission[`car${index}AvailableFrom`] = car.availableFrom;
-      submission[`car${index}DoneBy`] = car.doneBy;
-      submission[`car${index}Notes`] = car.notes;
-    });
+  // Flatten car data into submission object dynamically
+  const submission = { ...customerInfo };
+  cars.forEach((car, index) => {
+    submission[`car${index}Brand`] = car.brand;
+    submission[`car${index}Model`] = car.model;
+    submission[`car${index}Color`] = car.color;
+    submission[`car${index}Plate`] = car.plate;
+    submission[`car${index}Plan`] = car.plan;
+    submission[`car${index}AvailableFrom`] = car.availableFrom;
+    submission[`car${index}DoneBy`] = car.doneBy;
+    submission[`car${index}Notes`] = car.notes;
+  });
 
-    submission.submittedAt = new Date().toLocaleString();
-    return submission;
-  }
-
+  submission.submittedAt = new Date().toLocaleString();
+  return submission;
+}
   async function sendDataToGoogleSheet(data) {
     const url = "https://script.google.com/macros/s/AKfycbxgwnmD7U1_t-M_4ZoO2nXofBxf8f64NmUy3pJn8FbGCttS5Sf-6Ppzou43_GUKT7Fo/exec"; // Replace with real URL later
 
