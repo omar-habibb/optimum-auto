@@ -178,24 +178,30 @@
 
     if (direction === 1 && !validateStep(currentStep)) return;
 
+    // Hide current step
     steps[currentStep].classList.add("hidden");
 
+    // Update currentStep safely
     if (direction === 1 && currentStep < steps.length - 1) {
       currentStep++;
     } else if (direction === -1 && currentStep > 0) {
       currentStep--;
     }
 
+    // Show new step
     steps[currentStep].classList.remove("hidden");
 
-    if (currentStep === 1) generateCarFields();
-    if (currentStep === 2) generateFridays(select); // Make sure date picker is ready
-    if (currentStep === 3) {
+    // Step-specific actions
+    if (currentStep === 1) generateCarFields(); // Car Details
+    if (currentStep === 2) {
       const cars = collectCars();
-      generateSummary(cars);
+      generateSummary(cars); // Summary
+    }
+    if (currentStep === 3) {
+      showPaymentPage(); // Optional: add payment page here
     }
     if (currentStep === 4) {
-      saveData();
+      saveData(); // Save only on final step
       const submission = buildSubmissionObject();
       sendDataToGoogleSheet(submission);
     }
