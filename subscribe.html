@@ -221,113 +221,123 @@
   }
 
   function showPaymentPage() {
-  const startDate = document.querySelector("[name='startDate']").value;
-  const summaryDate = document.getElementById("summaryStartDate");
-  if (summaryDate) {
-    summaryDate.textContent = startDate || "Not selected";
-  }
+  const summaryDateElement = document.getElementById("summaryStartDate");
+  if (!summaryDateElement) return;
+
+  const startDateInput = document.querySelector("[name='startDate']");
+  if (!startDateInput) return;
+
+  const selectedDate = startDateInput.value || "Not selected";
+  summaryDateElement.textContent = selectedDate;
 }
 
   function generateCarFields() {
-    const container = document.getElementById("carDetailsContainer");
-    const totalCars = Math.min(parseInt(document.querySelector("[name='totalCars']").value) || 1, 15);
+  const container = document.getElementById("carDetailsContainer");
+  if (!container) return;
 
-    // Save existing values before clearing
-    const savedCars = [];
-    for (let i = 0; i < totalCars; i++) {
-      const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
-      const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
-      const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
-      const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
-      const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
-      const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
-      const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
-      const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
+  const totalCarsInput = document.querySelector("[name='totalCars']");
+  if (!totalCarsInput) return;
 
-      savedCars.push({ brand, model, color, plate, plan, availableFrom, doneBy, notes });
-    }
+  const totalCars = Math.min(parseInt(totalCarsInput.value) || 1, 15);
 
-    container.innerHTML = "";
+  // Save current values before regenerating
+  const savedCars = [];
+  for (let i = 0; i < totalCars; i++) {
+    const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
+    const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
+    const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
+    const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
+    const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
+    const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
+    const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
+    const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
 
-    for (let i = 0; i < totalCars; i++) {
-      const div = document.createElement("div");
-      div.className = "car-section";
-      div.innerHTML = `
-        <h4>Car ${i+1}</h4>
-        <input type="text" name="car[${i}][brand]" placeholder="Brand" value="${savedCars[i]?.brand || ''}" required />
-        <input type="text" name="car[${i}][model]" placeholder="Model" value="${savedCars[i]?.model || ''}" required />
-        <input type="text" name="car[${i}][color]" placeholder="Color" value="${savedCars[i]?.color || ''}" required />
-        <input type="text" name="car[${i}][plate]" placeholder="Plate Number" value="${savedCars[i]?.plate || ''}" required />
-
-        <label>
-          Wash Plan:
-          <select name="car[${i}][plan]" required>
-            <option value="">Select Plan</option>
-            <option value="6" ${savedCars[i]?.plan === "6" ? "selected" : ""}>6 Days/Week</option>
-            <option value="3" ${savedCars[i]?.plan === "3" ? "selected" : ""}>3 Days/Week</option>
-          </select>
-        </label>
-
-        <label>
-          Available From:
-          <select name="car[${i}][availableFrom]">
-            ${Array.from({ length: 8 }, (_, i) => i + 1).map(h => `<option>${h}:00 AM</option>`).join("")}
-          </select>
-        </label>
-
-        <label>
-          Need Done By:
-          <select name="car[${i}][doneBy]">
-            ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option>${h}:30 AM</option>`).join("")}
-          </select>
-        </label>
-
-        <textarea name="car[${i}][notes]" placeholder="Notes about this car (optional)">${savedCars[i]?.notes || ''}</textarea>
-      `;
-      container.appendChild(div);
-    }
-
-    // Restore time selections
-    for (let i = 0; i < totalCars; i++) {
-      const availableFromInput = container.querySelector(`[name='car[${i}][availableFrom]']`);
-      if (availableFromInput && savedCars[i]?.availableFrom) availableFromInput.value = savedCars[i].availableFrom;
-
-      const doneByInput = container.querySelector(`[name='car[${i}][doneBy]']`);
-      if (doneByInput && savedCars[i]?.doneBy) doneByInput.value = savedCars[i].doneBy;
-    }
+    savedCars.push({ brand, model, color, plate, plan, availableFrom, doneBy, notes });
   }
+
+  container.innerHTML = "";
+
+  for (let i = 0; i < totalCars; i++) {
+    const div = document.createElement("div");
+    div.className = "car-section";
+    div.innerHTML = `
+      <h4>Car ${i + 1}</h4>
+      <input type="text" name="car[${i}][brand]" placeholder="Brand" value="${savedCars[i]?.brand || ''}" required />
+      <input type="text" name="car[${i}][model]" placeholder="Model" value="${savedCars[i]?.model || ''}" required />
+      <input type="text" name="car[${i}][color]" placeholder="Color" value="${savedCars[i]?.color || ''}" required />
+      <input type="text" name="car[${i}][plate]" placeholder="Plate Number" value="${savedCars[i]?.plate || ''}" required />
+
+      <label>
+        Wash Plan:
+        <select name="car[${i}][plan]" required>
+          <option value="">Select Plan</option>
+          <option value="6" ${savedCars[i]?.plan === "6" ? "selected" : ""}>6 Days/Week</option>
+          <option value="3" ${savedCars[i]?.plan === "3" ? "selected" : ""}>3 Days/Week</option>
+        </select>
+      </label>
+
+      <label>
+        Available From:
+        <select name="car[${i}][availableFrom]">
+          ${Array.from({ length: 8 }, (_, i) => i + 1).map(h => `<option>${h}:00 AM</option>`).join("")}
+        </select>
+      </label>
+
+      <label>
+        Need Done By:
+        <select name="car[${i}][doneBy]">
+          ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option>${h}:30 AM</option>`).join("")}
+        </select>
+      </label>
+
+      <textarea name="car[${i}][notes]" placeholder="Notes about this car (optional)">${savedCars[i]?.notes || ''}</textarea>
+    `;
+    container.appendChild(div);
+
+    const availableFromInput = container.querySelector(`[name='car[${i}][availableFrom]']`);
+    if (availableFromInput && savedCars[i]?.availableFrom) availableFromInput.value = savedCars[i].availableFrom;
+
+    const doneByInput = container.querySelector(`[name='car[${i}][doneBy]']`);
+    if (doneByInput && savedCars[i]?.doneBy) doneByInput.value = savedCars[i].doneBy;
+  }
+}
 
   function collectCars() {
-    const container = document.getElementById("carDetailsContainer");
-    const totalCars = Math.min(parseInt(document.querySelector("[name='totalCars']").value) || 1, 15);
-    const cars = [];
+  const container = document.getElementById("carDetailsContainer");
+  if (!container) return [];
 
-    for (let i = 0; i < totalCars; i++) {
-      const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
-      const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
-      const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
-      const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
-      const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
-      const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
-      const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
-      const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
+  const totalCarsInput = document.querySelector("[name='totalCars']");
+  if (!totalCarsInput) return [];
 
-      if (brand || model || color || plate || plan) {
-        cars.push({
-          brand,
-          model,
-          color,
-          plate,
-          plan,
-          availableFrom,
-          doneBy,
-          notes
-        });
-      }
+  const totalCars = Math.min(parseInt(totalCarsInput.value) || 1, 15);
+  const cars = [];
+
+  for (let i = 0; i < totalCars; i++) {
+    const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
+    const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
+    const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
+    const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
+    const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
+    const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
+    const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
+    const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
+
+    if (brand || model || color || plate || plan) {
+      cars.push({
+        brand,
+        model,
+        color,
+        plate,
+        plan,
+        availableFrom,
+        doneBy,
+        notes
+      });
     }
-
-    return cars;
   }
+
+  return cars;
+}
 
   function calculatePrice(cars = []) {
     let totalPrice = 0;
