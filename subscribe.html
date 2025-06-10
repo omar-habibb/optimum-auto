@@ -82,51 +82,53 @@
   <form id="subscriptionForm">
 
     <!-- Step 1: Customer Info -->
-    <div id="step1" class="step active">
-      <h3>Customer Information</h3>
-      <input type="text" name="firstName" placeholder="First Name" required />
-      <input type="text" name="lastName" placeholder="Last Name" required />
-      <input type="tel" name="phone" placeholder="Phone Number (WhatsApp)" required />
-      <input type="text" name="area" placeholder="Area" required />
-      <input type="text" name="buildingNumber" placeholder="Building Number" required />
-      <input type="number" name="totalCars" min="1" value="1" placeholder="Number of Cars" id="totalCarsInput" required />
-      <button type="button" class="btn">Next</button>
-    </div>
+<div id="step1" class="step active">
+  <!-- same as before -->
+  <button type="button" class="btn">Next</button>
+</div>
 
-    <!-- Step 2: Car Details -->
-    <div id="step2" class="step hidden">
-      <h3>Car Details</h3>
-      <div id="carDetailsContainer"></div>
-      <button type="button" class="btn back">Back</button>
-      <button type="button" class="btn">Next</button>
-    </div>
+<!-- Step 2: Car Details -->
+<div id="step2" class="step hidden">
+  <h3>Car Details</h3>
+  <div id="carDetailsContainer"></div>
+  <button type="button" class="btn back">Back</button>
+  <button type="button" class="btn">Next</button>
+</div>
 
-    <!-- Step 3: Summary -->
-    <div id="step3" class="step hidden">
-      <h3>Summary</h3>
-      <div id="summaryContainer"></div>
-      <button type="button" class="btn back">Back</button>
-      <button type="button" class="btn">Next</button>
-    </div>
+<!-- Step 3: Select Start Date -->
+<div id="step3" class="step hidden">
+  <h3>Select Start Date</h3>
+  <p>Please choose a Friday.</p>
+  <select name="startDate" required>
+    <option value="">Select a Friday</option>
+  </select>
+  <button type="button" class="btn back">Back</button>
+  <button type="button" class="btn">Next</button>
+</div>
 
-    <!-- Step 4: Start Date -->
-    <div id="step4" class="step hidden">
-      <h3>Select Start Date</h3>
-      <p>Please choose a Friday.</p>
-      <select name="startDate" required>
-        <option value="">Select a Friday</option>
-      </select>
-      <button type="button" class="btn back">Back</button>
-      <button type="button" class="btn">Confirm</button>
-    </div>
+<!-- Step 4: Summary -->
+<div id="step4" class="step hidden">
+  <h3>Summary</h3>
+  <div id="summaryContainer"></div>
+  <button type="button" class="btn back">Back</button>
+  <button type="button" class="btn">Next</button>
+</div>
 
-    <!-- Step 5: Confirmation -->
-    <div id="step5" class="step hidden text-center">
-      <h3>Thank You!</h3>
-      <p>Your subscription has been successfully processed.</p>
-      <p>We’ll contact you shortly.</p>
-      <button type="button" class="btn" onclick="restartForm()">Start Over</button>
-    </div>
+<!-- Step 5: Payment Gateway -->
+<div id="step5" class="step hidden text-center">
+  <h3>Complete Your Subscription</h3>
+  <p>We accept payments via cash or online transfer upon confirmation.</p>
+  <p><strong>Selected Start Date:</strong> <span id="summaryStartDate"></span></p>
+  <button type="button" class="btn">I’ve Paid – Confirm</button>
+</div>
+
+<!-- Step 6: Thank You -->
+<div id="step6" class="step hidden text-center">
+  <h3>Thank You!</h3>
+  <p>Your subscription has been successfully processed.</p>
+  <p>We’ll contact you shortly.</p>
+  <button type="button" class="btn" onclick="restartForm()">Start Over</button>
+</div>
 
   </form>
 </div>
@@ -170,34 +172,41 @@
   }
 
   document.querySelectorAll(".btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const direction = btn.textContent === "Next" ? 1 : -1;
+  btn.addEventListener("click", () => {
+    const direction = btn.textContent === "Next" ? 1 : -1;
 
-      if (direction === 1 && !validateStep(currentStep)) return;
+    if (direction === 1 && !validateStep(currentStep)) return;
 
-      steps[currentStep].classList.add("hidden");
+    steps[currentStep].classList.add("hidden");
 
-      if (direction === 1 && currentStep < steps.length - 1) {
-        currentStep++;
-      } else if (direction === -1 && currentStep > 0) {
-        currentStep--;
-      }
+    if (direction === 1 && currentStep < steps.length - 1) {
+      currentStep++;
+    } else if (direction === -1 && currentStep > 0) {
+      currentStep--;
+    }
 
-      steps[currentStep].classList.remove("hidden");
+    steps[currentStep].classList.remove("hidden");
 
-      if (currentStep === 1) generateCarFields();
-      if (currentStep === 2) {
-        const cars = collectCars();
-        generateSummary(cars);
-      }
-      if (currentStep === 3) {
-        saveData();
-        const submission = buildSubmissionObject();
-        sendDataToGoogleSheet(submission);
-        console.log("Submission Data:", submission);
-      }
-    });
+    if (currentStep === 1) generateCarFields();
+    if (currentStep === 2) generateFridays(select);
+    if (currentStep === 3) {
+      const cars = collectCars();
+      generateSummary(cars);
+    }
+    if (currentStep === 4) showPaymentPage();
+    if (currentStep === 5) saveData();
+
+    // NEW: Auto send data when moving to final step
+    if (currentStep === 5 && direction === 1) {
+      const formData = collectFormData();
+      const cars = collectCars();
+      const { totalPrice, originalPrice } = calculatePrice(cars);
+
+      const submission = buildSubmissionObject();
+      sendDataToGoogleSheet(submission);
+    }
   });
+});
 
   function validateStep(stepIndex) {
     const step = steps[stepIndex];
@@ -210,6 +219,14 @@
     }
     return true;
   }
+
+  function showPaymentPage() {
+  const startDate = document.querySelector("[name='startDate']").value;
+  const summaryDate = document.getElementById("summaryStartDate");
+  if (summaryDate) {
+    summaryDate.textContent = startDate || "Not selected";
+  }
+}
 
   function generateCarFields() {
     const container = document.getElementById("carDetailsContainer");
@@ -408,6 +425,9 @@
     if (car.plan === "3") threeDayIndices.push(index + 1); // Car numbers start at 1
     else if (car.plan === "6") sixDayIndices.push(index + 1);
   });
+
+  const startDate = document.querySelector("[name='startDate']")?.value || "";
+  container.innerHTML += `<div class="summary-item"><strong>Start Date:</strong> ${startDate}</div>`;
 
   const totalCars = cars.length;
   let suggestion = "";
