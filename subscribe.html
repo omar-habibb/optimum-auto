@@ -319,6 +319,31 @@
     const sixDayCars = cars.filter(c => c.plan === "6");
     const threeDayCars = cars.filter(c => c.plan === "3");
 
+    if(sixDayCars.length === 1 && threeDayCars.length === 1 ){
+      totalPrice += 1150;
+      originalPrice += 1250;
+    } else if(sixDayCars.length === 2 && threeDayCars.length === 1){
+      totalPrice += 1900;
+      originalPrice += 2050;
+    }else if(sixDayCars.length === 1 && threeDayCars.length === 2){
+      totalPrice += 1550;
+      originalPrice += 1700;
+    }else if(sixDayCars.length >= 3  && threeDayCars.length === 1){
+      totalPrice += ( 700 * sixDayCars.length)+400;
+      originalPrice +=  (800 * sixDayCars.length)+450;
+    }else if(sixDayCars.length === 1  && threeDayCars.length >= 3){
+      totalPrice += 750+(350 * threeDayCars.length);
+      originalPrice +=  800+(450 * threeDayCars.length);
+    }else if(sixDayCars.length >= 3  && threeDayCars.length === 2){
+      totalPrice += ( 700 * sixDayCars.length)+750;
+      originalPrice +=  (800 * sixDayCars.length)+900;
+    }else if(sixDayCars.length === 2  && threeDayCars.length >= 3){
+      totalPrice += 1450+(350 * threeDayCars.length);
+      originalPrice +=  1600+(450 * threeDayCars.length);
+    }else if(sixDayCars.length === 2 && threeDayCars.length === 2){
+      totalPrice += 2200;
+      originalPrice += 2500;
+    }else{
     if (sixDayCars.length === 1) {
       totalPrice += 800;
       originalPrice += 800;
@@ -339,6 +364,7 @@
     } else if (threeDayCars.length >= 3) {
       totalPrice += 350 * threeDayCars.length;
       originalPrice += 450 * threeDayCars.length;
+    }
     }
 
     return {
