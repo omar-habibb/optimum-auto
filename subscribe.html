@@ -374,36 +374,103 @@
   }
 
   function generateSummary(cars) {
-    const container = document.getElementById("summaryContainer");
-    container.innerHTML = "<h4>Your Selection</h4>";
+  const container = document.getElementById("summaryContainer");
+  container.innerHTML = "<h4>Your Selection</h4>";
 
-    const fields = ["firstName", "lastName", "phone", "area", "buildingNumber", "totalCars"];
-    fields.forEach(name => {
-      const val = document.querySelector(`[name='${name}']`)?.value || "";
-      if (val) {
-        container.innerHTML += `<div class="summary-item"><strong>${toTitleCase(name)}:</strong> ${val}</div>`;
+  // Show customer info
+  const fields = ["firstName", "lastName", "phone", "area", "buildingNumber", "totalCars"];
+  fields.forEach(name => {
+    const val = document.querySelector(`[name='${name}']`)?.value || "";
+    if (val) {
+      container.innerHTML += `<div class="summary-item"><strong>${toTitleCase(name)}:</strong> ${val}</div>`;
+    }
+  });
+
+  // Show car details
+  cars.forEach((car, idx) => {
+    container.innerHTML += `<h4>Car ${idx + 1}</h4>`;
+    for (const key in car) {
+      if (car[key]) {
+        container.innerHTML += `<div class="summary-item"><strong>${toTitleCase(key)}:</strong> ${car[key]}</div>`;
       }
-    });
+    }
+  });
 
-    cars.forEach((car, idx) => {
-      container.innerHTML += `<h4>Car ${idx + 1}</h4>`;
-      for (const key in car) {
-        if (car[key]) {
-          container.innerHTML += `<div class="summary-item"><strong>${toTitleCase(key)}:</strong> ${car[key]}</div>`;
-        }
-      }
-    });
+  // Calculate price
+  const { totalPrice, originalPrice } = calculatePrice(cars);
+  const saved = (originalPrice - totalPrice).toFixed(2);
 
-    const { totalPrice, originalPrice } = calculatePrice(cars);
-    const saved = (originalPrice - totalPrice).toFixed(2);
+  // Generate suggestions based on car data
+  const threeDayIndices = [];
+  const sixDayIndices = [];
 
-    container.innerHTML += `
-      <hr>
-      <div class="summary-item"><strong>Original Price:</strong> EGP ${originalPrice.toFixed(2)}</div>
-      <div class="summary-item"><strong>Offer Price:</strong> EGP ${totalPrice.toFixed(2)}</div>
-      <div class="summary-item"><strong>You Save:</strong> EGP ${saved}</div>
+  cars.forEach((car, index) => {
+    if (car.plan === "3") threeDayIndices.push(index + 1); // Car numbers start at 1
+    else if (car.plan === "6") sixDayIndices.push(index + 1);
+  });
+
+  const totalCars = cars.length;
+  let suggestion = "";
+
+  if (threeDayIndices.length > 0 && sixDayIndices.length > 0) {
+    const carsToSuggest = threeDayIndices.join(", ");
+    suggestion = `
+      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
+        <strong>💡 Suggestion:</strong> You could save more by switching Car(${carsToSuggest}) to 6 Days/Week.
+      </div>
     `;
   }
+
+  if (totalCars === 2 && threeDayIndices.length >= 1) {
+    const carsToSuggest = threeDayIndices.join(", ");
+    suggestion = `
+      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
+        <strong>💡 Tip:</strong> Switch Car(${carsToSuggest}) to 6 Days/Week — you’ll get a better rate!
+      </div>
+    `;
+  }
+
+  if (totalCars === 3 && threeDayIndices.length === 1) {
+    const carsToSuggest = threeDayIndices.join(", ");
+    suggestion = `
+      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
+        <strong>💡 Tip:</strong> Try switching Car(${carsToSuggest}) to 6 Days/Week — it may cost less per car.
+      </div>
+    `;
+  }
+
+  if (totalCars === 3 && threeDayIndices.length === 2) {
+    const carsToSuggest = threeDayIndices.join(", ");
+    suggestion = `
+      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
+        <strong>💡 Tip:</strong> Consider switching Car(${carsToSuggest}) to 6 Days/Week — it could be cheaper overall.
+      </div>
+    `;
+  }
+
+  if (totalCars >= 4 && threeDayIndices.length >= 1) {
+    const carsToSuggest = threeDayIndices.join(", ");
+    const savingsEstimate = threeDayIndices.length * (450 - 700) + (threeDayIndices.length * 50); // rough estimate
+    suggestion = `
+      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
+        <strong>💡 Pro Tip:</strong> You can save up to EGP ${Math.abs(savingsEstimate)} by switching Car(${carsToSuggest}) to 6 Days/Week.
+      </div>
+    `;
+  }
+
+  // Add suggestion if any
+  if (suggestion) {
+    container.innerHTML += suggestion;
+  }
+
+  // Final price display
+  container.innerHTML += `
+    <hr>
+    <div class="summary-item"><strong>Original Price:</strong> EGP ${originalPrice.toFixed(2)}</div>
+    <div class="summary-item"><strong>Offer Price:</strong> EGP ${totalPrice.toFixed(2)}</div>
+    <div class="summary-item"><strong>You Save:</strong> EGP ${saved}</div>
+  `;
+}
 
   function buildSubmissionObject() {
   const customerInfo = {
