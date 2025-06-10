@@ -101,7 +101,7 @@
       <button type="button" class="btn">Next</button>
     </div>
 
-    <!-- Step 3: Summary -->
+    <!-- Step 3: start date -->
     <div id="step3" class="step hidden">
       <h3>Select Start Date</h3>
       <p>Please choose a Friday.</p>
@@ -109,11 +109,11 @@
         <option value="">Select a Friday</option>
       </select>
       <button type="button" class="btn back">Back</button>
-      <button type="button" class="btn">Confirm</button>
+      <button type="button" class="btn">Next</button>
     </div>
     
 
-    <!-- Step 4: Start Date -->
+    <!-- Step 4: summary -->
     </div>
     <div id="step4" class="step hidden">
       <h3>Summary</h3>
@@ -191,17 +191,15 @@
     // Show new step
     steps[currentStep].classList.remove("hidden");
 
-    // Step-specific actions
+    // Run step-specific functions
     if (currentStep === 1) generateCarFields(); // Car Details
-    if (currentStep === 2) {
+    if (currentStep === 2) generateFridays(select); // Start Date
+    if (currentStep === 3) {
       const cars = collectCars();
       generateSummary(cars); // Summary
     }
-    if (currentStep === 3) {
-      showPaymentPage(); // Optional: add payment page here
-    }
     if (currentStep === 4) {
-      saveData(); // Save only on final step
+      saveData(); // Save + Send Data
       const submission = buildSubmissionObject();
       sendDataToGoogleSheet(submission);
     }
