@@ -103,14 +103,6 @@
 
     <!-- Step 3: Summary -->
     <div id="step3" class="step hidden">
-      <h3>Summary</h3>
-      <div id="summaryContainer"></div>
-      <button type="button" class="btn back">Back</button>
-      <button type="button" class="btn">Next</button>
-    </div>
-
-    <!-- Step 4: Start Date -->
-    <div id="step4" class="step hidden">
       <h3>Select Start Date</h3>
       <p>Please choose a Friday.</p>
       <select name="startDate" required>
@@ -119,6 +111,17 @@
       <button type="button" class="btn back">Back</button>
       <button type="button" class="btn">Confirm</button>
     </div>
+    
+
+    <!-- Step 4: Start Date -->
+    </div>
+    <div id="step4" class="step hidden">
+      <h3>Summary</h3>
+      <div id="summaryContainer"></div>
+      <button type="button" class="btn back">Back</button>
+      <button type="button" class="btn">Next</button>
+    </div>
+    
 
     <!-- Step 5: Confirmation -->
     <div id="step5" class="step hidden text-center">
@@ -170,34 +173,34 @@
   }
 
   document.querySelectorAll(".btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const direction = btn.textContent === "Next" ? 1 : -1;
+  btn.addEventListener("click", () => {
+    const direction = btn.textContent === "Next" ? 1 : -1;
 
-      if (direction === 1 && !validateStep(currentStep)) return;
+    if (direction === 1 && !validateStep(currentStep)) return;
 
-      steps[currentStep].classList.add("hidden");
+    steps[currentStep].classList.add("hidden");
 
-      if (direction === 1 && currentStep < steps.length - 1) {
-        currentStep++;
-      } else if (direction === -1 && currentStep > 0) {
-        currentStep--;
-      }
+    if (direction === 1 && currentStep < steps.length - 1) {
+      currentStep++;
+    } else if (direction === -1 && currentStep > 0) {
+      currentStep--;
+    }
 
-      steps[currentStep].classList.remove("hidden");
+    steps[currentStep].classList.remove("hidden");
 
-      if (currentStep === 1) generateCarFields();
-      if (currentStep === 2) {
-        const cars = collectCars();
-        generateSummary(cars);
-      }
-      if (currentStep === 3) {
-        saveData();
-        const submission = buildSubmissionObject();
-        sendDataToGoogleSheet(submission);
-        console.log("Submission Data:", submission);
-      }
-    });
+    if (currentStep === 1) generateCarFields();
+    if (currentStep === 2) generateFridays(select); // Make sure date picker is ready
+    if (currentStep === 3) {
+      const cars = collectCars();
+      generateSummary(cars);
+    }
+    if (currentStep === 4) {
+      saveData();
+      const submission = buildSubmissionObject();
+      sendDataToGoogleSheet(submission);
+    }
   });
+});
 
   function validateStep(stepIndex) {
     const step = steps[stepIndex];
@@ -385,6 +388,11 @@
       container.innerHTML += `<div class="summary-item"><strong>${toTitleCase(name)}:</strong> ${val}</div>`;
     }
   });
+    //show start date
+    const startDate = document.querySelector("[name='startDate']")?.value || "";
+if (startDate) {
+  container.innerHTML += `<div class="summary-item"><strong>Start Date:</strong> ${startDate}</div>`;
+}
 
   // Show car details
   cars.forEach((car, idx) => {
@@ -399,6 +407,8 @@
   // Calculate price
   const { totalPrice, originalPrice } = calculatePrice(cars);
   const saved = (originalPrice - totalPrice).toFixed(2);
+
+  
 
   // Generate suggestions based on car data
   const threeDayIndices = [];
