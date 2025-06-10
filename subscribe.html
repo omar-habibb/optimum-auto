@@ -187,22 +187,32 @@
 
     steps[currentStep].classList.remove("hidden");
 
-    if (currentStep === 1) generateCarFields();
-    if (currentStep === 2) generateFridays(select);
+    // Now, only run functions IF step exists
+    if (currentStep === 1) {
+      const container = document.getElementById("carDetailsContainer");
+      if (container) generateCarFields();
+    }
+
+    if (currentStep === 2) {
+      const cars = collectCars();
+      generateSummary(cars);
+    }
+
     if (currentStep === 3) {
       const cars = collectCars();
       generateSummary(cars);
     }
-    if (currentStep === 4) showPaymentPage();
-    if (currentStep === 5) saveData();
 
-    // NEW: Auto send data when moving to final step
-    if (currentStep === 5 && direction === 1) {
+    if (currentStep === 4) {
+      showPaymentPage();
+    }
+
+    if (currentStep === 5) {
+      saveData();
+
       const formData = collectFormData();
       const cars = collectCars();
-      const { totalPrice, originalPrice } = calculatePrice(cars);
-
-      const submission = buildSubmissionObject();
+      const submission = buildSubmissionObject(formData, cars);
       sendDataToGoogleSheet(submission);
     }
   });
@@ -232,6 +242,7 @@
 }
 
   function generateCarFields() {
+    console.log("Running:", arguments.callee.name);
   const container = document.getElementById("carDetailsContainer");
   if (!container) return;
 
