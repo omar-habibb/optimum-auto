@@ -82,53 +82,51 @@
   <form id="subscriptionForm">
 
     <!-- Step 1: Customer Info -->
-<div id="step1" class="step active">
-  <!-- same as before -->
-  <button type="button" class="btn">Next</button>
-</div>
+    <div id="step1" class="step active">
+      <h3>Customer Information</h3>
+      <input type="text" name="firstName" placeholder="First Name" required />
+      <input type="text" name="lastName" placeholder="Last Name" required />
+      <input type="tel" name="phone" placeholder="Phone Number (WhatsApp)" required />
+      <input type="text" name="area" placeholder="Area" required />
+      <input type="text" name="buildingNumber" placeholder="Building Number" required />
+      <input type="number" name="totalCars" min="1" value="1" placeholder="Number of Cars" id="totalCarsInput" required />
+      <button type="button" class="btn">Next</button>
+    </div>
 
-<!-- Step 2: Car Details -->
-<div id="step2" class="step hidden">
-  <h3>Car Details</h3>
-  <div id="carDetailsContainer"></div>
-  <button type="button" class="btn back">Back</button>
-  <button type="button" class="btn">Next</button>
-</div>
+    <!-- Step 2: Car Details -->
+    <div id="step2" class="step hidden">
+      <h3>Car Details</h3>
+      <div id="carDetailsContainer"></div>
+      <button type="button" class="btn back">Back</button>
+      <button type="button" class="btn">Next</button>
+    </div>
 
-<!-- Step 3: Select Start Date -->
-<div id="step3" class="step hidden">
-  <h3>Select Start Date</h3>
-  <p>Please choose a Friday.</p>
-  <select name="startDate" required>
-    <option value="">Select a Friday</option>
-  </select>
-  <button type="button" class="btn back">Back</button>
-  <button type="button" class="btn">Next</button>
-</div>
+    <!-- Step 3: Summary -->
+    <div id="step3" class="step hidden">
+      <h3>Summary</h3>
+      <div id="summaryContainer"></div>
+      <button type="button" class="btn back">Back</button>
+      <button type="button" class="btn">Next</button>
+    </div>
 
-<!-- Step 4: Summary -->
-<div id="step4" class="step hidden">
-  <h3>Summary</h3>
-  <div id="summaryContainer"></div>
-  <button type="button" class="btn back">Back</button>
-  <button type="button" class="btn">Next</button>
-</div>
+    <!-- Step 4: Start Date -->
+    <div id="step4" class="step hidden">
+      <h3>Select Start Date</h3>
+      <p>Please choose a Friday.</p>
+      <select name="startDate" required>
+        <option value="">Select a Friday</option>
+      </select>
+      <button type="button" class="btn back">Back</button>
+      <button type="button" class="btn">Confirm</button>
+    </div>
 
-<!-- Step 5: Payment Gateway -->
-<div id="step5" class="step hidden text-center">
-  <h3>Complete Your Subscription</h3>
-  <p>We accept payments via cash or online transfer upon confirmation.</p>
-  <p><strong>Selected Start Date:</strong> <span id="summaryStartDate"></span></p>
-  <button type="button" class="btn">I’ve Paid – Confirm</button>
-</div>
-
-<!-- Step 6: Thank You -->
-<div id="step6" class="step hidden text-center">
-  <h3>Thank You!</h3>
-  <p>Your subscription has been successfully processed.</p>
-  <p>We’ll contact you shortly.</p>
-  <button type="button" class="btn" onclick="restartForm()">Start Over</button>
-</div>
+    <!-- Step 5: Confirmation -->
+    <div id="step5" class="step hidden text-center">
+      <h3>Thank You!</h3>
+      <p>Your subscription has been successfully processed.</p>
+      <p>We’ll contact you shortly.</p>
+      <button type="button" class="btn" onclick="restartForm()">Start Over</button>
+    </div>
 
   </form>
 </div>
@@ -172,51 +170,34 @@
   }
 
   document.querySelectorAll(".btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const direction = btn.textContent === "Next" ? 1 : -1;
+    btn.addEventListener("click", () => {
+      const direction = btn.textContent === "Next" ? 1 : -1;
 
-    if (direction === 1 && !validateStep(currentStep)) return;
+      if (direction === 1 && !validateStep(currentStep)) return;
 
-    steps[currentStep].classList.add("hidden");
+      steps[currentStep].classList.add("hidden");
 
-    if (direction === 1 && currentStep < steps.length - 1) {
-      currentStep++;
-    } else if (direction === -1 && currentStep > 0) {
-      currentStep--;
-    }
+      if (direction === 1 && currentStep < steps.length - 1) {
+        currentStep++;
+      } else if (direction === -1 && currentStep > 0) {
+        currentStep--;
+      }
 
-    steps[currentStep].classList.remove("hidden");
+      steps[currentStep].classList.remove("hidden");
 
-    // Now, only run functions IF step exists
-    if (currentStep === 1) {
-      const container = document.getElementById("carDetailsContainer");
-      if (container) generateCarFields();
-    }
-
-    if (currentStep === 2) {
-      const cars = collectCars();
-      generateSummary(cars);
-    }
-
-    if (currentStep === 3) {
-      const cars = collectCars();
-      generateSummary(cars);
-    }
-
-    if (currentStep === 4) {
-      showPaymentPage();
-    }
-
-    if (currentStep === 5) {
-      saveData();
-
-      const formData = collectFormData();
-      const cars = collectCars();
-      const submission = buildSubmissionObject(formData, cars);
-      sendDataToGoogleSheet(submission);
-    }
+      if (currentStep === 1) generateCarFields();
+      if (currentStep === 2) {
+        const cars = collectCars();
+        generateSummary(cars);
+      }
+      if (currentStep === 3) {
+        saveData();
+        const submission = buildSubmissionObject();
+        sendDataToGoogleSheet(submission);
+        console.log("Submission Data:", submission);
+      }
+    });
   });
-});
 
   function validateStep(stepIndex) {
     const step = steps[stepIndex];
@@ -230,125 +211,106 @@
     return true;
   }
 
-  function showPaymentPage() {
-  const summaryDateElement = document.getElementById("summaryStartDate");
-  if (!summaryDateElement) return;
-
-  const startDateInput = document.querySelector("[name='startDate']");
-  if (!startDateInput) return;
-
-  const selectedDate = startDateInput.value || "Not selected";
-  summaryDateElement.textContent = selectedDate;
-}
-
   function generateCarFields() {
-    console.log("Running:", arguments.callee.name);
-  const container = document.getElementById("carDetailsContainer");
-  if (!container) return;
+    const container = document.getElementById("carDetailsContainer");
+    const totalCars = Math.min(parseInt(document.querySelector("[name='totalCars']").value) || 1, 15);
 
-  const totalCarsInput = document.querySelector("[name='totalCars']");
-  if (!totalCarsInput) return;
+    // Save existing values before clearing
+    const savedCars = [];
+    for (let i = 0; i < totalCars; i++) {
+      const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
+      const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
+      const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
+      const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
+      const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
+      const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
+      const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
+      const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
 
-  const totalCars = Math.min(parseInt(totalCarsInput.value) || 1, 15);
+      savedCars.push({ brand, model, color, plate, plan, availableFrom, doneBy, notes });
+    }
 
-  // Save current values before regenerating
-  const savedCars = [];
-  for (let i = 0; i < totalCars; i++) {
-    const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
-    const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
-    const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
-    const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
-    const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
-    const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
-    const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
-    const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
+    container.innerHTML = "";
 
-    savedCars.push({ brand, model, color, plate, plan, availableFrom, doneBy, notes });
-  }
+    for (let i = 0; i < totalCars; i++) {
+      const div = document.createElement("div");
+      div.className = "car-section";
+      div.innerHTML = `
+        <h4>Car ${i+1}</h4>
+        <input type="text" name="car[${i}][brand]" placeholder="Brand" value="${savedCars[i]?.brand || ''}" required />
+        <input type="text" name="car[${i}][model]" placeholder="Model" value="${savedCars[i]?.model || ''}" required />
+        <input type="text" name="car[${i}][color]" placeholder="Color" value="${savedCars[i]?.color || ''}" required />
+        <input type="text" name="car[${i}][plate]" placeholder="Plate Number" value="${savedCars[i]?.plate || ''}" required />
 
-  container.innerHTML = "";
+        <label>
+          Wash Plan:
+          <select name="car[${i}][plan]" required>
+            <option value="">Select Plan</option>
+            <option value="6" ${savedCars[i]?.plan === "6" ? "selected" : ""}>6 Days/Week</option>
+            <option value="3" ${savedCars[i]?.plan === "3" ? "selected" : ""}>3 Days/Week</option>
+          </select>
+        </label>
 
-  for (let i = 0; i < totalCars; i++) {
-    const div = document.createElement("div");
-    div.className = "car-section";
-    div.innerHTML = `
-      <h4>Car ${i + 1}</h4>
-      <input type="text" name="car[${i}][brand]" placeholder="Brand" value="${savedCars[i]?.brand || ''}" required />
-      <input type="text" name="car[${i}][model]" placeholder="Model" value="${savedCars[i]?.model || ''}" required />
-      <input type="text" name="car[${i}][color]" placeholder="Color" value="${savedCars[i]?.color || ''}" required />
-      <input type="text" name="car[${i}][plate]" placeholder="Plate Number" value="${savedCars[i]?.plate || ''}" required />
+        <label>
+          Available From:
+          <select name="car[${i}][availableFrom]">
+            ${Array.from({ length: 8 }, (_, i) => i + 1).map(h => `<option>${h}:00 AM</option>`).join("")}
+          </select>
+        </label>
 
-      <label>
-        Wash Plan:
-        <select name="car[${i}][plan]" required>
-          <option value="">Select Plan</option>
-          <option value="6" ${savedCars[i]?.plan === "6" ? "selected" : ""}>6 Days/Week</option>
-          <option value="3" ${savedCars[i]?.plan === "3" ? "selected" : ""}>3 Days/Week</option>
-        </select>
-      </label>
+        <label>
+          Need Done By:
+          <select name="car[${i}][doneBy]">
+            ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option>${h}:30 AM</option>`).join("")}
+          </select>
+        </label>
 
-      <label>
-        Available From:
-        <select name="car[${i}][availableFrom]">
-          ${Array.from({ length: 8 }, (_, i) => i + 1).map(h => `<option>${h}:00 AM</option>`).join("")}
-        </select>
-      </label>
+        <textarea name="car[${i}][notes]" placeholder="Notes about this car (optional)">${savedCars[i]?.notes || ''}</textarea>
+      `;
+      container.appendChild(div);
+    }
 
-      <label>
-        Need Done By:
-        <select name="car[${i}][doneBy]">
-          ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option>${h}:30 AM</option>`).join("")}
-        </select>
-      </label>
+    // Restore time selections
+    for (let i = 0; i < totalCars; i++) {
+      const availableFromInput = container.querySelector(`[name='car[${i}][availableFrom]']`);
+      if (availableFromInput && savedCars[i]?.availableFrom) availableFromInput.value = savedCars[i].availableFrom;
 
-      <textarea name="car[${i}][notes]" placeholder="Notes about this car (optional)">${savedCars[i]?.notes || ''}</textarea>
-    `;
-    container.appendChild(div);
-
-    const availableFromInput = container.querySelector(`[name='car[${i}][availableFrom]']`);
-    if (availableFromInput && savedCars[i]?.availableFrom) availableFromInput.value = savedCars[i].availableFrom;
-
-    const doneByInput = container.querySelector(`[name='car[${i}][doneBy]']`);
-    if (doneByInput && savedCars[i]?.doneBy) doneByInput.value = savedCars[i].doneBy;
-  }
-}
-
-  function collectCars() {
-  const container = document.getElementById("carDetailsContainer");
-  if (!container) return [];
-
-  const totalCarsInput = document.querySelector("[name='totalCars']");
-  if (!totalCarsInput) return [];
-
-  const totalCars = Math.min(parseInt(totalCarsInput.value) || 1, 15);
-  const cars = [];
-
-  for (let i = 0; i < totalCars; i++) {
-    const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
-    const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
-    const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
-    const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
-    const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
-    const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
-    const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
-    const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
-
-    if (brand || model || color || plate || plan) {
-      cars.push({
-        brand,
-        model,
-        color,
-        plate,
-        plan,
-        availableFrom,
-        doneBy,
-        notes
-      });
+      const doneByInput = container.querySelector(`[name='car[${i}][doneBy]']`);
+      if (doneByInput && savedCars[i]?.doneBy) doneByInput.value = savedCars[i].doneBy;
     }
   }
 
-  return cars;
-}
+  function collectCars() {
+    const container = document.getElementById("carDetailsContainer");
+    const totalCars = Math.min(parseInt(document.querySelector("[name='totalCars']").value) || 1, 15);
+    const cars = [];
+
+    for (let i = 0; i < totalCars; i++) {
+      const brand = container.querySelector(`[name='car[${i}][brand]']`)?.value || "";
+      const model = container.querySelector(`[name='car[${i}][model]']`)?.value || "";
+      const color = container.querySelector(`[name='car[${i}][color]']`)?.value || "";
+      const plate = container.querySelector(`[name='car[${i}][plate]']`)?.value || "";
+      const plan = container.querySelector(`[name='car[${i}][plan]']`)?.value || "";
+      const availableFrom = container.querySelector(`[name='car[${i}][availableFrom]']`)?.value || "";
+      const doneBy = container.querySelector(`[name='car[${i}][doneBy]']`)?.value || "";
+      const notes = container.querySelector(`[name='car[${i}][notes]']`)?.value || "";
+
+      if (brand || model || color || plate || plan) {
+        cars.push({
+          brand,
+          model,
+          color,
+          plate,
+          plan,
+          availableFrom,
+          doneBy,
+          notes
+        });
+      }
+    }
+
+    return cars;
+  }
 
   function calculatePrice(cars = []) {
     let totalPrice = 0;
@@ -446,9 +408,6 @@
     if (car.plan === "3") threeDayIndices.push(index + 1); // Car numbers start at 1
     else if (car.plan === "6") sixDayIndices.push(index + 1);
   });
-
-  const startDate = document.querySelector("[name='startDate']")?.value || "";
-  container.innerHTML += `<div class="summary-item"><strong>Start Date:</strong> ${startDate}</div>`;
 
   const totalCars = cars.length;
   let suggestion = "";
