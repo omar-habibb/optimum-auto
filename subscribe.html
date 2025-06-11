@@ -133,8 +133,45 @@
     <div id="step4" class="step hidden">
       <h3>Summary</h3>
       <div id="summaryContainer"></div>
-      <button type="button" class="btn back">Back</button>
-      <button type="button" class="btn">Next</button>
+
+<!-- Policies Section -->
+<div style="margin-top: 20px;">
+  <label style="display: block; margin-bottom: 10px;">
+    <input type="checkbox" id="policyCheckbox" required />
+    <strong>I have read and agree to the <a href="#" onclick="togglePolicy(event)">Policies & What to Do</a></strong>
+  </label>
+
+  <!-- Hidden Policy Box -->
+  <div id="policyBox" style="background:#fefce8; padding:15px; border-left:4px solid #eab308; display:none;">
+    <h4>🚘 Optimum Auto – Service Terms & What You Should Know</h4>
+    <p>To keep your experience smooth and your car looking its best, here are a few simple things to know before each wash. Nothing complicated — just easy steps to help us deliver the best results.</p>
+
+    <h4>✅ What You Should Do</h4>
+    <ul>
+      <li>Please make sure all windows, sunroof, trunk, and hood are closed.</li>
+      <li>Park your car within one building to the left or right of your registered address.</li>
+      <li>If your car’s color or license plate has changed, just let us know on WhatsApp.</li>
+      <li>If your car won’t be available, please message us at least 6 hours in advance.</li>
+      <li>Enable WhatsApp notifications to stay updated about your washes.</li>
+    </ul>
+
+    <h4>⚠️ When We Can’t Wash the Car</h4>
+    <ul>
+      <li>Open windows, sunroof, trunk, or hood at the time of service.</li>
+      <li>Car is parked outside the allowed area (not within one building of your location).</li>
+      <li>License plate or color changed without prior notice.</li>
+      <li>Car is in a garage with direct building access.</li>
+      <li>Unavailability of the car without 6-hour notice.</li>
+      <li>Rainy weather that prevents safe washing.</li>
+    </ul>
+
+    <h4>📱 Communication</h4>
+    <p>All service-related updates, changes, or notifications will be sent through WhatsApp. Please make sure your number is active and reachable.</p>
+  </div>
+</div>
+
+<button type="button" class="btn back">Back</button>
+<button type="button" class="btn" id="nextBtn" disabled>Next</button>
     </div>
     
 
@@ -191,7 +228,17 @@
   btn.addEventListener("click", () => {
     const direction = btn.textContent === "Next" ? 1 : -1;
 
-    if (direction === 1 && !validateStep(currentStep)) return;
+    if (direction === 1) {
+  if (currentStep === 3) { // Summary step
+    const checkbox = document.getElementById("policyCheckbox");
+    if (!checkbox?.checked) {
+      alert("You must agree to the policies before continuing.");
+      return;
+    }
+  }
+
+  if (!validateStep(currentStep)) return;
+}
 
     // Hide current step
     steps[currentStep].classList.add("hidden");
@@ -232,6 +279,12 @@
     }
     return true;
   }
+
+  function togglePolicy(e) {
+  e.preventDefault();
+  const policyBox = document.getElementById("policyBox");
+  policyBox.style.display = policyBox.style.display === "none" ? "block" : "none";
+}
 
   function generateCarFields() {
     const container = document.getElementById("carDetailsContainer");
@@ -499,6 +552,9 @@ if (startDate) {
     <div class="summary-item"><strong>Offer Price:</strong> EGP ${totalPrice.toFixed(2)}</div>
     <div class="summary-item"><strong>You Save:</strong> EGP ${saved}</div>
   `;
+    document.getElementById("policyCheckbox").addEventListener("change", () => {
+  document.getElementById("nextBtn").disabled = !document.getElementById("policyCheckbox").checked;
+});
 }
 
   function buildSubmissionObject() {
