@@ -173,6 +173,25 @@ ul {
 }
 /*style="background-image:  url(823e0a7a-eb99-422d-8674-936abef4445f.jpeg)"*/
 
+/* description*/
+.dscr{
+    background-image: linear-gradient(to bottom,grey , black);
+    color:whitesmoke;
+    padding-bottom: 1.5rem;
+    
+    
+}
+
+#hdscr{
+    color:goldenrod;
+    font-size:2rem;
+    padding-bottom: 1.3rem;
+}
+
+#pdscr{
+    font-size: 1.25rem;
+}
+
 /* Feature Cards */
 .feature-card {
   background-color: #fff;
