@@ -178,6 +178,7 @@ ul {
     background-image: linear-gradient(to bottom,grey , black);
     color:whitesmoke;
     padding-bottom: 1.5rem;
+    padding-top: 10rem;
     
     
 }
@@ -186,7 +187,7 @@ ul {
     color:goldenrod;
     font-size:2rem;
     padding-bottom: 1.3rem;
-    padding-top: 1.75rem;
+    
 }
 
 #pdscr{
