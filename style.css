@@ -177,10 +177,11 @@ ul {
 .dscr{
     background-image: linear-gradient(to bottom,grey , black);
     color:whitesmoke;
-    padding-bottom: 1.5rem;
+    padding: 1.5rem;
     background-size: cover;
     background-position: center;
-    padding-top: 1.5rem;
+    
+    
 }
 
 #hdscr{
