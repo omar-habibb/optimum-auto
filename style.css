@@ -178,15 +178,17 @@ ul {
     background-image: linear-gradient(to bottom,grey , black);
     color:whitesmoke;
     padding-bottom: 1.5rem;
-    padding-top: 10rem;
-    
-    
+    background-size: cover;
+    background-position: center;
+    padding-top: 1.5rem;
 }
 
 #hdscr{
     color:goldenrod;
     font-size:2rem;
     padding-bottom: 1.3rem;
+    
+
     
 }
 
