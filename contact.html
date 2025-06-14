@@ -43,11 +43,18 @@
             </li>
           </ul>
         </div>
-        <form class="space-y-4">
-          <input type="text" placeholder="Your Name" required />
-          <input type="email" placeholder="Your Email" required />
-          <textarea rows="5" placeholder="Your Message"></textarea>
-          <button type="submit" class="btn-primary w-full">Send Message</button>
+        <form id="contactForm" class="space-y-4">
+            <input type="text" name="name" placeholder="Your First and Last Name" required />
+
+            <input type="tel" name="phone" placeholder="Phone Number (WhatsApp)" required />
+
+            <input type="text" name="area" placeholder="Area" required />
+
+            <input type="text" name="buildingNumber" placeholder="Building Number" required />
+
+            <textarea name="message" rows="5" placeholder="Your Message"></textarea>
+
+            <button type="submit" class="btn-primary w-full">Send Message</button>
         </form>
       </div>
     </div>
@@ -60,8 +67,39 @@
     </div>
   </footer>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script> 
+<script>
+  // Initialize EmailJS (use your public key)
+  (function() {
+    emailjs.init("W-gEWOujOJpMtAs-L"); // Replace with your actual public key
+  })();
+
+  document.getElementById("contactForm")?.addEventListener("submit", function(event) {
+    event.preventDefault(); // Prevent default submit
+
+    const form = event.target;
+    const serviceID = "service_21i06yu"; // e.g., service_default
+    const templateID = "template_contact_form"; // e.g., template_XXXXXXXX
+
+    // Collect values
+    const params = {
+      name: form.name.value.trim(),
+      phone: form.phone.value.trim(),
+      area: form.area.value.trim(),
+      buildingNumber: form.buildingNumber.value.trim(),
+      message: form.message.value.trim()
+    };
+
+    // Send via EmailJS
+    emailjs.send(serviceID, templateID, params)
+      .then(() => {
+        alert("Message sent successfully!");
+        form.reset();
+      }, (err) => {
+        alert("Failed to send message.");
+        console.error(err);
+      });
+  });
+</script>
 </body>
 </html>
