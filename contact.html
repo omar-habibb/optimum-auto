@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact Us - Optimum Auto</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> 
 </head>
 <body>
 
@@ -29,21 +30,29 @@
         <div>
           <p class="mb-4">Have any questions or need assistance?</p>
           <ul class="space-y-3">
-            <li class="flex items-center space-x-3">
-              <svg class="icon" viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 0 6V5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>+201234567891</span>
+            <br>
+        <!-- Phone -->
+        <li class="flex items-center space-x-3">
+        <i class="fas fa-phone icon" style="color: goldenrod;"></i>
+        <span style="color:black;">+201234567891</span>
+        </li>
+
+        <!-- Email -->
+        <li class="flex items-center space-x-3">
+            <i class="fas fa-envelope icon" style="color: navy;"></i>
+            <span style="color:black;">optimumauto.oa@gmail.com</span>
             </li>
+
+            <!-- WhatsApp -->
             <li class="flex items-center space-x-3">
-              <svg class="icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <span>optimumauto.oa@gmail.com</span>
+            <i class="fab fa-whatsapp icon" style="color: #25d366;"></i>
+            <a href="https://wa.me/201234567891"  target="_blank" rel="noopener noreferrer" style="color: black;">Chat on WhatsApp</a>
             </li>
-            <li class="flex items-center space-x-3">
-              <svg class="icon" viewBox="0 0 24 24"><path d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              <a href="https://wa.me/201234567891"  target="_blank" rel="noopener noreferrer">Chat on WhatsApp</a>
-            </li>
-          </ul>
+        </ul>
+        <br>
         </div>
         <form id="contactForm" class="space-y-4">
+            <h3>Send us a Message</h3>
             <input type="text" name="name" placeholder="Your First and Last Name" required />
 
             <input type="tel" name="phone" placeholder="Phone Number (WhatsApp)" required />
