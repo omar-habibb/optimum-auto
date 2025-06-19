@@ -200,14 +200,24 @@ ul {
     font-size: 1.25rem;
 }
 
+
 /* Feature Cards */
+.feature-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem; /* or whatever spacing you want */
+}
+
 .feature-card {
-  background-color: #fff;
+  background-color: white;
   padding: 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   display: flex;
   align-items: start;
+  width:175px;
+  height:150px;
+  font-size: 1.2rem;
 }
 .icon {
   width: 1.25rem;
