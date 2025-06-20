@@ -200,6 +200,12 @@ ul {
     font-size: 1.25rem;
 }
 
+/* our service */
+#os{
+  background-image: radial-gradient(grey,black);
+  color:white;
+  /*background-color: goldenrod;*/
+}
 
 /* Feature Cards */
 .feature-cards-container {
@@ -209,7 +215,8 @@ ul {
 }
 
 .feature-card {
-  background-color: white;
+  color: black;
+  background-color: gold;
   padding: 1.5rem;
   border-radius: 0.5rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
@@ -218,6 +225,7 @@ ul {
   width:175px;
   height:150px;
   font-size: 1.2rem;
+  font-weight: 500;
 }
 .icon {
   width: 1.25rem;
