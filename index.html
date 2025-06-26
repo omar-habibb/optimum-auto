@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0 , height=device-height"/>
   <title>Optimum Auto - Your Car. Our Pride.</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
@@ -60,11 +61,155 @@
   </header>
 -->
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; <span id="year"></span> Optimum Auto. All rights reserved.</p>
-  </footer>
+  <footer class="bg-black text-white py-8">
+  <div class="container text-center">
+    <p class="mb-2">&copy; <span id="year"></span> Optimum Auto. All rights reserved.</p>
+    <p>
+    <i class="fa-solid fa-location-dot" style="color:gold;"></i>
+    Cairo, Egypt</p>
 
-  <script src="script.js"></script>
+    <!-- Policy Toggle Buttons -->
+    <div class="policy-buttons flex flex-wrap justify-center gap-3 mb-4">
+      <button type="button" class="footer-policy-btn">Privacy Policy</button>
+      <button type="button" class="footer-policy-btn">Refund & Exchange</button>
+      <button type="button" class="footer-policy-btn">Service Duration</button>
+      <button type="button" class="footer-policy-btn">Terms & Conditions</button>
+    </div>
+
+    <!-- Policy Content Sections -->
+     <!--privacy-->
+<div class="policy-container">
+  <div class="policy-item">
+    <div class="policy-content hidden">
+      
+      <h3>Privacy Policy</h3>
+      <p>
+        At Optimum Auto, your privacy is important to us. This Privacy Policy outlines how we collect, use, and protect your personal information when you use our services.
+      </p>
+      <h4>Information We Collect</h4>
+      <p>
+        We collect only the information necessary to deliver our services effectively and securely:
+      </p>
+      <ul>
+        <li>-Full Name</li>
+        <li>-Phone Number</li>
+        <li>-Address</li>
+        <li>-Car Details</li>
+      </ul>
+      <h4>How We Use Your Information</h4>
+      <p>
+        Your data is used strictly for operational purposes:
+      </p>
+      <ul>
+        <li>-To manage your car wash subscription</li>
+        <li>-To schedule and deliver service to your specified location</li>
+        <li>-To send service-related notifications (e.g., reminders or updates) via WhatsApp</li>
+      </ul>
+      <p>
+        We do not send promotional content and we do not share your information with any third parties.
+      </p>
+      <h4>Data Storage & Security</h4>
+      <p>
+        All user data is stored in protected files and handled with confidentiality. We do not use cookies or third-party trackers. Some data may be stored in your browser’s local storage for smoother interaction on our website — none of this is shared externally.
+      </p>
+      <h4>Your Rights</h4>
+      <p>You have full control over your data:</p>
+      <ul>
+        <li>-You may request to update or correct your information at any time.</li>
+        <li>-You may request to delete your data from our system.</li>
+      </ul>
+      <p>To do so, simply contact us via WhatsApp or email.</p>
+      <h4>Policy Updates</h4>
+      <p>We may update this Privacy Policy if needed to reflect changes in service. We will notify you of any major updates.</p>
+      <br>
+      <h5>If you have any questions or concerns regarding your privacy, feel free to reach out to us via the methods listed on our  <a href="contact.html" style="color: goldenrod;">Contact Page.</a></h5>
+      <button id="fc-btn" onclick="cl()">Accept</button>
+    </div>
+  </div>
+
+  <div class="policy-item">
+    <div class="policy-content hidden">
+      <h3>Refund & Exchange Policy</h3>
+      <P>
+        At Optimum Auto, we aim to provide a seamless and reliable service. To ensure transparency and fairness. Please review the following terms regarding refunds and subscription changes:
+      </P>
+      <h4>Refunds</h4>
+      <p>
+        <strong>Payment Errors:</strong> If a customer is charged incorrectly due to a system or billing error, a full refund will be issued upon verification.
+      </p>
+      <p>
+        <strong>Cancellation Within First 2 Weeks:</strong> If a customer chooses to cancel their subscription within 14 days from the start date, they are eligible for a refund of 50% of the total amount paid.
+      </p>
+      <p>
+        <strong>Cancellation After 2 Weeks:</strong> Requests for cancellation made after the initial two-week period from the start date are not eligible for a refund.
+      </p>
+      <h4>Plan Changes</h4>
+      <p>
+        <strong>Upgrading from 3-Day to 6-Day Plan:</strong>
+        <br>-Customers may upgrade their plan within 7 days of the subscription start date, with the price difference applied accordingly.
+        <br>-After this period, upgrades can still be made, but we recommend scheduling them for the upcoming month, as it would be more cost-effective for the customer.
+        <br>-The upgraded plan will be applied starting from the following week to ensure proper planning and availability.
+      </p>
+      <p>
+        <strong>Downgrading from 6-Day to 3-Day Plan:</strong>
+        <br>-Downgrades can be requested within the first 3 days of the subscription start date for a refund of the price difference.
+        <br>-After that, customers may still downgrade at any time, but no refund will be issued. It is recommended to apply such changes for the upcoming month.
+        <br>-The change to the downgraded plan will be processed and applied instantly after confirmation.
+      </p>
+      <h4>Missed Washes</h4>
+      <p>
+        We strive to maintain reliable service and consistent scheduling. In the rare case that a wash cannot be completed due to unexpected or uncontrollable circumstances (such as weather or logistical challenges), we will notify the customer in advance via WhatsApp, and do our best to minimize any disruption to the service. Our team always aims to operate with professionalism and transparency.
+      </p>
+      <br>
+      <h5>For any refund or exchange inquiries, feel free to reach out to us via the methods listed on our <a href="contact.html" style="color: goldenrod;">Contact Page.</a></h5>
+      <button id="fc-btn" onclick="cl()">Accept</button>
+    </div>
+  </div>
+
+  <div class="policy-item">
+    <div class="policy-content hidden">
+      <p>Subscriptions are based on weekly plans starting from the selected Friday. Each wash takes approximately 25–35 minutes per vehicle.</p>
+      <p>You can pause your subscription once per cycle for one week. Renewal depends on plan and availability.</p>
+
+      <button id="fc-btn" onclick="cl()">Accept</button>
+    </div>
+  </div>
+
+  <div class="policy-item">
+    <div class="policy-content hidden">
+
+      <h4>🚘 Optimum Auto – Service Terms & What You Should Know</h4>
+    <p>To keep your experience smooth and your car looking its best, here are a few simple things to know before each wash. Nothing complicated — just easy steps to help us deliver the best results.</p>
+
+    <h4>✅ What You Should Do</h4>
+    <ul>
+      <li>-Please make sure all windows, sunroof, trunk, and hood are closed.</li>
+      <li>-Park your car within one building to the left or right of your registered address.</li>
+      <li>-If your car’s color or license plate has changed, just let us know on WhatsApp.</li>
+      <li>-Our team will wash your car at any time within the time your car will be available from and the time it needs to be done by. 
+      If the car will arrive later or needs to be used earlier than that time frame, please notify us before 10:00 PM on the same day via WhatsApp.</li>
+    </ul>
+
+    <h4>⚠️ When We Can’t Wash the Car</h4>
+    <ul>
+      <li>-Open windows, sunroof, trunk, or hood at the time of service.</li>
+      <li>-Car is parked outside the allowed area (not within one building of your location).</li>
+      <li>-License plate or color changed without prior notice.</li>
+      <li>-Car is in a garage with direct building access.</li>
+      <li>-Car is not present during the time range provided, and we were not informed before 10:00 PM.</li>
+      <li>-Rainy weather that prevents safe washing.</li>
+    </ul>
+
+    <h4>📱 Communication</h4>
+    <p>All service-related updates, changes, or notifications will be sent through WhatsApp. Please make sure your number is active and reachable.</p>
+    <br>
+    <h5>For any questions, issues, or feedback,  feel free to reach out to us via the methods listed on our <a href="contact.html" style="color: goldenrod;">Contact Page.</a></h5>
+    <button id="fc-btn" onclick="cl()">Accept</button>
+    </div>
+  </div>
+</div>
+  </div>
+</footer>
+<script src="script.js"></script>
 </body>
 </html>
