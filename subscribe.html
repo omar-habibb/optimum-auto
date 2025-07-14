@@ -37,16 +37,25 @@
       text-align: center;
       margin-bottom: 20px;
     }
-    input, select, textarea, button {
+    input{
+      width: 90%;
+      padding: 10px;
+      margin: 10px 10px;
+      border: 3px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      
+    }
+     select, textarea, button {
       width: 100%;
       padding: 10px;
       margin: 10px 0;
-      border: 1px solid #ccc;
+      border: 3px solid #ccc;
       border-radius: 5px;
       font-size: 1rem;
     }
     .car-section {
-      border: 1px solid #ddd;
+      
       padding: 15px;
       border-radius: 5px;
       margin-bottom: 15px;
@@ -85,6 +94,8 @@
       display: none;
     }
     .step.summary,
+#step1,
+#step2,
 #step3,
 #step5 {
   background-color: #f5f5f5;
@@ -226,7 +237,7 @@ footer {
 
 <div id="contcont">
 <div class="container">
-  <h2>Subscribe to Optimum Auto</h2>
+  <h2 style="color:goldenrod;">Subscribe to Optimum Auto</h2>
 
   <!-- Subscription Form -->
   <form id="subscriptionForm">
@@ -239,7 +250,7 @@ footer {
       <input type="tel" name="phone" placeholder="Phone Number (WhatsApp)" required />
       <input type="text" name="area" placeholder="Area" required />
       <input type="text" name="buildingNumber" placeholder="Building Number" required />
-      <input type="number" name="totalCars" min="1" value="1" placeholder="Number of Cars" id="totalCarsInput" required />
+      <input type="number" name="totalCars" min="1"  placeholder="Number of Cars" id="totalCarsInput" required />
       <button type="button" class="btn">Next</button>
     </div>
 
@@ -633,22 +644,23 @@ document.getElementById("year").textContent = new Date().getFullYear();
         </label>
 
         <label>
-          Available From:
-          <select name="car[${i}][availableFrom]">
-            ${Array.from({ length: 8 }, (_, i) => i + 1).map(h => `<option>${h}:00 AM</option>`).join("")}
-          </select>
-        </label>
+  Available From:
+  <select name="car[${i}][availableFrom]" id="availableFrom-${i}">
+    ${Array.from({ length: 5 }, (_, i) => i + 1).map(h => `<option value="${h}:00 AM">${h}:00 AM</option>`).join("")}
+  </select>
+</label>
 
-        <label>
-          Need Done By:
-          <select name="car[${i}][doneBy]">
-            ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option>${h}:30 AM</option>`).join("")}
-          </select>
-        </label>
+<label>
+  Need Done By:
+  <select name="car[${i}][doneBy]" id="doneBy-${i}" disabled>
+    ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option value="${h}:30 AM">${h}:30 AM</option>`).join("")}
+  </select>
+</label>
 
         <textarea name="car[${i}][notes]" placeholder="Notes about this car (optional)">${savedCars[i]?.notes || ''}</textarea>
       `;
       container.appendChild(div);
+      setupTimeValidation(i);
     }
 
     // Restore time selections
@@ -963,6 +975,52 @@ if (startDate) {
   function toTitleCase(str) {
     return str.replace(/\w+/g, w => w[0].toUpperCase() + w.slice(1));
   }
+  function setupTimeValidation(carIndex) {
+  const availableFromSelect = document.querySelector(`#availableFrom-${carIndex}`);
+  const doneBySelect = document.querySelector(`#doneBy-${carIndex}`);
+
+  if (!availableFromSelect || !doneBySelect) return;
+
+  // Enable doneBy select once availableFrom is selected
+  availableFromSelect.addEventListener("change", () => {
+    const selectedTime = availableFromSelect.value;
+    if (!selectedTime) {
+      doneBySelect.disabled = true;
+      doneBySelect.innerHTML = "";
+      return;
+    }
+
+    // Parse selected hour
+    const availableHour = parseInt(selectedTime.split(":")[0]);
+
+    // Generate new "doneBy" options with min 3-hour gap
+    const minDoneByHour = availableHour + 3;
+
+    // Clear and enable
+    doneBySelect.disabled = false;
+    doneBySelect.innerHTML = "";
+
+    // Populate valid options
+    for (let h = minDoneByHour; h <= 8; h++) {
+      if (h >= 2 && h <= 8) {
+        const option = document.createElement("option");
+        option.value = `${h}:30 AM`;
+        option.textContent = `${h}:30 AM`;
+        doneBySelect.appendChild(option);
+      }
+    }
+
+    // Show message if no valid options
+    if (minDoneByHour > 8) {
+      const option = document.createElement("option");
+      option.textContent = "No valid time available";
+      option.disabled = true;
+      doneBySelect.innerHTML = "";
+      doneBySelect.appendChild(option);
+      doneBySelect.disabled = true;
+    }
+  });
+}
 </script>
 </body>
 </html>
