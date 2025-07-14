@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subscribe - Optimum Auto</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     *{
         margin:0;
@@ -13,22 +12,26 @@
    body {
       font-family: 'Segoe UI', sans-serif;
       line-height: 1.6;
-      background-color: #f9f9f9;
+      background-image: linear-gradient(black 15%,goldenrod,black 80%);
       color: #333;
       margin: 0;
       padding: 0;
       width: 100%;
       overflow-x: hidden;
+
       
     }
     .container {
-      min-height: 600;
+     
       max-width: 700px;
       margin: auto;
       background: white;
       padding: 30px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.05);
+      margin-bottom: 10px;
+      margin-top: 10px;
+
     }
     h2, h3 {
       text-align: center;
@@ -95,6 +98,9 @@
 
 #step5 h3 {
   margin-top: 0;
+}
+#contcont{
+ min-height: 600px;
 }
 /* Navbar */
 .containernav {
@@ -218,6 +224,7 @@ footer {
     </div>
 </nav>
 
+<div id="contcont">
 <div class="container">
   <h2>Subscribe to Optimum Auto</h2>
 
@@ -257,7 +264,7 @@ footer {
     
 
     <!-- Step 4: summary -->
-    </div>
+    
     <div id="step4" class="step hidden">
       <h3>Summary</h3>
       <div id="summaryContainer"></div>
@@ -313,6 +320,8 @@ footer {
 
   </form>
 </div>
+</div>
+</div>
 
 <!-- Footer -->
   <footer class="bg-black text-white py-8">
@@ -328,7 +337,6 @@ footer {
     <div class="policy-buttons flex flex-wrap justify-center gap-3 mb-4">
       <button type="button" class="footer-policy-btn">Privacy Policy</button>
       <button type="button" class="footer-policy-btn">Refund & Exchange</button>
-    
       <button type="button" class="footer-policy-btn">Terms & Conditions</button>
     </div>
 
@@ -421,6 +429,7 @@ footer {
       <button id="fc-btn" onclick="cl()">Accept</button>
     </div>
   </div>
+
 
   <div class="policy-item">
     <div class="policy-content hidden">
