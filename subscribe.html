@@ -37,6 +37,11 @@
       text-align: center;
       margin-bottom: 20px;
     }
+    #area{
+      margin-left:10px;
+
+    }
+    
     input{
       width: 90%;
       padding: 10px;
@@ -46,10 +51,13 @@
       font-size: 1rem;
       
     }
+    label{
+      margin-left:10px ;
+    }
      select, textarea, button {
-      width: 100%;
+      width: 95%;
       padding: 10px;
-      margin: 10px 0;
+      margin: 10px 10px;
       border: 3px solid #ccc;
       border-radius: 5px;
       font-size: 1rem;
@@ -97,6 +105,7 @@
 #step1,
 #step2,
 #step3,
+#step4,
 #step5 {
   background-color: #f5f5f5;
   border: 1px solid #ddd;
@@ -106,7 +115,47 @@
     .summary-item strong {
   color: #333;
 }
-
+#policyBox{
+  position: fixed;
+  top: 25%;
+  bottom: 20%;
+  right: 20px;
+  left: 20px;
+  background-color: white ;
+  color: #000;
+  font-size: 1rem;
+  border: 5px solid black;
+  border-radius: 10px;
+  text-align: left;
+  height: fit-content;
+  max-height: 400px;
+  width:auto;
+  overflow: auto;
+  overflow-y: scroll;
+  padding:10px;
+}
+#policyCheckbox{
+  width:min-content;
+  color:gold;
+  background-color:gold;
+  
+}
+#sbtn{
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  position: sticky;
+  top:100;
+  bottom: 0;
+  float: right;
+  left:0px;
+  background-color: gold;
+  padding: 7px;
+  width:70px ;
+  border: none;
+  border-radius: 5px;
+  font-weight: 700;
+}
 #step5 h3 {
   margin-top: 0;
 }
@@ -248,8 +297,15 @@ footer {
       <input type="text" name="firstName" placeholder="First Name" required />
       <input type="text" name="lastName" placeholder="Last Name" required />
       <input type="tel" name="phone" placeholder="Phone Number (WhatsApp)" required />
-      <input type="text" name="area" placeholder="Area" required />
+ <select name="area" id="area" required>
+  <option value="">Select Area</option>
+  <option value="Oriana 1">Oriana 1</option>
+  <option value="Oriana 2">Oriana 2</option>
+  <option value="Oriana 3">Oriana 3</option>
+  <option value="Oriana 4">Oriana 4</option>
+</select>
       <input type="text" name="buildingNumber" placeholder="Building Number" required />
+      <label for="number">Total Number of Cars:</label>
       <input type="number" name="totalCars" min="1"  placeholder="Number of Cars" id="totalCarsInput" required />
       <button type="button" class="btn">Next</button>
     </div>
@@ -282,10 +338,12 @@ footer {
 
 <!-- Policies Section -->
 <div style="margin-top: 20px;">
+  
   <label style="display: block; margin-bottom: 10px;">
     <input type="checkbox" id="policyCheckbox" required />
     <strong>I have read and agree to the <a href="#" onclick="togglePolicy(event)">Policies & What to Do</a></strong>
   </label>
+  
 
   <!-- Hidden Policy Box -->
   <div id="policyBox" style="background:#fefce8; padding:15px; border-left:4px solid #eab308; display:none;">
@@ -313,6 +371,7 @@ footer {
 
     <h4>📱 Communication</h4>
     <p>All service-related updates, changes, or notifications will be sent through WhatsApp. Please make sure your number is active and reachable.</p>
+    <a id="sbtn" href="#" onclick="togglePolicy(event)">Accept</a>
   </div>
 </div>
 
@@ -650,10 +709,14 @@ document.getElementById("year").textContent = new Date().getFullYear();
   </select>
 </label>
 
-<label>
-  Need Done By:
-  <select name="car[${i}][doneBy]" id="doneBy-${i}" disabled>
-    ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => `<option value="${h}:30 AM">${h}:30 AM</option>`).join("")}
+<label>Need Done By:
+  <select name="car[${i}][doneBy]" id="doneBy-${i}">
+    <option value="">Select done by</option>
+    ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => 
+      h === 8 ? 
+        `<option selected value="${h}:30 AM">${h}:30 AM</option>` : 
+        `<option value="${h}:30 AM">${h}:30 AM</option>`
+    ).join("")}
   </select>
 </label>
 
@@ -981,44 +1044,45 @@ if (startDate) {
 
   if (!availableFromSelect || !doneBySelect) return;
 
-  // Enable doneBy select once availableFrom is selected
-  availableFromSelect.addEventListener("change", () => {
-    const selectedTime = availableFromSelect.value;
-    if (!selectedTime) {
-      doneBySelect.disabled = true;
-      doneBySelect.innerHTML = "";
-      return;
-    }
+  // Helper to extract hour from time string like "1:00 AM"
+  function getHour(timeStr) {
+    return parseInt(timeStr.split(":")[0]);
+  }
 
-    // Parse selected hour
-    const availableHour = parseInt(selectedTime.split(":")[0]);
+  // Populate doneBy options based on availableFrom
+  function populateDoneByOptions(availableHour) {
+    doneBySelect.innerHTML = ""; // Clear existing options
 
-    // Generate new "doneBy" options with min 3-hour gap
     const minDoneByHour = availableHour + 3;
 
-    // Clear and enable
-    doneBySelect.disabled = false;
-    doneBySelect.innerHTML = "";
-
-    // Populate valid options
     for (let h = minDoneByHour; h <= 8; h++) {
-      if (h >= 2 && h <= 8) {
-        const option = document.createElement("option");
-        option.value = `${h}:30 AM`;
-        option.textContent = `${h}:30 AM`;
-        doneBySelect.appendChild(option);
-      }
+      const option = document.createElement("option");
+      option.value = `${h}:30 AM`;
+      option.textContent = `${h}:30 AM`;
+      doneBySelect.appendChild(option);
     }
 
-    // Show message if no valid options
+    // If no valid options
     if (minDoneByHour > 8) {
       const option = document.createElement("option");
-      option.textContent = "No valid time available";
       option.disabled = true;
+      option.textContent = "No valid time";
       doneBySelect.innerHTML = "";
       doneBySelect.appendChild(option);
       doneBySelect.disabled = true;
+    } else {
+      doneBySelect.disabled = false;
     }
+  }
+
+  // Initial population
+  const initialAvailableHour = getHour(availableFromSelect.value);
+  populateDoneByOptions(initialAvailableHour);
+
+  // On change
+  availableFromSelect.addEventListener("change", () => {
+    const selectedHour = getHour(availableFromSelect.value);
+    populateDoneByOptions(selectedHour);
   });
 }
 </script>
