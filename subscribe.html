@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Subscribe - Optimum Auto</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     *{
         margin:0;
@@ -294,16 +295,21 @@ footer {
     <!-- Step 1: Customer Info -->
     <div id="step1" class="step active">
       <h3>Customer Information</h3>
+      <label for="firstName">First Name:</label>
       <input type="text" name="firstName" placeholder="First Name" required />
+      <label for="lastName">Last Name:</label>
       <input type="text" name="lastName" placeholder="Last Name" required />
+      <label for="phone">Phone Number (WhatsApp):</label>
       <input type="tel" name="phone" placeholder="Phone Number (WhatsApp)" required />
- <select name="area" id="area" required>
-  <option value="">Select Area</option>
+      <label for="area">Select Area:</label>
+      <select name="area" id="area" required>
+     <option value="">Select Area</option>
   <option value="Oriana 1">Oriana 1</option>
   <option value="Oriana 2">Oriana 2</option>
   <option value="Oriana 3">Oriana 3</option>
   <option value="Oriana 4">Oriana 4</option>
 </select>
+      <label for="buildingNumber">Building number:</label>
       <input type="text" name="buildingNumber" placeholder="Building Number" required />
       <label for="number">Total Number of Cars:</label>
       <input type="number" name="totalCars" min="1"  placeholder="Number of Cars" id="totalCarsInput" required />
