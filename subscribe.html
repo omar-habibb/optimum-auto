@@ -382,16 +382,13 @@ footer {
 </div>
 
 <button type="button" class="btn back">Back</button>
-<button type="button" class="btn" id="nextBtn" disabled>Next</button>
+<button type="button" onclick="shitstart()" class="btn" id="nextBtn">Next</button>
     </div>
     
 
     <!-- Step 5: Confirmation -->
     <div id="step5" class="step hidden text-center">
-      <h3>Thank You!</h3>
-      <p>Your subscription has been successfully processed.</p>
-      <p>We’ll contact you shortly.</p>
-      <button type="button" class="btn" onclick="restartForm()">Start Over</button>
+      <h2>LOADING PAYMENT GATEWAY....</h2>
     </div>
 
   </form>
@@ -1045,52 +1042,123 @@ if (startDate) {
     return str.replace(/\w+/g, w => w[0].toUpperCase() + w.slice(1));
   }
   function setupTimeValidation(carIndex) {
-  const availableFromSelect = document.querySelector(`#availableFrom-${carIndex}`);
-  const doneBySelect = document.querySelector(`#doneBy-${carIndex}`);
+    const availableFromSelect = document.querySelector(`#availableFrom-${carIndex}`);
+    const doneBySelect = document.querySelector(`#doneBy-${carIndex}`);
 
-  if (!availableFromSelect || !doneBySelect) return;
+    if (!availableFromSelect || !doneBySelect) return;
 
-  // Helper to extract hour from time string like "1:00 AM"
-  function getHour(timeStr) {
-    return parseInt(timeStr.split(":")[0]);
-  }
-
-  // Populate doneBy options based on availableFrom
-  function populateDoneByOptions(availableHour) {
-    doneBySelect.innerHTML = ""; // Clear existing options
-
-    const minDoneByHour = availableHour + 3;
-
-    for (let h = minDoneByHour; h <= 8; h++) {
-      const option = document.createElement("option");
-      option.value = `${h}:30 AM`;
-      option.textContent = `${h}:30 AM`;
-      doneBySelect.appendChild(option);
+    // Helper to extract hour from time string like "1 Am"
+    function getHour(timeStr) {
+        // Handles "1 Am", "2 Am", etc.
+        return parseInt(timeStr);
     }
 
-    // If no valid options
-    if (minDoneByHour > 8) {
-      const option = document.createElement("option");
-      option.disabled = true;
-      option.textContent = "No valid time";
-      doneBySelect.innerHTML = "";
-      doneBySelect.appendChild(option);
-      doneBySelect.disabled = true;
-    } else {
-      doneBySelect.disabled = false;
+    // Populate doneBy options based on availableFrom
+    function populateDoneByOptions(availableHour) {
+        doneBySelect.innerHTML = ""; // Clear existing options
+
+        const minDoneByHour = availableHour + 3;
+        let has830 = false;
+
+        for (let h = minDoneByHour; h <= 8; h++) {
+            const option = document.createElement("option");
+            option.value = `${h}:30 AM`;
+            option.textContent = `${h}:30 AM`;
+            if (h === 8) {
+                option.selected = true;
+                has830 = true;
+            }
+            doneBySelect.appendChild(option);
+        }
+
+        // If no valid options
+        if (minDoneByHour > 8) {
+            const option = document.createElement("option");
+            option.disabled = true;
+            option.textContent = "No valid time";
+            doneBySelect.innerHTML = "";
+            doneBySelect.appendChild(option);
+            doneBySelect.disabled = true;
+        } else {
+            doneBySelect.disabled = false;
+            // If 8:30 AM is not in the options, select the last available option
+            if (!has830 && doneBySelect.options.length > 0) {
+                doneBySelect.options[doneBySelect.options.length - 1].selected = true;
+            }
+        }
     }
-  }
 
-  // Initial population
-  const initialAvailableHour = getHour(availableFromSelect.value);
-  populateDoneByOptions(initialAvailableHour);
+    // Initial population
+    const initialAvailableHour = getHour(availableFromSelect.value);
+    populateDoneByOptions(initialAvailableHour);
 
-  // On change
-  availableFromSelect.addEventListener("change", () => {
-    const selectedHour = getHour(availableFromSelect.value);
-    populateDoneByOptions(selectedHour);
-  });
+    // On change
+    availableFromSelect.addEventListener("change", () => {
+        const selectedHour = getHour(availableFromSelect.value);
+        populateDoneByOptions(selectedHour);
+    });
 }
+
+
+   function calcorder(){
+    const cars = collectCars();
+    const { totalPrice, originalPrice } = calculatePrice(cars);
+    console.log(totalPrice);
+    return totalPrice;
+
+   }
+   //async function oplink(){
+     //var lnk = await shitstart();
+     //window.location.href = lnk;
+    //window.open(lnk);
+   //}
+    
+   async function shitstart() {
+  const totalEGP = calcorder(); // use your existing calcorder() function
+  const amount_cents = totalEGP * 100;
+
+  const billing_data = {
+    apartment: "NA",
+    email: "test@example.com",
+    floor: "NA",
+    first_name: "Omar",
+    street: "NA",
+    building: "NA",
+    phone_number: "01000000000",
+    shipping_method: "NA",
+    postal_code: "NA",
+    city: "Cairo",
+    country: "EG",
+    last_name: "User",
+    state: "Cairo"
+  };
+
+  try {
+    const response = await fetch('https://paymob-backend-production.up.railway.app/start-payment', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ amount_cents, billing_data })
+    });
+
+    const result = await response.json();
+
+    if (result.iframe_url) {
+      window.location.href = result.iframe_url;
+    } else {
+      alert("Payment failed: No iframe URL received.");
+    }
+  } catch (error) {
+    console.error("Error starting payment:", error);
+    alert("Something went wrong. Please try again.");
+  }
+}
+
+
+
+
+
 </script>
 </body>
 </html>
