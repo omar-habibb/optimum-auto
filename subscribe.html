@@ -164,25 +164,7 @@
  min-height: 600px;
 }
 /* Navbar */
-.logo-combo {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* space between logo and text */
-  text-decoration: none;
-  margin-bottom: 4px;
-  
-}
 
-.logo-img {
-  height: 40px;      /* increase height */
-  width: auto;       /* maintain aspect ratio */
-  object-fit: contain;
-}
-.logo-text {
-  font-size: 1.7rem;
-  font-weight: bold;
-  color: goldenrod /* golden yellow or change to match your theme */
-}
 
 .containernav {
   width: 100%;
@@ -199,17 +181,39 @@
     margin-left:30px;
 }
 
+.logo-combo {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between logo and text */
+  text-decoration: none;
+  margin-bottom: 4px;
+  
+}
+
+.logo-img {
+  height: 40px;      /* increase height */
+  width: auto;       /* maintain aspect ratio */
+  object-fit: contain;
+}
+
+
+.logo-text {
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: goldenrod /* golden yellow or change to match your theme */
+}
+
 .navbar {
   background-color: black;
- 
+  padding:10px 0rem;
   box-shadow: 0 1px 4px rgba0,0,0,0.1;
   position: sticky;
-  top: 0px;
+  top: 0;
   z-index: 1000;
 }
 
 .nav-links {
- padding:0;
+  padding: 0;
   list-style: none;
   display: flex;
   gap: 1rem;
@@ -303,7 +307,7 @@ footer {
 </a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="service.html">Service</a></li>
+        <li><a href="service.html">Our Service</a></li>
         <li><a href="membership.html">Membership</a></li>
         <li><a href="contact.html">Contact</a></li>
       </ul>
