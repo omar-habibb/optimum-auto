@@ -24,6 +24,9 @@ body {
   display: flex;
   flex-direction: column;
 }
+.dae{
+  flex: 1;
+}
 
 a {
   text-decoration: none;
@@ -40,7 +43,7 @@ ul {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 20px;
-  flex: 1;
+  
 }
 
 .container-sm {
