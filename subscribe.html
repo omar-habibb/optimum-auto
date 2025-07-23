@@ -417,7 +417,7 @@ footer {
 </div>
 
 <button type="button" class="btn back">Back</button>
-<button type="button" onclick="shitstart()" class="btn" id="nextBtn">Next</button>
+<button type="button" class="btn" id="nextBtn">Next</button>
     </div>
     
 
@@ -693,7 +693,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
       saveData(); // Save + Send Data
       const submission = buildSubmissionObject();
       sendDataToGoogleSheet(submission);
+      shitstart();
     }
+    
   });
 });
 
