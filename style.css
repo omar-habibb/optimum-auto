@@ -235,7 +235,7 @@ ul {
 
 /* membership */
 .memb {
-  background: linear-gradient(black 2%, grey,black);
+ /* background: linear-gradient(black 2%, grey,black);*/
   min-height: 600px;
   display: flex;
   flex-direction: column;
@@ -245,7 +245,10 @@ ul {
   padding: 4rem 1.5rem;
   color: white;
 }
-
+.fpage{
+  flex:1;
+  background: linear-gradient(black 2%, grey,black);
+}
 .btn-memb{
   display: inline-block;
   padding: 1.3rem 2.8rem;
