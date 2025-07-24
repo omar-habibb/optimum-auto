@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
   <title>Renewal - Optimum Auto</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> 
@@ -33,7 +37,7 @@
     label{
       margin-left:10px ;
     }
-    select, textarea, #rbtn {
+    select, textarea {
       width: 95%;
       padding: 10px;
       margin: 10px 10px;
@@ -60,7 +64,27 @@
     #renewal-step-2 p{
       margin: 7px 0;
     }
-  
+  #rbtn{
+    color:black;
+    background-color: gold;
+    width: 95%;
+      padding: 10px;
+      margin: 10px 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+  }
+  #bbtn{
+    color:#ccc;
+   background-color:black;
+    width: 95%;
+      padding: 10px;
+      margin: 10px 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+
+  }
 
   </style>
 </head>
@@ -119,7 +143,7 @@
       <p><strong>-Original Price:</strong> <span id="original-price">EGP 0</span></p>
       <p><strong>-Offer Price:</strong> <span id="total-price">EGP 0</span></p>
       <button onclick="handleProceed()" id="rbtn">Proceed to Payment</button>
-      <button onclick="goBack()" id="rbtn">Back</button>
+      <button onclick="goBack()" id="bbtn">Back</button>
     </div>
 
     <!-- Payment loading screen -->
