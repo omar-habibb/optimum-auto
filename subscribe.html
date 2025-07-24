@@ -109,12 +109,20 @@
 #step1,
 #step2,
 #step3,
-#step4,
-#step5 {
+#step4 {
   background-color: #f5f5f5;
   border: 1px solid #ddd;
   padding: 15px;
   border-radius: 8px;
+  min-height: 300px;
+}
+#step5{
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  padding: 15px;
+  border-radius: 8px;
+  min-height: 300px;
+  font-weight: 900;
 }
     .summary-item strong {
   color: #333;
@@ -886,7 +894,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
   function generateSummary(cars) {
   const container = document.getElementById("summaryContainer");
-  container.innerHTML = "<h4>Your Selection</h4>";
+  
 
   // Show customer info
   const fields = ["firstName", "lastName", "phone", "area", "buildingNumber", "totalCars"];
