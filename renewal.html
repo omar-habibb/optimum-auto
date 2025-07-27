@@ -628,6 +628,72 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
+function getNextFridayDate() {
+  const today = new Date();
+  const date = new Date(today);
+  const day = today.getDay();
+  const daysUntilFriday = (5 - day + 7) % 7 || 7;
+  date.setDate(date.getDate() + daysUntilFriday);
+  return date.toISOString().split("T")[0];
+}
+
+function tryAutoRenewFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const three = parseInt(params.get("three") || "0");
+  const six = parseInt(params.get("six") || "0");
+  const name = params.get("name");
+
+  if (id && (three > 0 || six > 0)) {
+    // Pre-fill the form
+    document.getElementById("userId").value = id;
+    document.getElementById("threeDayCars").value = three;
+    document.getElementById("sixDayCars").value = six;
+
+    // Set start date to next Friday
+    const friday = getNextFridayDate();
+    document.getElementById("startDate").value = friday;
+
+    // Store it
+    localStorage.setItem("optimumUserId", id);
+    localStorage.setItem("optimumThreeDayCars", three);
+    localStorage.setItem("optimumSixDayCars", six);
+    localStorage.setItem("optimumStartDate", friday);
+
+    // Simulate form submission to skip to summary
+    const fakeEvent = new Event("submit", { bubbles: true });
+    document.getElementById("renewal-form").dispatchEvent(fakeEvent);
+  }
+  // ✅ Show welcome message if name is present
+    if (name) {
+      setTimeout(() => showWelcomeMessage(name), 300); // Wait for summary to show
+    }
+}
+
+// Run this after DOM and Fridays are ready
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    tryAutoRenewFromURL();
+  }, 400); // ensure Friday options are populated
+});
+
+function showWelcomeMessage(name) {
+  const summarySection = document.getElementById("renewal-step-2");
+
+  const existingMessage = document.getElementById("welcome-msg");
+  if (existingMessage) existingMessage.remove();
+
+  const welcome = document.createElement("p");
+  welcome.id = "welcome-msg";
+  welcome.style.color = "goldenrod";
+  welcome.style.fontWeight = "bold";
+  welcome.style.marginBottom = "10px";
+  welcome.textContent = `Welcome back, ${name}!`;
+
+  summarySection.insertBefore(welcome, summarySection.firstChild);
+}
+
+
 </script>
 </body>
 </html>
