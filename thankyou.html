@@ -52,9 +52,10 @@
   </nav>
 
    <!-- Thank You Section -->
-<!--
+
 <div class="container"  style="align-items: center; justify-items: center; background-image: linear-gradient(black ,grey ,black );">
      <div id="message"></div>
+     <!--
     <div class="thank-cont">
         <div class="cente">
 <h3>Thank You for Your Payment</h3>
@@ -69,9 +70,9 @@ From now on, your car care is in trusted hands — cleaned with precision, right
 </div>
 <h4 style="margin-top: 10px;">Optimum Auto</h4>
 <h4 >Your Car. Our Pride.</h4>
+</div>-->
 </div>
-</div>
--->
+
 
 
    
@@ -243,8 +244,8 @@ From now on, your car care is in trusted hands — cleaned with precision, right
 
   if (isSuccess === 'true') {
     messageDiv.innerHTML = `
-      <div class="container"  style="align-items: center; justify-items: center; background-image: linear-gradient(black ,grey ,black );">
-     <div id="message"></div>
+     
+    
     <div class="thank-cont">
         <div class="cente">
 <h3>Thank You for Your Payment</h3>
@@ -260,13 +261,15 @@ From now on, your car care is in trusted hands — cleaned with precision, right
 <h4 style="margin-top: 10px;">Optimum Auto</h4>
 <h4 >Your Car. Our Pride.</h4>
 </div>
-</div>
+
     `;
   } else {
     messageDiv.innerHTML = `
-      <h2>Payment Failed</h2>
+      <div class="thank-cont">
+      <h2 style="text-align: center;">Payment Failed</h2>
       <p>It looks like something went wrong with your payment.</p>
-      <a href="/payment">Try Again</a>
+      <a href="contact.html">Contact Us.</a>
+      </div>
     `;
   }
 </script>
