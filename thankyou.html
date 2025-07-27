@@ -12,9 +12,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> 
 
   <style>
- #message{
-    color:white;
- }
+ 
+ 
        
     .thank-cont{
         color: black;
@@ -53,7 +52,7 @@
   </nav>
 
    <!-- Thank You Section -->
-
+<!--
 <div class="container"  style="align-items: center; justify-items: center; background-image: linear-gradient(black ,grey ,black );">
      <div id="message"></div>
     <div class="thank-cont">
@@ -72,7 +71,7 @@ From now on, your car care is in trusted hands — cleaned with precision, right
 <h4 >Your Car. Our Pride.</h4>
 </div>
 </div>
-
+-->
 
 
    
@@ -244,8 +243,24 @@ From now on, your car care is in trusted hands — cleaned with precision, right
 
   if (isSuccess === 'true') {
     messageDiv.innerHTML = `
-      <h2>Payment Received — Thank You!</h2>
-      <p>Your subscription has been activated. We’ll take care of the rest.</p>
+      <div class="container"  style="align-items: center; justify-items: center; background-image: linear-gradient(black ,grey ,black );">
+     <div id="message"></div>
+    <div class="thank-cont">
+        <div class="cente">
+<h3>Thank You for Your Payment</h3>
+<P>
+Your subscription is confirmed.
+<p>
+We’ll be in touch shortly via WhatsApp with your service details and schedule.
+</p>
+<p>
+From now on, your car care is in trusted hands — cleaned with precision, right where it’s parked.
+</p>
+</div>
+<h4 style="margin-top: 10px;">Optimum Auto</h4>
+<h4 >Your Car. Our Pride.</h4>
+</div>
+</div>
     `;
   } else {
     messageDiv.innerHTML = `
