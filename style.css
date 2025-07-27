@@ -37,7 +37,7 @@ ul {
 /* Helpers */
 .container {
   width: 100%;
-  max-width: 1100px;
+  /*max-width: 1100px;*/
   margin: 0 auto;
   padding: 0 20px;
   flex: 1;
