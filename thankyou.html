@@ -12,7 +12,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> 
 
   <style>
-
+ #message{
+    color:white;
+ }
        
     .thank-cont{
         color: black;
@@ -53,7 +55,7 @@
    <!-- Thank You Section -->
 
 <div class="container"  style="align-items: center; justify-items: center; background-image: linear-gradient(black ,grey ,black );">
-     
+     <div id="message"></div>
     <div class="thank-cont">
         <div class="cente">
 <h3>Thank You for Your Payment</h3>
@@ -233,7 +235,26 @@ From now on, your car care is in trusted hands — cleaned with precision, right
 
   </footer>
   <script src="script.js"></script>
+<script>
+  // Get the URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const isSuccess = urlParams.get('success');
 
+  const messageDiv = document.getElementById('message');
+
+  if (isSuccess === 'true') {
+    messageDiv.innerHTML = `
+      <h2>Payment Received — Thank You!</h2>
+      <p>Your subscription has been activated. We’ll take care of the rest.</p>
+    `;
+  } else {
+    messageDiv.innerHTML = `
+      <h2>Payment Failed</h2>
+      <p>It looks like something went wrong with your payment.</p>
+      <a href="/payment">Try Again</a>
+    `;
+  }
+</script>
 
 </body>
 </html>
