@@ -125,6 +125,11 @@
         <select id="startDate" name="startDate" required>
         
         </select>
+       
+        <p id="start-note" style="display: none; color: gray; margin-top: 5px; font-size: 0.8rem;">
+  Note: If you’d like to add or remove a car, please 
+      <a href="https://wa.me/201123403403?text=Hello%2C%20I%20want%20to%20add%2Fremove%20a%20car." style="color: goldenrod;"> message us</a> before proceeding.
+</p>
 
 
 
@@ -135,13 +140,20 @@
 
     <!-- Step 2: Summary -->
     <div id="renewal-step-2" style="display: none;">
+        <div style="text-align: center; margin-bottom: 20px;">
       <h2>Renewal Summary</h2>
+      <p id="welcome-msg"></p>
+      </div>
       <p><strong>-User ID:</strong> <span id="summary-user-id">—</span></p>
       <p><strong>-3-Day Plan Cars:</strong> <span id="summary-3day">0</span></p>
       <p><strong>-6-Day Plan Cars:</strong> <span id="summary-6day">0</span></p>
       <p><strong>-Start Date:</strong> <span id="summary-start-date">Not selected</span> (dd/mm/yyyy)</p>
       <p><strong>-Original Price:</strong> <span id="original-price">EGP 0</span></p>
       <p><strong>-Offer Price:</strong> <span id="total-price">EGP 0</span></p>
+      <p id="summary-note" style="display: none; color: gray; margin-top: 10px; font-size: 0.8rem;">
+      Note: If you’d like to add or remove a car, please 
+      <a href="https://wa.me/201123403403?text=Hello%2C%20I%20want%20to%20add%2Fremove%20a%20car." style="color: goldenrod;">message us</a> before proceeding.
+      </p>
       <button onclick="handleProceed()" id="rbtn">Proceed to Payment</button>
       <button onclick="goBack()" id="bbtn">Back</button>
     </div>
@@ -604,6 +616,8 @@ populateFridayOptions();
 
 
 window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isFromLink = urlParams.has("id");
   const storedUserId = localStorage.getItem("optimumUserId");
   const storedThreeDay = localStorage.getItem("optimumThreeDayCars");
   const storedSixDay = localStorage.getItem("optimumSixDayCars");
@@ -668,30 +682,68 @@ function tryAutoRenewFromURL() {
     if (name) {
       setTimeout(() => showWelcomeMessage(name), 300); // Wait for summary to show
     }
+    if(id){
+    setTimeout(() => {
+  document.getElementById("summary-note").style.display = "block";
+  }, 300);
+  }
 }
+
+
 
 // Run this after DOM and Fridays are ready
 window.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isFromLink = urlParams.has("id");
+  const storedUserId = localStorage.getItem("optimumUserId");
+  const storedThreeDay = localStorage.getItem("optimumThreeDayCars");
+  const storedSixDay = localStorage.getItem("optimumSixDayCars");
+  const storedStartDate = localStorage.getItem("optimumStartDate");
+
+  if (storedUserId) document.getElementById("userId").value = storedUserId;
+  if (storedThreeDay) document.getElementById("threeDayCars").value = storedThreeDay;
+  if (storedSixDay) document.getElementById("sixDayCars").value = storedSixDay;
+
   setTimeout(() => {
+    if (storedStartDate) {
+      const startDateSelect = document.getElementById("startDate");
+      for (let option of startDateSelect.options) {
+        if (option.value === storedStartDate) {
+          startDateSelect.value = storedStartDate;
+          break;
+        }
+      }
+    }
+
+    // ✅ Handle summary auto-renew
     tryAutoRenewFromURL();
-  }, 400); // ensure Friday options are populated
+
+    // ✅ Only show "start-note" if user did not come from a link
+    if (!isFromLink) {
+      document.getElementById("start-note").style.display = "block";
+    }
+
+  }, 400); // Give time for Friday options to populate
 });
 
+
 function showWelcomeMessage(name) {
-  const summarySection = document.getElementById("renewal-step-2");
+  const summaryHeading = document.querySelector("#renewal-step-2 h2");
 
   const existingMessage = document.getElementById("welcome-msg");
   if (existingMessage) existingMessage.remove();
 
-  const welcome = document.createElement("p");
+  const welcome = document.createElement("h3");
   welcome.id = "welcome-msg";
   welcome.style.color = "goldenrod";
   welcome.style.fontWeight = "bold";
-  welcome.style.marginBottom = "10px";
+  welcome.style.marginTop = "5px";
   welcome.textContent = `Welcome back, ${name}!`;
 
-  summarySection.insertBefore(welcome, summarySection.firstChild);
+  // Insert just after the <h2> tag
+  summaryHeading.insertAdjacentElement("afterend", welcome);
 }
+
 
 
 </script>
