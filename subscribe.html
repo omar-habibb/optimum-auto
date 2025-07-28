@@ -26,6 +26,7 @@
 
       
     }
+    
     .container {
      
       max-width: 700px;
@@ -60,6 +61,8 @@
     label{
       margin-left:10px ;
     }
+
+    
      select, textarea, button {
       width: 95%;
       padding: 10px;
@@ -96,14 +99,15 @@
       max-width: max-content;
     }
     .btn {
-      background: black;
-      color: white;
+      background: gold;
+      color: black;
       border: none;
       cursor: pointer;
+      font-size: 1.1rem;
     }
     .btn.back {
-      background: #ccc;
-      color: black;
+      background: black;
+      color: white;
     }
     .hidden {
       display: none;
@@ -357,7 +361,7 @@ footer {
       <input type="text" name="buildingNumber" placeholder="Building Number" required />
       <label for="number">Total Number of Cars:</label>
       <input type="number" name="totalCars" min="1"  placeholder="Number of Cars" id="totalCarsInput" required />
-      <button type="button" class="btn">Next</button>
+      <button type="button" class="btn" id="nxtbtn">Next</button>
     </div>
 
     <!-- Step 2: Car Details -->
@@ -365,8 +369,8 @@ footer {
       <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
       <h3>Car Details</h3>
       <div id="carDetailsContainer"></div>
+      <button type="button" class="btn" id="nxtbtn">Next</button>
       <button type="button" class="btn back">Back</button>
-      <button type="button" class="btn">Next</button>
     </div>
 
     <!-- Step 3: start date -->
@@ -377,8 +381,8 @@ footer {
       <select name="startDate" required>
         <option value="">Select a Friday</option>
       </select>
+      <button type="button" class="btn" id="nxtbtn">Next</button>
       <button type="button" class="btn back">Back</button>
-      <button type="button" class="btn">Next</button>
     </div>
     
 
@@ -427,9 +431,9 @@ footer {
     <a id="sbtn" href="#" onclick="togglePolicy(event)">Accept</a>
   </div>
 </div>
-
+<button type="button" class="btn" id="nxtbtn">Proceed to Payment</button>
 <button type="button" class="btn back">Back</button>
-<button type="button" class="btn" id="nextBtn">Next</button>
+
     </div>
     
 
@@ -666,8 +670,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
   }
 
   document.querySelectorAll(".btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const direction = btn.textContent === "Next" ? 1 : -1;
+  btn.addEventListener("click", (e) => {
+    const direction = e.target.id === "nxtbtn" ? 1 : -1;
 
     if (direction === 1) {
   if (currentStep === 3) { // Summary step
