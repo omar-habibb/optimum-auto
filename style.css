@@ -275,13 +275,13 @@ ul {
 .feature-cards-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem; /* or whatever spacing you want */
+  
 }
 
 .feature-card {
   color: black;
   background-color: gold;
-  padding: 1.5rem;
+  padding: 1.2rem;
   border-radius: 0.5rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   display: flex;
@@ -289,12 +289,12 @@ ul {
   align-items: center;
   text-align: center;
   gap: 1rem; /* Space between icon and text */
-  width:175px;
-  height:175px;
+  width:150px;
+  height:150px;
   font-size: 1.2rem;
   font-weight: 500;
   margin-left: auto;
-  margin-right:auto;
+  margin-bottom: 20px;
 }
 .icon {
   width: 1.25rem;
