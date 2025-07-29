@@ -132,7 +132,7 @@
 </p>
 
 
-
+     
         <button type="submit" id="rbtn">Next</button>
       </form>
       <div id="form-warning" style="color: red; margin-top: 10px; display: none;"></div>
@@ -582,35 +582,56 @@ function handleProceed() {
 
     function getNextFridays(count = 15) {
   const fridays = [];
-  const today = new Date();
+  const now = new Date();
+
+  let date = new Date(now);
+
+  // Check if today is Friday and before 8 PM
+  if (date.getDay() === 5 && date.getHours() < 20) {
+    fridays.push(new Date(date)); // Include today
+  }
 
   // Start from tomorrow
-  let date = new Date(today);
+  date.setDate(date.getDate() + 1);
 
   while (fridays.length < count) {
-    date.setDate(date.getDate() + 1);
     if (date.getDay() === 5) {
       fridays.push(new Date(date));
     }
+    date.setDate(date.getDate() + 1);
   }
 
   return fridays;
 }
 
+
 function populateFridayOptions() {
   const select = document.getElementById("startDate");
+  select.innerHTML = ""; // Clear any old options
+
   const fridays = getNextFridays();
 
+  const today = new Date();
+  const todayStr = today.toDateString();
+
   fridays.forEach(date => {
-    const formatted = date.toISOString().split("T")[0]; // yyyy-mm-dd
-   const label = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+    const formattedValue = date.toISOString().split("T")[0]; // yyyy-mm-dd
+    const labelDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
 
     const option = document.createElement("option");
-    option.value = formatted;
-    option.textContent = label;
+    option.value = formattedValue;
+
+    // If this date is today, add label
+    if (date.toDateString() === todayStr) {
+      option.textContent = `${labelDate} (Today)`;
+    } else {
+      option.textContent = labelDate;
+    }
+
     select.appendChild(option);
   });
 }
+
 
 populateFridayOptions();
 
