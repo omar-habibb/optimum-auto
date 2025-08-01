@@ -695,6 +695,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
       currentStep--;
     }
 
+    if (direction === -1 && currentStep === 2) {
+      const container = document.getElementById("summaryContainer");
+      container.innerHTML = ""; // Clear summary on back navigation
+    }
+
     // Show new step
     steps[currentStep].classList.remove("hidden");
 
@@ -899,8 +904,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
       originalPrice: parseFloat(originalPrice.toFixed(2))
     };
   }
-
+   
   function generateSummary(cars) {
+  
   const container = document.getElementById("summaryContainer");
   
 
