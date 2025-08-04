@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pricing - Optimum Auto</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .pricing-container {
+     color: goldenrod;
+      
+      padding: 20px;
+      background-image: linear-gradient(black,goldenrod,black);
+      background-size: cover;
+  background-position: center;
+    }
+    .plan-section {
+      background:  #1a1a1a;
+      font-size: auto;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      width: auto;
+      color: goldenrod;
+    }
+    .plan-section h2 {
+      margin-bottom: 10px;
+      
+    }
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+    }
+    .price-table th, .price-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+      
+    }
+    
+    .note {
+      font-size: 0.95rem;
+      color: #666;
+      margin-top: 8px;
+    }
+    .calculator {
+      margin-top: 40px;
+      padding: 20px;
+      background: #f0f8ff;
+      border-radius: 10px;
+    }
+    .calculator input {
+      margin: 10px;
+      padding: 8px;
+      width: 60px;
+    }
+    .calculator-result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticky Navigation -->
+  <nav class="navbar">
+    <div class="container">
+               <a href="index.html" class="logo-combo">
+  <img src="logo.png" alt="Optimum Auto Logo" class="logo-img" />
+  <span class="logo-text">Optimum Auto</span>
+</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="service.html">Service</a></li>
+        <li class="dropdown">
+  <a href="#">Membership <i class="fa fa-caret-down"></i></a>
+  <ul class="dropdown-content">
+    <li><a href="subscribe.html">Subscribe</a></li>
+    <li><a href="renewal.html">Renew</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+  </ul>
+</li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="pricing-container">
+    <h1>Plan Pricing</h1>
+    <p>We offer competitive pricing with discounts for multiple cars. Prices below include both offer and original rates.</p>
+
+    <div class="plan-section">
+      <h2>3-Day Plan</h2>
+      <table class="price-table">
+        <tr><th>Number of Cars</th><th>Offer Price</th><th>Original Price</th><th>Price per Wash</th></tr>
+        <tr><td>1 Car</td><td><i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i></td><td>450 EGP</td><td> 37.5 EGP </td></tr>
+        <tr style="color:goldenrod;"><td>2+ Cars</td><td>350 EGP each</td><td>450 EGP each</td><td>EGP 29.17</td></tr>
+      </table>
+      <p class="note">* 3-Day plan includes 12 washes per car.</p>
+    </div>
+
+    <div class="plan-section">
+      <h2>6-Day Plan</h2>
+      <table class="price-table">
+        <tr><th>Number of Cars</th><th>Offer Price</th><th>Original Price</th><th>Price per Wash</th></tr>
+        <tr><td>1 Car</td><td><i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i></td><td>EGP 750</td><td>EGP 31.25</td></tr>
+        <tr style="color:goldenrod;"><td>2+ Cars</td><td>EGP 600 each</td><td>EGP 750 each</td><td>EGP 25.00</td></tr>
+      </table>
+      <p class="note">* 6-Day plan includes 24 washes per car.</p>
+    </div>
+
+    <div class="plan-section highlight">
+      <h2>Bundle Offers</h2>
+      <table class="price-table">
+        <tr><th>Combination</th><th>Offer Price</th><th>Original Price</th></tr>
+        <tr><td>1 (3-Day) + 1 (6-Day)</td><td>EGP 1150</td><td>EGP 1200</td></tr>
+        <tr><td>1 (3-Day) + 2+ (6-Day)</td><td>EGP 600/car + 400</td><td>EGP 750/car + 450</td></tr>
+        <tr ><td>2+ (3-Day) + 1 (6-Day)</td><td>EGP 350/car + 700</td><td>EGP 450/car + 750</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="calculator">
+      <h2>Estimate Your Price Per Wash</h2>
+      <label>3-Day Cars: <input type="number" id="threeDayInput" value="1" min="0"></label>
+      <label>6-Day Cars: <input type="number" id="sixDayInput" value="1" min="0"></label>
+      <div class="calculator-result" id="calcResult"></div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-black text-white py-8">
+    <div class="container text-center">
+      <p>&copy; <span id="year"></span> Optimum Auto. All rights reserved.</p>
+    </div>
+    <p>
+    <i class="fa-solid fa-location-dot" style="color:gold;"></i>
+    Cairo, Egypt</p>
+
+    <!-- Policy Toggle Buttons -->
+    <div class="policy-buttons flex flex-wrap justify-center gap-3 mb-4">
+      <button type="button" class="footer-policy-btn">Privacy Policy</button>
+      <button type="button" class="footer-policy-btn">Refund & Exchange</button>
+      <button type="button" class="footer-policy-btn">Terms & Conditions</button>
+    </div>
+
+    <!-- Policy Content Sections -->
+     <!--privacy-->
+<div class="policy-container">
+  <div class="policy-item">
+    <div class="policy-content hidden">
+      
+      <h3>Privacy Policy</h3>
+      <p>
+        At Optimum Auto, your privacy is important to us. This Privacy Policy outlines how we collect, use, and protect your personal information when you use our services.
+      </p>
+      <h4>Information We Collect</h4>
+      <p>
+        We collect only the information necessary to deliver our services effectively and securely:
+      </p>
+      <ul>
+        <li>-Full Name</li>
+        <li>-Phone Number</li>
+        <li>-Address</li>
+        <li>-Car Details</li>
+        <li>-Number of Cars</li>
+      </ul>
+      <h4>How We Use Your Information</h4>
+      <p>
+        Your data is used strictly for operational purposes:
+      </p>
+      <ul>
+        <li>-To manage your car wash subscription</li>
+        <li>-To schedule and deliver service to your specified location</li>
+        <li>-To send service-related notifications (e.g., reminders or updates) via WhatsApp</li>
+        <li>-To process payments securely through our payment provider (see below)</li>
+      </ul>
+      <p>
+        We do not send promotional content and we do not share your information with any third parties.
+      </p>
+      <h4>Payment Processing</h4>
+      <P>
+        When you complete a payment through our platform, a limited set of billing data is securely shared with our payment provider, Paymob, for transaction processing purposes. This includes:
+      </P>
+      <ul>
+        <li>-First Name</li>
+        <li>-Last Name</li>
+        <li>-Phone Number</li>
+        <li>-BUilding Number</li>
+      </ul>
+      <p>
+        This data is used solely to identify the payment and ensure proper service delivery. It is not used for marketing or any other purposes.
+      </p>
+      <h4>Data Storage & Security</h4>
+      <p>
+        All user data is stored in protected files and handled with confidentiality. We do not use cookies or third-party trackers. Some data may be stored in your browser’s local storage for smoother interaction on our website — none of this is shared externally.
+      </p>
+      <h4>Your Rights</h4>
+      <p>You have full control over your data:</p>
+      <ul>
+        <li>-You may request to update or correct your information at any time.</li>
+        <li>-You may request to delete your data from our system.</li>
+      </ul>
+      <p>To do so, simply contact us via WhatsApp or email.</p>
+      <h4>Policy Updates</h4>
+      <p>We may update this Privacy Policy if needed to reflect changes in service. We will notify you of any major updates.</p>
+      <br>
+      <h5>If you have any questions or concerns regarding your privacy, feel free to reach out to us via the methods listed on our  <a href="contact.html" style="color: goldenrod;">Contact Page.</a></h5>
+      <button id="fc-btn" onclick="cl()">Accept</button>
+    </div>
+  </div>
+
+  <div class="policy-item">
+    <div class="policy-content hidden">
+      <h3>Refund & Exchange Policy</h3>
+      <P>
+        At Optimum Auto, we aim to provide a seamless and reliable service. To ensure transparency and fairness. Please review the following terms regarding refunds and subscription changes:
+      </P>
+      <h4>Refunds</h4>
+      <p>
+        <strong>Payment Errors:</strong> If a customer is charged incorrectly due to a system or billing error, a full refund will be issued upon verification.
+      </p>
+      <p>
+        <strong>Cancellation Within First 2 Weeks:</strong> If a customer chooses to cancel their subscription within 14 days from the start date, they are eligible for a refund of 50% of the total amount paid.
+      </p>
+      <p>
+        <strong>Cancellation After 2 Weeks:</strong> Requests for cancellation made after the initial two-week period from the start date are not eligible for a refund.
+      </p>
+      <h4>Plan Changes</h4>
+      <p>
+        <strong>Upgrading from 3-Day to 6-Day Plan:</strong>
+        <br>-Customers may upgrade their plan within 7 days of the subscription start date, with the price difference applied accordingly.
+        <br>-After this period, upgrades can still be made, but we recommend scheduling them for the upcoming month, as it would be more cost-effective for the customer.
+        <br>-The upgraded plan will be applied starting from the following week to ensure proper planning and availability.
+      </p>
+      <p>
+        <strong>Downgrading from 6-Day to 3-Day Plan:</strong>
+        <br>-Downgrades can be requested within the first 3 days of the subscription start date for a refund of the price difference.
+        <br>-After that, customers may still downgrade at any time, but no refund will be issued. It is recommended to apply such changes for the upcoming month.
+        <br>-The change to the downgraded plan will be processed and applied instantly after confirmation.
+      </p>
+      <h4>Missed Washes</h4>
+      <p>
+        We strive to maintain reliable service and consistent scheduling. In the rare case that a wash cannot be completed due to unexpected or uncontrollable circumstances (such as weather or logistical challenges), we will notify the customer in advance via WhatsApp, and do our best to minimize any disruption to the service. Our team always aims to operate with professionalism and transparency.
+      </p>
+      <br>
+      <h5>For any refund or exchange inquiries, feel free to reach out to us via the methods listed on our <a href="contact.html" style="color: goldenrod;">Contact Page.</a></h5>
+      <button id="fc-btn" onclick="cl()">Accept</button>
+    </div>
+  </div>
+
+  <div class="policy-item">
+    <div class="policy-content hidden">
+
+      <h4>🚘 Optimum Auto – Service Terms & What You Should Know</h4>
+    <p>To keep your experience smooth and your car looking its best, here are a few simple things to know before each wash. Nothing complicated — just easy steps to help us deliver the best results.</p>
+
+    <h4>✅ What You Should Do</h4>
+    <ul>
+      <li>-Please make sure all windows, sunroof, trunk, and hood are closed.</li>
+      <li>-Park your car within one building to the left or right of your registered address.</li>
+      <li>-If your car’s color or license plate has changed, just let us know on WhatsApp.</li>
+      <li>-Our team will wash your car at any time within the time your car will be available from and the time it needs to be done by. 
+      If the car will arrive later or needs to be used earlier than that time frame, please notify us before 10:00 PM on the same day via WhatsApp.</li>
+    </ul>
+
+    <h4>⚠️ When We Can’t Wash the Car</h4>
+    <ul>
+      <li>-Open windows, sunroof, trunk, or hood at the time of service.</li>
+      <li>-Car is parked outside the allowed area (not within one building of your location).</li>
+      <li>-License plate or color changed without prior notice.</li>
+      <li>-Car is in a garage with direct building access.</li>
+      <li>-Car is not present during the time range provided, and we were not informed before 10:00 PM.</li>
+      <li>-Rainy weather that prevents safe washing.</li>
+    </ul>
+
+    <h4>📱 Communication</h4>
+    <p>All service-related updates, changes, or notifications will be sent through WhatsApp. Please make sure your number is active and reachable.</p>
+    <br>
+    <h5>For any questions, issues, or feedback,  feel free to reach out to us via the methods listed on our <a href="contact.html" style="color: goldenrod;">Contact Page.</a></h5>
+    <button id="fc-btn" onclick="cl()">Accept</button>
+    </div>
+  </div>
+</div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    function calculateEstimate() {
+      const threeDay = parseInt(document.getElementById('threeDayInput').value) || 0;
+      const sixDay = parseInt(document.getElementById('sixDayInput').value) || 0;
+
+      let totalPrice = 0;
+      let totalWashes = (threeDay * 12) + (sixDay * 24);
+
+      if (sixDay === 1 && threeDay === 1) {
+        totalPrice = 1150;
+      } else if (sixDay >= 2 && threeDay === 1) {
+        totalPrice = (sixDay * 600) + 400;
+      } else if (sixDay === 1 && threeDay >= 2) {
+        totalPrice = (threeDay * 350) + 700;
+      } else {
+        if (sixDay === 1) {
+          totalPrice += 750;
+        } else if (sixDay >= 2) {
+          totalPrice += 600 * sixDay;
+        }
+
+        if (threeDay === 1) {
+          totalPrice += 450;
+        } else if (threeDay >= 2) {
+          totalPrice += 350 * threeDay;
+        }
+      }
+
+      const perWash = totalWashes ? (totalPrice / totalWashes).toFixed(2) : 0;
+      document.getElementById("calcResult").textContent = `Estimated Price: EGP ${totalPrice} → ~EGP ${perWash} per wash`;
+    }
+
+    document.getElementById("threeDayInput").addEventListener("input", calculateEstimate);
+    document.getElementById("sixDayInput").addEventListener("input", calculateEstimate);
+    calculateEstimate(); // Run once on load
+  </script>
+</body>
+</html>
