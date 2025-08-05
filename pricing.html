@@ -10,16 +10,17 @@
     .pricing-container {
      color: goldenrod;
       
-      padding: 20px;
+      padding: 10px;
       background-image: linear-gradient(black,goldenrod,black);
       background-size: cover;
   background-position: center;
+  text-align: center;
     }
     .plan-section {
       background:  #1a1a1a;
       font-size: auto;
       border-radius: 12px;
-      padding: 24px;
+      padding: 10px;
       margin-bottom: 30px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.06);
       width: auto;
@@ -32,13 +33,17 @@
     .price-table {
       width: 100%;
       border-collapse: collapse;
+      flex-wrap: wrap;
       margin-top: 16px;
     }
     .price-table th, .price-table td {
-      padding: 12px 16px;
+      padding: 12px 5px;
       border-bottom: 1px solid #ddd;
       text-align: left;
       
+    }
+    .price-table td {
+      min-width: 9px;
     }
     
     .note {
@@ -88,18 +93,9 @@
   </nav>
 
   <div class="pricing-container">
-    <h1>Plan Pricing</h1>
-    <p>We offer competitive pricing with discounts for multiple cars. Prices below include both offer and original rates.</p>
+    <h1 style="margin-top: 20px;">Subscription Pricing</h1>
+    <p style="margin-top: 20px;margin-bottom: 15px;">We offer competitive pricing with discounts for multiple cars. Prices below include both offer and original rates.</p>
 
-    <div class="plan-section">
-      <h2>3-Day Plan</h2>
-      <table class="price-table">
-        <tr><th>Number of Cars</th><th>Offer Price</th><th>Original Price</th><th>Price per Wash</th></tr>
-        <tr><td>1 Car</td><td><i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i></td><td>450 EGP</td><td> 37.5 EGP </td></tr>
-        <tr style="color:goldenrod;"><td>2+ Cars</td><td>350 EGP each</td><td>450 EGP each</td><td>EGP 29.17</td></tr>
-      </table>
-      <p class="note">* 3-Day plan includes 12 washes per car.</p>
-    </div>
 
     <div class="plan-section">
       <h2>6-Day Plan</h2>
@@ -109,6 +105,16 @@
         <tr style="color:goldenrod;"><td>2+ Cars</td><td>EGP 600 each</td><td>EGP 750 each</td><td>EGP 25.00</td></tr>
       </table>
       <p class="note">* 6-Day plan includes 24 washes per car.</p>
+    </div>
+
+    <div class="plan-section">
+      <h2>3-Day Plan</h2>
+      <table class="price-table">
+        <tr><th>Number of Cars</th><th>Offer Price</th><th>Original Price</th><th>Price per Wash</th></tr>
+        <tr><td>1 Car</td><td><i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i></td><td>450 EGP</td><td> 37.5 EGP </td></tr>
+        <tr style="color:goldenrod;"><td>2+ Cars</td><td>350 EGP /car</td><td>450 EGP each</td><td>EGP 29.17</td></tr>
+      </table>
+      <p class="note">* 3-Day plan includes 12 washes per car.</p>
     </div>
 
     <div class="plan-section highlight">
@@ -122,12 +128,13 @@
     </div>
     <div class="calculator">
       <h2>Estimate Your Price Per Wash</h2>
-      <label>3-Day Cars: <input type="number" id="threeDayInput" value="1" min="0"></label>
-      <label>6-Day Cars: <input type="number" id="sixDayInput" value="1" min="0"></label>
+      <label>3-Day Cars: <input type="number" id="threeDayInput" value="1" min="0" style="border:2px solid black;background-color: #666;"></label>
+      <label>6-Day Cars: <input type="number" id="sixDayInput" value="1" min="0" style="border:2px solid black;background-color: #666;"></label>
       <div class="calculator-result" id="calcResult"></div>
     </div>
   </div>
   </div>
+  
 
   
 
