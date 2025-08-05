@@ -173,6 +173,7 @@ ul {
 /* Dropdown */
 .dropdown {
   position: relative;
+  min-width: 105px;
 }
 
 .dropdown-content {
