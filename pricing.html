@@ -7,6 +7,21 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    .strikethrough-tilted {
+    position: relative;
+    display: inline-block; /* Or block, depending on your layout */
+}
+
+.strikethrough-tilted::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 52%; /* Adjust as needed for vertical centering */
+    border-top:  0.15rem solid goldenrod; /* Or background-color */
+    transform: rotate(0deg); /* Adjust the angle for tilt */
+    transform-origin: center center; /* Ensure rotation around the center */
+}
     .pricing-container {
      color: goldenrod;
       
@@ -56,7 +71,7 @@
       padding: 20px;
       padding-left:0px;
       padding-right:0px;
-      background: #f0f8ff;
+      background: #1a1a1a;
       border-radius: 10px;
       max-width: 100%;
       box-sizing: border-box;
@@ -99,7 +114,7 @@
     }
     #calcTable td,#calcTable th {
       width: 100%;
-      border-bottom:1px solid black;
+      border-bottom:1px solid  #ddd;
       margin:0;
       border-collapse:collapse;
       border-spacing: 0;
@@ -151,7 +166,7 @@
       <table class="price-table">
         <tr><th>Number of Cars</th><th>Offer Price</th><th>Original Price</th><th>Price per Wash</th></tr>
         <tr><td>1 Car</td><td><i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i></td><td>450 EGP</td><td> 37.5 EGP </td></tr>
-        <tr style="color:goldenrod;"><td>2+ Cars</td><td>350 EGP /car</td><td>450 EGP each</td><td>EGP 29.17</td></tr>
+        <tr ><td>2+ Cars</td><td>350 EGP /car</td><td>450 EGP each</td><td>EGP 29.17</td></tr>
       </table>
       <p class="note">* 3-Day plan includes 12 washes per car.</p>
     </div>
@@ -379,11 +394,13 @@
         document.getElementById("ofPrice").innerHTML = `<i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>`;
         document.getElementById("pricePWash").innerHTML = `<i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>`;
       }else{
-      document.getElementById("orgPrice").textContent = `${originalPrice}`;
+      
       if (totalPrice === originalPrice){
+        document.getElementById("orgPrice").textContent = `${originalPrice}`;
         document.getElementById("ofPrice").innerHTML = `<i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>`;
       }else{
       document.getElementById("ofPrice").textContent = `${totalPrice}`;
+      document.getElementById("orgPrice").innerHTML = `<span class="strikethrough-tilted">${originalPrice}</span>`;
       }
       document.getElementById("pricePWash").textContent = `${perWash}`;
     }
