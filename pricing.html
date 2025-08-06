@@ -51,20 +51,57 @@
       color: #666;
       margin-top: 8px;
     }
-    .calculator {
+     .calculator {
       margin-top: 40px;
       padding: 20px;
-      background: #1a1a1a;
+      background: #f0f8ff;
       border-radius: 10px;
+      max-width: 100%;
+      box-sizing: border-box;
+      
+      
+      align-items: center;
+      text-align: center;
+      justify-content:center;
+      
+      
+      gap: 12px;
+    }
+    .calculator-inputs {
+      display: flex;
+      flex-direction: column;
+      
+      width:fit-content;
     }
     .calculator input {
-      margin: 10px;
-      padding: 8px;
-      width: 60px;
+      margin-left: 5px;
+      padding: 3px;
+      border:2px solid black;
+      background-color: #666;
+      width:50px;
+      
+      
     }
     .calculator-result {
-      margin-top: 10px;
       font-weight: bold;
+      font-size: 1.1rem;
+      width: 50%;
+    }
+    label{
+      width:150px
+    }
+    .calculator-r{
+      display: flex;
+      flex-flow: row;
+      
+    }
+    #calcTable td,#calcTable th {
+      width: 100%;
+      border-bottom:1px solid black;
+      margin:0;
+      border-collapse:collapse;
+      border-spacing: 0;
+      
     }
   </style>
 </head>
@@ -94,7 +131,7 @@
 
   <div class="pricing-container">
     <h1 style="margin-top: 20px;">Subscription Pricing</h1>
-    <p style="margin-top: 20px;margin-bottom: 15px;">We offer competitive pricing with discounts for multiple cars. Prices below include both offer and original rates.</p>
+    <p style="margin-top: 20px;margin-bottom: 15px;color:rgb(255, 255, 255);">We offer competitive pricing with discounts for multiple cars. Prices below include both offer and original rates.</p>
 
 
     <div class="plan-section">
@@ -127,10 +164,20 @@
       </table>
     </div>
     <div class="calculator">
-      <h2>Estimate Your Price Per Wash</h2>
-      <label>3-Day Cars: <input type="number" id="threeDayInput" value="1" min="0" style="border:2px solid black;background-color: #666;"></label>
-      <label>6-Day Cars: <input type="number" id="sixDayInput" value="1" min="0" style="border:2px solid black;background-color: #666;"></label>
-      <div class="calculator-result" id="calcResult"></div>
+      <h2 >Estimate Your Price Per Wash</h2>
+      <div class="calculator-r">
+      <div class="calculator-inputs">
+      <label>3-Day Cars: <input type="number" id="threeDayInput" value="1" min="0" ></label>
+      <label>6-Day Cars: <input type="number" id="sixDayInput" value="1" min="0" ></label>
+    </div>
+    <div class="calculator-result" id="calcResult">
+      <table id="calcTable" >
+        <tr><th>original price</th><td id="orgPrice"></td></tr>
+        <tr><th>offer price</th><td id="ofPrice"></td></tr>
+        <tr><th>price per wash</th><td id="pricePWash"></td></tr>
+      </table>
+    </div>
+      </div>
     </div>
   </div>
   </div>
@@ -299,10 +346,11 @@
     function calculateEstimate() {
       const threeDay = parseInt(document.getElementById('threeDayInput').value) || 0;
       const sixDay = parseInt(document.getElementById('sixDayInput').value) || 0;
-
+      let originalPrice = 0;
       let totalPrice = 0;
       let totalWashes = (threeDay * 12) + (sixDay * 24);
-
+      originalPrice = (threeDay * 450) + (sixDay * 750);
+      console.log(originalPrice)
       if (sixDay === 1 && threeDay === 1) {
         totalPrice = 1150;
       } else if (sixDay >= 2 && threeDay === 1) {
@@ -324,7 +372,14 @@
       }
 
       const perWash = totalWashes ? (totalPrice / totalWashes).toFixed(2) : 0;
-      document.getElementById("calcResult").textContent = `Estimated Price: EGP ${totalPrice} → ~EGP ${perWash} per wash`;
+      
+      document.getElementById("orgPrice").textContent = `${originalPrice}`;
+      if (totalPrice === originalPrice){
+        document.getElementById("ofPrice").innerHTML = `<i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>`;
+      }else{
+      document.getElementById("ofPrice").textContent = `${totalPrice}`;
+      }
+      document.getElementById("pricePWash").textContent = `${perWash}`;
     }
 
     document.getElementById("threeDayInput").addEventListener("input", calculateEstimate);
