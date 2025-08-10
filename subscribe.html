@@ -392,6 +392,8 @@ footer {
       <input type="text" name="lastName" placeholder="Last Name" required />
       <label for="phone">Phone Number (WhatsApp):</label>
       <input type="tel" name="phone" placeholder="Phone Number (WhatsApp)" required />
+      <label for="email">Email:</label>
+      <input type="email" name="email" placeholder="Email" required />
       <label for="area">Select Area:</label>
       <select name="area" id="area" required>
      <option value="">Select Area</option>
@@ -933,7 +935,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   
 
   // Show customer info
-  const fields = ["firstName", "lastName", "phone", "area", "buildingNumber", "totalCars"];
+  const fields = ["firstName", "lastName", "phone", "area", "buildingNumber", "totalCars", "email"];
   fields.forEach(name => {
     const val = document.querySelector(`[name='${name}']`)?.value || "";
     if (val) {
@@ -1221,12 +1223,12 @@ container.innerHTML += carHTML;
    async function shitstart() {
   const totalEGP = calcorder(); // use your existing calcorder() function
   const amount = totalEGP * 100;
-
+  
   const billing_data = {
   first_name: document.querySelector("[name='firstName']").value,
   last_name: document.querySelector("[name='lastName']").value,
   phone_number: document.querySelector("[name='phone']").value,
-  email: "no@gmail.com",
+  email: document.querySelector("[name='email']").value,
   building: document.querySelector("[name='buildingNumber']").value,
   apartment: "NA",
   floor: "NA",
