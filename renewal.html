@@ -478,42 +478,24 @@ document.getElementById("year").textContent = new Date().getFullYear();
    }*/
 
     async function proceedToPayment() {
-  const userId = document.getElementById("userId").value;
- 
-
+  const id = document.getElementById("userId").value;
   const totalPrice = document.getElementById("total-price").textContent.replace("EGP", "").trim();
   const amount = parseFloat(totalPrice) * 100;
-  const billing_data = {
-  
-    "apartment": "NA",
-    "email": "no@email.com",
-    "floor": "NA",
-    "first_name": userId,
-    "street": "NA",
-    "building": "NA",
-    "phone_number": "+201111111111",
-    "shipping_method": "NA",
-    "postal_code": "NA",
-    "city": "Cairo",
-    "country": "EG",
-    "last_name": "Renewal",
-    "state": "NA"
-}
 
   try {
-    const response = await fetch("https://paymob-backend-production.up.railway.app/start-checkout", {
+    const response = await fetch("https://ren-paymob-backend-production.up.railway.app/start-renewal", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ amount, billing_data })
+      body: JSON.stringify({ amount, id })
     });
 
     const result = await response.json();
 
     if (result.checkout_url) {
-      //window.location.href = result.checkout_url;
-      window.open(result.checkout_url, "_blank");
+      window.location.href = result.checkout_url;
+      //window.open(result.checkout_url, "_blank");
     } else {
       alert("Payment failed: " + result.error);
     }
