@@ -553,7 +553,10 @@ async function sendDataToSheet() {
 function handleProceed() {
   proceedToPayment();   // handles loading UI
   sendDataToSheet();    // sends form data to Google Sheet
-
+  setTimeout(() => {
+      document.getElementById("renewal-step-2").style.display = "block";
+      document.getElementById("payment-loading").style.display = "none";
+      }, 20000);
   // Hide the summary step
   document.getElementById("renewal-step-2").style.display = "none";
 
