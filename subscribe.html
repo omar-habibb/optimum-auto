@@ -409,8 +409,31 @@ footer {
       <button type="button" class="btn" id="nxtbtn">Next</button>
     </div>
 
-    <!-- Step 2: Car Details -->
+    <!-- Step 2: start date -->
     <div id="step2" class="step hidden">
+  <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
+  <h3>Select Start Date & Duration</h3>
+  <!-- Duration Selection -->
+  <label for="durationSelect">Select Duration:</label>
+  <select id="durationSelect" name="duration" required>
+    <option value="">Select Duration</option>
+    <option value="4">4 Weeks</option>
+    
+  </select>
+  <!-- Start Date Selection -->
+  <label for="startDateSelect">Select Start Date:</label>
+  <select id="startDateSelect" name="startDate" required>
+    <option value="">Select a Friday</option>
+  </select>
+  <!-- End Date Display -->
+  <p id="endDateDisplay" style="margin-top:10px; font-weight:bold; color:#333;"></p>
+  <button type="button" class="btn" id="nxtbtn">Next</button>
+  <button type="button" class="btn back">Back</button>
+</div>
+
+
+    <!-- Step 3: Car Details -->
+    <div id="step3" class="step hidden">
       <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
       <h3>Car Details</h3>
       <div id="carDetailsContainer"></div>
@@ -418,17 +441,7 @@ footer {
       <button type="button" class="btn back">Back</button>
     </div>
 
-    <!-- Step 3: start date -->
-    <div id="step3" class="step hidden">
-      <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
-      <h3>Select Start Date</h3>
-      <p>Please choose a Friday.</p>
-      <select name="startDate" required>
-        <option value="">Select a Friday</option>
-      </select>
-      <button type="button" class="btn" id="nxtbtn">Next</button>
-      <button type="button" class="btn back">Back</button>
-    </div>
+   
     
 
     <!-- Step 4: summary -->
@@ -688,8 +701,44 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (el) el.value = formData[key];
   });
 
+  const durationSelect = document.getElementById("durationSelect");
+const startDateSelect = document.getElementById("startDateSelect");
+const endDateDisplay = document.getElementById("endDateDisplay");
   const select = document.querySelector("select[name='startDate']");
   generateFridays(select);
+  
+
+// Function to calculate end date
+function calculateEndDate(startDate, weeks) {
+  const date = new Date(startDate);
+  const daysToAdd = (weeks * 7) - 1; // end date should be Thursday
+  date.setDate(date.getDate() + daysToAdd);
+  return date.toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+// Function to update end date display
+function updateEndDate() {
+  const startDateValue = startDateSelect.value;
+  const weeks = parseInt(durationSelect.value, 10);
+
+  if (startDateValue && weeks) {
+    const endDate = calculateEndDate(startDateValue, weeks);
+    endDateDisplay.textContent = `Renewal Date: ${endDate}`;
+    
+  } else {
+    endDateDisplay.textContent = "";
+    
+  }
+}
+
+// Update end date when either field changes
+durationSelect.addEventListener("change", updateEndDate);
+startDateSelect.addEventListener("change", updateEndDate);
 
   function generateFridays(selectElement) {
     const today = new Date();
@@ -711,7 +760,10 @@ document.getElementById("year").textContent = new Date().getFullYear();
       currentDate.setDate(currentDate.getDate() + 7);
     }
 
-    if (formData.startDate) selectElement.value = formData.startDate;
+    if (formData.startDate){
+      selectElement.value = formData.startDate;
+       updateEndDate();
+      } 
   }
 
   document.querySelectorAll(".btn").forEach(btn => {
@@ -749,8 +801,8 @@ document.getElementById("year").textContent = new Date().getFullYear();
     steps[currentStep].classList.remove("hidden");
 
     // Run step-specific functions
-    if (currentStep === 1) generateCarFields(); // Car Details
-    if (currentStep === 2) generateFridays(select); // Start Date
+    if (currentStep === 1) generateFridays(select); // Start Date
+    if (currentStep === 2) generateCarFields(); // Car Details
     if (currentStep === 3) {
       const cars = collectCars();
       generateSummary(cars); // Summary
@@ -948,14 +1000,33 @@ document.getElementById("year").textContent = new Date().getFullYear();
   fields.forEach(name => {
     const val = document.querySelector(`[name='${name}']`)?.value || "";
     if (val) {
-      container.innerHTML += `<div class="summary-item"><strong>${toTitleCase(name)}:</strong> ${val}</div>`;
+      if (name === "firstName"){
+       container.innerHTML += `<div class="summary-item"><strong>First Name:</strong> ${val}</div>`; 
+      }else if(name === "lastName"){
+       container.innerHTML += `<div class="summary-item"><strong>Last Name:</strong> ${val}</div>`; 
+      }else if(name === "buildingNumber"){
+       container.innerHTML += `<div class="summary-item"><strong>Building Number:</strong> ${val}</div>`; 
+      }else if(name === "totalCars"){
+       container.innerHTML += `<div class="summary-item"><strong>Total Cars:</strong> ${val}</div>`; 
+      }else{
+        container.innerHTML += `<div class="summary-item"><strong>${toTitleCase(name)}:</strong> ${val}</div>`;
+      }
     }
   });
-    //show start date
+    //show duration
+    const duration = document.querySelector("[name='duration']")?.value || "";
+if (duration) {
+  container.innerHTML += `<div class="summary-item"><strong>Duration :</strong> ${duration} Weeks</div>`;
+}//show start date
     const startDate = document.querySelector("[name='startDate']")?.value || "";
 if (startDate) {
   container.innerHTML += `<div class="summary-item"><strong>Start Date:</strong> ${startDate}</div>`;
+}//show end date
+    const endDate =document.querySelector("[id='endDateDisplay']").textContent;
+if (startDate) {
+  container.innerHTML += `<div class="summary-item"><strong> ${endDate}</strong></div>`;
 }
+
 
   // Show car details
   cars.forEach((car, idx) => {
@@ -1067,7 +1138,8 @@ container.innerHTML += carHTML;
     area: document.querySelector("[name='area']")?.value || "",
     buildingNumber: document.querySelector("[name='buildingNumber']")?.value || "",
     totalCars: document.querySelector("[name='totalCars']")?.value || "",
-    startDate: document.querySelector("[name='startDate']")?.value || ""
+    startDate: document.querySelector("[name='startDate']")?.value || "",
+    duration: document.querySelector("[name='duration']")?.value || ""
   };
 
   const cars = collectCars();
