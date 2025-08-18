@@ -62,8 +62,18 @@
       margin-left:10px ;
     }
 
+     #endDateDisplay {
+      font-weight: 500;
+      padding: 10px;
+      margin: 10px 10px;
+      border: 3px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      color:rgb(10, 10, 10);
+      
+    }
     
-     select, textarea, button {
+     select, textarea, button{
       width: 95%;
       padding: 10px;
       margin: 10px 10px;
@@ -426,7 +436,8 @@ footer {
     <option value="">Select a Friday</option>
   </select>
   <!-- End Date Display -->
-  <p id="endDateDisplay" style="margin-top:10px; font-weight:bold; color:#333;"></p>
+   <P style="margin-left:10px;">Renewal Date:</P>
+  <p id="endDateDisplay" ></p>
   <button type="button" class="btn" id="nxtbtn">Next</button>
   <button type="button" class="btn back">Back</button>
 </div>
@@ -714,7 +725,7 @@ function calculateEndDate(startDate, weeks) {
   const daysToAdd = (weeks * 7) - 1; // end date should be Thursday
   date.setDate(date.getDate() + daysToAdd);
   return date.toLocaleDateString("en-US", {
-    weekday: "long",
+    
     year: "numeric",
     month: "long",
     day: "numeric"
@@ -728,7 +739,7 @@ function updateEndDate() {
 
   if (startDateValue && weeks) {
     const endDate = calculateEndDate(startDateValue, weeks);
-    endDateDisplay.textContent = `Renewal Date: ${endDate}`;
+    endDateDisplay.textContent = `${endDate}`;
     
   } else {
     endDateDisplay.textContent = "";
@@ -1023,8 +1034,8 @@ if (startDate) {
   container.innerHTML += `<div class="summary-item"><strong>Start Date:</strong> ${startDate}</div>`;
 }//show end date
     const endDate =document.querySelector("[id='endDateDisplay']").textContent;
-if (startDate) {
-  container.innerHTML += `<div class="summary-item"><strong> ${endDate}</strong></div>`;
+if (endDate) {
+  container.innerHTML += `<div class="summary-item"><strong>Renewal Date:</strong> <span>${endDate}</span></div>`;
 }
 
 
@@ -1035,7 +1046,11 @@ carHTML += `<h4>Car ${idx + 1}</h4>`;       // heading
 
 carHTML += `<div class="summary-car-fields">`; // wrapper for fields
 for (const key in car) {
-  if (car[key]) {
+  if(key === "availableFrom"){
+    carHTML += `<div class="summary-item"><strong>Available From:</strong> ${car[key]}</div>`;
+  }else if(key === "doneBy"){
+    carHTML += `<div class="summary-item"><strong>Done By:</strong> ${car[key]}</div>`;
+  }else if(car[key]){
     carHTML += `<div class="summary-item"><strong>${toTitleCase(key)}:</strong> ${car[key]}</div>`;
   }
 }
