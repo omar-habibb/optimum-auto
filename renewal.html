@@ -11,11 +11,12 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"> 
   <style>
+     
     
   .fContainer{
-    width:100%;
+      width:100%;
      
-    min-height: 700px;
+      min-height: 825px;
       padding: 25px;
       border-radius: 10px;
       flex: 1;
@@ -36,6 +37,16 @@
     }
     label{
       margin-left:10px ;
+    }
+     #endDateDisplay {
+      font-weight: 500;
+      padding: 10px;
+      margin: 10px 10px;
+      border: 3px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      color:rgb(10, 10, 10);
+      
     }
     select, textarea {
       width: 95%;
@@ -122,23 +133,30 @@
         <label for="userId">Your ID</label>
         <input type="text" id="userId" name="userId" required />
 
-        <label for="threeDayCars">Number of Cars (3-Day Plan)</label>
-        <input type="number" id="threeDayCars" name="threeDayCars" min="0" />
-
         <label for="sixDayCars">Number of Cars (6-Day Plan)</label>
         <input type="number" id="sixDayCars" name="sixDayCars" min="0"  />
 
-        <label for="startDate">Select Start Date (dd/mm/yyyy)</label>
+        <label for="threeDayCars">Number of Cars (3-Day Plan)</label>
+        <input type="number" id="threeDayCars" name="threeDayCars" min="0" />
+
+        <label for="durationSelect" id="rem">Duration:</label>
+        <select id="durationSelect" name="duration" required>
+        <option value="">Select Duration</option>
+        <option value="4">4 Weeks</option>
+        </select>
+
+        <label for="startDate"id="rem">Select Start Date:</label>
         <select id="startDate" name="startDate" required>
         
         </select>
+
+        <p style="margin-left:10px;" id="rem">Renewal Date:</p>
+        <p id="endDateDisplay" ></p>
        
         <p id="start-note" style="display: none; color: gray; margin-top: 5px; font-size: 0.8rem;">
   Note: If you’d like to add or remove a car, please 
       <a href="https://wa.me/201123403403?text=Hello%2C%20I%20would%20like%20to%20add%2Fremove%20a%20car." style="color: goldenrod;"> message us</a> before proceeding.
 </p>
-
-
      
         <button type="submit" id="rbtn">Next</button>
       </form>
@@ -151,10 +169,17 @@
       <h2>Renewal Summary</h2>
       <p id="welcome-msg"></p>
       </div>
-      <p><strong>-User ID:</strong> <span id="summary-user-id">—</span></p>
+      <p><strong>-ID:</strong> <span id="summary-user-id">—</span></p>
       <p><strong>-3-Day Plan Cars:</strong> <span id="summary-3day">0</span></p>
       <p><strong>-6-Day Plan Cars:</strong> <span id="summary-6day">0</span></p>
-      <p><strong>-Start Date:</strong> <span id="summary-start-date">Not selected</span> (dd/mm/yyyy)</p>
+      <p><strong>-Duration:</strong> <span id="summary-duration"></span></p>
+      <select id="durationSelect" name="duration" required style="display:none;">
+        <option value="">Select Duration</option>
+        <option value="4">4 Weeks</option>
+        </select>
+      <p><strong>-Start Date:</strong> <span id="summary-start-date"></span></p>
+      <select id="startDate" name="startDate" required style="display:none;"></select>
+      <p><strong>-Next Renewal:</strong> <span id="summary-end-date"></span><p id="endDateDisplay" style="display:none; padding:5px; margin-left: 10px;" ></p></p>
       <p><strong>-Original Price:</strong> <span id="original-price">EGP 0</span></p>
       <p><strong>-Offer Price:</strong> <span id="total-price">EGP 0</span></p>
       <p id="summary-note" style="display: none; color: gray; margin-top: 10px; font-size: 0.8rem;">
@@ -431,21 +456,42 @@ document.getElementById("year").textContent = new Date().getFullYear();
       const userId = document.getElementById("userId").value;
       
       const startDateInput = document.getElementById("startDate").value;
-
       const startDate = new Date(startDateInput);
-      const formattedDate = `${String(startDate.getDate()).padStart(2, '0')}/${String(startDate.getMonth() + 1).padStart(2, '0')}/${startDate.getFullYear()}`;
- // Example: "Fri Jul 26 2025"
+      const formattedDate =startDate.toLocaleDateString("en-US", {year: "numeric",month: "long",day: "numeric"});
+      const durationInput = document.getElementById("durationSelect").value;
+      const endDateInput = startDate +  (durationInput*7*24*60*60*1000);
+      const daysToAdd = (durationInput * 7)-1 ;
+      const endDate = new Date(startDateInput);
+      endDate.setDate(startDate.getDate() + daysToAdd);
+      const formattedEndDate =endDate.toLocaleDateString("en-US", {year: "numeric",month: "long",day: "numeric"});
 
-      
+
+      const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const three = parseInt(params.get("three") || "0");
+  const six = parseInt(params.get("six") || "0");
+       
 
       const { totalPrice, originalPrice } = calculatePrice(cars);
       
       document.getElementById("summary-user-id").textContent = userId;
       document.getElementById("summary-3day").textContent = threeDayCars;
       document.getElementById("summary-6day").textContent = sixDayCars;
+      if (!(id && (three > 0 || six > 0))) {
+      document.getElementById("summary-duration").textContent = `${durationInput} Weeks`;
       document.getElementById("summary-start-date").textContent = formattedDate;
-      document.getElementById("original-price").textContent = `EGP ${originalPrice}`;
-      document.getElementById("total-price").textContent = `EGP ${totalPrice}`;
+      document.getElementById("summary-end-date").textContent =formattedEndDate;
+      
+      }else{
+        /*document.getElementById("summary-duration").innerHTML = `<select id="durationSelect" name="duration" required>
+        <option value="">Select Duration</option>
+        <option value="4">4 Weeks</option>
+        </select>`;*/
+        //document.getElementById("summary-start-date").innerHTML = `<select id="startDate" name="startDate" required></select>`;
+        
+      }
+      document.getElementById("original-price").textContent = `${originalPrice} EGP `;
+      document.getElementById("total-price").textContent = `${totalPrice} EGP `;
 
       // Save data to localStorage
       localStorage.setItem("optimumUserId", userId);
@@ -515,7 +561,7 @@ async function sendDataToSheet() {
   const threeDayCars = parseInt(document.getElementById("threeDayCars").value) || 0;
   const sixDayCars = parseInt(document.getElementById("sixDayCars").value) || 0;
   const startDateInput = document.getElementById("startDate").value;
-
+  const duration = document.getElementById("durationSelect").value;
   const startDate = new Date(startDateInput);
   const formattedStartDate = `${String(startDate.getDate()).padStart(2, '0')}/${String(startDate.getMonth() + 1).padStart(2, '0')}/${startDate.getFullYear()}`;
 
@@ -525,6 +571,7 @@ async function sendDataToSheet() {
     userId,
     threeDayCars,
     sixDayCars,
+    duration,
     startDate: formattedStartDate,
     totalPrice
   };
@@ -551,6 +598,11 @@ async function sendDataToSheet() {
   
 
 function handleProceed() {
+  const endDateCheck =document.getElementById("endDateDisplay");
+  if(!endDateCheck.textContent){
+    alert("Please select a start date and duration first.");
+    return;
+  }else{
   proceedToPayment();   // handles loading UI
   sendDataToSheet();    // sends form data to Google Sheet
   setTimeout(() => {
@@ -564,6 +616,7 @@ function handleProceed() {
   document.getElementById("payment-loading").style.display = "block";
 
   // Optional: Add a loading spinner or delay here later
+  }
 }
 
 
@@ -600,18 +653,72 @@ function handleProceed() {
 }
 
 
+const durationSe = document.getElementById("durationSelect");
+const startDateSe = document.getElementById("startDate");
+
+  const select = document.querySelector("select[name='startDate']");
+  populateFridayOptions(select);
+
+// Function to calculate end date
+function calculateEndDate(startDate, weeks) {
+  const date = new Date(startDate);
+  const daysToAdd = (weeks * 7)-1 ; // end date should be Thursday
+  date.setDate(date.getDate() + daysToAdd);
+  return date.toLocaleDateString("en-US", {
+    
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+}
+
+// Function to update end date display
+function updateEndDate() {
+  const durationSelect = document.getElementById("durationSelect");
+  const endDateDisplay = document.getElementById("endDateDisplay");
+  const startDateSelect = document.getElementById("startDate");
+  const startDateValue = startDateSelect.value;
+  const weeks = parseInt(durationSelect.value, 10);
+ 
+  
+  if (startDateValue && weeks) {
+    const endDate = calculateEndDate(startDateValue, weeks);
+    endDateDisplay.textContent = `${endDate}`;
+    
+    
+  } else {
+    endDateDisplay.textContent = "";
+    
+  }
+}
+
+// Update end date when either field changes
+durationSe.addEventListener("change", updateEndDate);
+startDateSe.addEventListener("change", updateEndDate);
+
+
 function populateFridayOptions() {
   const select = document.getElementById("startDate");
   select.innerHTML = ""; // Clear any old options
-
+  
+  
   const fridays = getNextFridays();
 
   const today = new Date();
   const todayStr = today.toDateString();
 
   fridays.forEach(date => {
-    const formattedValue = date.toISOString().split("T")[0]; // yyyy-mm-dd
-    const labelDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+    const formattedValue = date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  });
+    
+    const labelDate = date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    });
 
     const option = document.createElement("option");
     option.value = formattedValue;
@@ -657,7 +764,6 @@ window.addEventListener("DOMContentLoaded", () => {
   }, 300);
 });
 
-
 function getNextFridayDate() {
   const today = new Date();
   const date = new Date(today);
@@ -681,14 +787,28 @@ function tryAutoRenewFromURL() {
     document.getElementById("sixDayCars").value = six;
 
     // Set start date to next Friday
-    const friday = getNextFridayDate();
-    document.getElementById("startDate").value = friday;
+    //const friday = getNextFridayDate();
+    //document.getElementById("startDate").value = friday;
+     document.getElementById("rem").remove();
+     document.getElementById("rem").remove();
+     document.getElementById("rem").remove();
+    document.getElementById("startDate").remove();
+    document.getElementById("durationSelect").remove();
+    document.getElementById("endDateDisplay").remove();
+    document.getElementById("startDate").style.display = "block";
+    document.getElementById("durationSelect").style.display = "block";
+    document.getElementById("endDateDisplay").style.display = "block";
+    populateFridayOptions();
+    updateEndDate();
+    document.getElementById("startDate").addEventListener("change", updateEndDate);
+    document.getElementById("durationSelect").addEventListener("change", updateEndDate);
+
 
     // Store it
     localStorage.setItem("optimumUserId", id);
     localStorage.setItem("optimumThreeDayCars", three);
     localStorage.setItem("optimumSixDayCars", six);
-    localStorage.setItem("optimumStartDate", friday);
+    //localStorage.setItem("optimumStartDate", friday);
 
     // Simulate form submission to skip to summary
     const fakeEvent = new Event("submit", { bubbles: true });
@@ -719,7 +839,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if (storedUserId) document.getElementById("userId").value = storedUserId;
   if (storedThreeDay) document.getElementById("threeDayCars").value = storedThreeDay;
   if (storedSixDay) document.getElementById("sixDayCars").value = storedSixDay;
-
+  
   setTimeout(() => {
     if (storedStartDate) {
       const startDateSelect = document.getElementById("startDate");
