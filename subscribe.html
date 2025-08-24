@@ -729,7 +729,7 @@ const endDateDisplay = document.getElementById("endDateDisplay");
 // Function to calculate end date
 function calculateEndDate(startDate, weeks) {
   const date = new Date(startDate);
-  const daysToAdd = (weeks * 7) - 1; // end date should be Thursday
+  const daysToAdd = (weeks * 7); // end date should be Thursday
   date.setDate(date.getDate() + daysToAdd);
   return date.toLocaleDateString("en-US", {
     
@@ -1380,4 +1380,5 @@ container.innerHTML += carHTML;
 </script>
 </body>
 </html>
+
 
