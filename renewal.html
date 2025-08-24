@@ -868,13 +868,22 @@ function showWelcomeMessage(name) {
 
   const existingMessage = document.getElementById("welcome-msg");
   if (existingMessage) existingMessage.remove();
+  function capitalizeFirstLetter(str) {
+  if (str.length === 0) {
+    return ""; // Handle empty strings
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+const myString = name;
+const capitalizedString = capitalizeFirstLetter(myString);
 
   const welcome = document.createElement("h3");
   welcome.id = "welcome-msg";
   welcome.style.color = "goldenrod";
   welcome.style.fontWeight = "bold";
   welcome.style.marginTop = "5px";
-  welcome.textContent = `Welcome back, ${name}!`;
+  welcome.textContent = `Welcome back, ${capitalizedString}!`;
 
   // Insert just after the <h2> tag
   summaryHeading.insertAdjacentElement("afterend", welcome);
