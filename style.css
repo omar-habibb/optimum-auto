@@ -213,10 +213,11 @@ ul {
   background-size: cover;
   background-position: center;
   color: white;
-  padding: 10rem 1.5rem 5rem;
+  padding: 5rem 1.5rem 5rem;
   text-align: center;
   height: 600px;
-  background-image: linear-gradient(to top, grey,black);
+  background-image: linear-gradient(to top, grey,black 93%);
+  text-align: center;
 
   /*background image
   background-image: url(823e0a7a-eb99-422d-8674-936abef4445f.jpeg);  
@@ -229,15 +230,15 @@ ul {
 }
 
 .hsl{
-  font-size: 5rem;
+  font-size: 4.5rem;
   font-weight: bold;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
   color: goldenrod;
 
 }
 
 .sl {
-  font-size: 2.5rem;
+  font-size: 3rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
