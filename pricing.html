@@ -23,6 +23,36 @@
     transform: rotate(0deg); /* Adjust the angle for tilt */
     transform-origin: center center; /* Ensure rotation around the center */
 }
+.strike {
+    position: relative;
+    display: inline-block; /* Or block, depending on your layout */
+}
+
+.strike::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 45%; /* Adjust as needed for vertical centering */
+    border-top:  0.15rem solid lightgray; /* Or background-color */
+    transform: rotate(0deg); /* Adjust the angle for tilt */
+    transform-origin: center center; /* Ensure rotation around the center */
+}
+.strikee {
+    position: relative;
+    display: inline-block; /* Or block, depending on your layout */
+}
+
+.strikee::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 45%; /* Adjust as needed for vertical centering */
+    border-top:  0.1rem solid lightgray; /* Or background-color */
+    transform: rotate(0deg); /* Adjust the angle for tilt */
+    transform-origin: center center; /* Ensure rotation around the center */
+}
     .pricing-container {
      color: goldenrod;
       
@@ -164,7 +194,7 @@
       <table class="price-table">
         <tr><th>Cars</th><th>Standard</th><th style="font-size: 1.05rem;">Special</th><th>Per Wash</th></tr>
         <tr><td>1 Car</td><td>750 EGP</td><td><i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i></td><td>31.25 EGP</td></tr>
-        <tr style="color:rgb(255, 183, 0);"><td style="min-width:70px;">2+ Cars</td><td style="color:rgb(184, 140, 29);font-size: 0.96rem; font-weight: 700;">750 EGP<span style="font-size: 0.9rem; font-weight:400;"> /Car</span></td><td style="font-size: 1rem; font-weight: 700;">600 EGP <span style="font-size: 0.9rem; font-weight: 400;">/Car</span></td><td style="min-width: 90px;">25.00 EGP</td></tr>
+        <tr style="color:rgb(224, 166, 18);"><td style="min-width:70px;">2+ Cars</td><td style="color:rgb(184, 140, 29);font-size: 0.96rem; font-weight: 700;"><span class="strikee">750 EGP</span><span style="font-size: 0.9rem; font-weight:400;"> /Car</span></td><td style="font-size: 1rem; font-weight: 700;">600 EGP <span style="font-size: 0.9rem; font-weight: 400;">/Car</span></td><td style="min-width: 90px;">25.00 EGP</td></tr>
       </table>
       <p class="note">* 6-Day plan includes 24 washes per car.</p>
     </div>
@@ -174,7 +204,7 @@
       <table class="price-table">
         <tr><th>Cars</th><th>Standard</th><th style="font-size: 1.05rem;">Special</th><th>Per Wash</th></tr>
         <tr><td>1 Car</td><td>450 EGP</td><td><i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i></td><td>37.5 EGP</td></tr>
-        <tr style="color:goldenrod;"><td style="min-width:70px;">2+ Cars</td><td style="color:rgb(184, 140, 29);font-size: 0.96rem; font-weight: 700;">450 EGP<span style="font-size: 0.9rem; font-weight:400;"> /Car</span></td><td style="font-size: 1rem; font-weight: 700;">350 EGP <span style="font-size: 0.9rem; font-weight: 400;">/Car</span></td><td style="min-width: 90px;">29.17 EGP</td></tr>
+        <tr style="color:goldenrod;"><td style="min-width:70px;">2+ Cars</td><td style="color:rgb(184, 140, 29);font-size: 0.96rem; font-weight: 700;"><span class="strike">450 EGP</span><span style="font-size: 0.9rem; font-weight:400;"> /Car</span></td><td style="font-size: 1rem; font-weight: 700;">350 EGP <span style="font-size: 0.9rem; font-weight: 400;">/Car</span></td><td style="min-width: 90px;">29.17 EGP</td></tr>
       </table>
       <p class="note">* 3-Day plan includes 12 washes per car.</p>
     </div>
