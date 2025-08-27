@@ -174,6 +174,55 @@
       border-spacing: 0;
       
     }
+    .combination-box{
+      text-align: left;
+      margin-top:15px;
+      margin-left: 7px;
+      margin-right: 7px;
+      padding-top:8px;
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-bottom: 15px;
+      background-color: goldenrod;
+      color:#1a1a1a;
+      border-radius: 7px;
+    }
+    .combPrice-table {
+      width: 100%;
+      border-collapse: collapse;
+      flex-wrap: wrap;
+      margin-top: 5px;
+    }
+    .combPrice-table th, .combPrice-table td {
+      
+      border-bottom: 1px solid rgb(165, 118, 0);
+      text-align: left;
+      color:#1a1a1a;
+      
+    }
+    .combPrice-table td {
+      min-width: 9px;
+      
+    }
+    .combPrice-table th{
+      width: 90px;
+    }
+    #combtd{
+      text-align: right;
+      width: 75px;
+      padding-right: 5px;
+    }
+    #combtd-f{
+      text-align: right;
+      width: 50px;
+      padding-right: 5px;
+    }
+    #combtd-s{
+      text-align: right;
+      width: 50px;
+      padding-right: 5px;
+    }
+
   </style>
 </head>
 <body>
@@ -225,20 +274,61 @@
       <!--<p class="note">* 3-Day plan includes 12 washes per car.</p>-->
     </div>
 
-    <div class="plan-section highlight">
+    <div class="plan-section highlight" style="padding-left: 2px; padding-right: 2px;">
       <h2>Plan Combinations</h2>
       <p class="note" style="text-align: left; ">Note:</p>
       <p class="note" style="text-align: left; margin-left: 5px; margin-top: 0;">6D = Six Days a Week Plan</p>
       <p class="note" style="text-align: left; margin-left: 5px; margin-top: 0;">3D = Three Days a Week Plan</p>
       <table class="price-table">
-        <tr><th>Combination</th><th>Standard</th><th>Special</th></tr>
+        <tr><th>Combination</th><th>Standard</th><th style="padding-left: 2px;padding-right:2px ;" >Special</th><th>Per wash</th></tr>
         <tr><td><pre style="font-family: inherit;">   1 Car (6D)
-+ 1 Car (3D)</pre></td><td><span class="strike">750</span><br>+ <span class="strike"> 450 </span></td><td>700<br>+ 450 </td></tr>
-        <tr><td><pre style="font-family: inherit;">  2+ Car (6D)
-+ 1 Car (3D)</pre></td><td><span class="strike-l">750/car</span><br>+ <span class="strike"> 450 </span></td><td>600/car<br>+ 400 </td></tr>
+& 1 Car (3D)</pre></td><td><span class="strike">750</span><br>+ <span class="strike"> 450 </span></td><td style="padding-left: 2px;padding-right:2px ;">700<br>+ 450 </td><td>29.17<br>+ 37.5</td></tr>
+        <tr><td><pre style="font-family: inherit;">  2+ Cars (6D)
+& 1 Car (3D)</pre></td><td><span class="strike-l">750/car</span><br>+ <span class="strike"> 450 </span></td><td style="padding-left: 2px;padding-right:2px ;">600/car<br>+ 400 </td><td>25.00<br>+ 33.33</td></tr>
         <tr ><td><pre style="font-family: inherit;">  1 Car (6D)
-+ 2+ Car (3D)</pre></td><td><span class="strike">750 </span><br>+<span class="strike-l"> 450/car</span></td><td>700 <br>+ 350/car</td></tr>
+& 2+ Cars (3D)</pre></td><td><span class="strike">750 </span><br>+<span class="strike-l"> 450/car</span></td><td style="padding-left: 0px;padding-right:0px ;">700 <br>+ 350/car</td><td>29.17<br>+ 29.17</td></tr>
       </table>
+      <p class="note">All prices shown are in EGP.</p>
+    </div>
+    <div class="plan-section highlight" style="padding-left: 2px; padding-right: 2px;">
+      <h2>Plan Combinations</h2>
+      <p class="note" style="text-align: left; ">Note:</p>
+      <p class="note" style="text-align: left; margin-left: 5px; margin-top: 0;">6D = Six Days a Week Plan</p>
+      <p class="note" style="text-align: left; margin-left: 5px; margin-top: 0;">3D = Three Days a Week Plan</p>
+      <div class="combination-box">
+        <h4 style=" text-align: center;">1 Car (6D) And 1 Car (3D)</h4>
+        <!--<p>Standard : 750  + 450  EGP</p>
+        <p>Special  : 700  + 450  EGP</p>
+        <p>Per Wash : 29.17  + 37.5  EGP</p>-->
+        <table class="combPrice-table">
+          <tr><th>Standard</th><td id="combtd-f">750  </td><td> + 450  </td></tr>
+          <tr><th>Special</th><td id="combtd-f">700 </td><td> + 450  </td></tr>
+          <tr><th>Per Wash</th><td id="combtd-f">29.17  </td><td> + 37.5  </td></tr>
+        </table>
+      </div>
+      <div class="combination-box">
+        <h4 style=" text-align: center;">1 Car (6D) And 2+ Car (3D)</h4>
+        <!--<p>Standard : 750  + 450  EGP</p>
+        <p>Special  : 700  + 450  EGP</p>
+        <p>Per Wash : 29.17  + 37.5  EGP</p>-->
+        <table class="combPrice-table">
+          <tr><th>Standard</th><td id="combtd-s">750 </td><td> + 450  /Car  </td></tr>
+          <tr><th>Special</th><td id="combtd-s">700 </td><td> + 350 /Car  </td></tr>
+          <tr><th>Per Wash</th><td id="combtd-s">29.17  </td><td> + 29.17 </td></tr>
+        </table>
+      </div>
+      <div class="combination-box">
+        <h4 style=" text-align: center;">2+ Cars (6D) And 1 Car (3D)</h4>
+        <!--<p>Standard : 750  + 450  EGP</p>
+        <p>Special  : 700  + 450  EGP</p>
+        <p>Per Wash : 29.17  + 37.5  EGP</p>-->
+        <table class="combPrice-table">
+          <tr><th>Standard</th><td id="combtd">750 /Car </td><td> + 450  </td></tr>
+          <tr><th>Special</th><td id="combtd">600 /Car</td><td> + 400  </td></tr>
+          <tr><th>Per Wash</th><td id="combtd">25.00  </td><td> + 33.33  </td></tr>
+        </table>
+      </div>
+      <p class="note">All prices shown are in EGP.</p>
     </div>
     <div class="calculator">
       <h2 >Estimate Your Price Per Wash</h2>
