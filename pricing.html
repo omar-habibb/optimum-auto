@@ -121,7 +121,8 @@
       margin-bottom: 25px;
     }
      .calculator {
-      margin-top: 40px;
+      margin-top: 10px;
+      margin-bottom: 20px;
       padding: 20px;
       padding-left:0px;
       padding-right:0px;
@@ -156,7 +157,7 @@
     .calculator-result {
       font-weight: bold;
       font-size: 1.1rem;
-      width: 50%;
+      width: 55%;
     }
     label{
       width:150px
@@ -183,8 +184,8 @@
       padding-left: 10px;
       padding-right: 10px;
       padding-bottom: 15px;
-      background-color: goldenrod;
-      color:#1a1a1a;
+      background-color: black;
+      color:rgba(218, 165, 32, 0.822);
       border-radius: 7px;
     }
     .combPrice-table {
@@ -195,14 +196,13 @@
     }
     .combPrice-table th, .combPrice-table td {
       
-      border-bottom: 1px solid rgb(165, 118, 0);
+      border-bottom: 1px solid #ddd;
       text-align: left;
-      color:#1a1a1a;
+      
       
     }
     .combPrice-table td {
       min-width: 9px;
-      
     }
     .combPrice-table th{
       width: 90px;
@@ -330,18 +330,20 @@
       </div>
       <p class="note">All prices shown are in EGP.</p>
     </div>
+    <p style="color: white; font-weight: 500; font-size: 1.1rem; margin-top: 50px;">
+      Feeling lost? Let the Price Calculator do the math for you.</p>
     <div class="calculator">
-      <h2 >Estimate Your Price Per Wash</h2>
+      <h2 style="margin-bottom: 10px;">Price Calcualtor</h2>
       <div class="calculator-r">
       <div class="calculator-inputs">
-        <label>6-Day Cars: <input type="number" id="sixDayInput" value="1" min="0" ></label>
-      <label>3-Day Cars: <input type="number" id="threeDayInput" value="1" min="0" ></label>
+        <label>6 D Cars: <input type="number" id="sixDayInput" value="1" min="0" ></label>
+        <label>3-Day Cars: <input type="number" id="threeDayInput" value="1" min="0" ></label>
     </div>
     <div class="calculator-result" id="calcResult">
       <table id="calcTable" >
-        <tr><th>original price</th><td id="orgPrice"></td></tr>
-        <tr><th>offer price</th><td id="ofPrice"></td></tr>
-        <tr><th>price per wash</th><td id="pricePWash"></td></tr>
+        <tr><th>Standard Price</th><td id="orgPrice"></td></tr>
+        <tr><th>Special Price</th><td id="ofPrice"></td></tr>
+        <tr><th>Price Per Wash</th><td id="pricePWash"></td></tr>
       </table>
     </div>
       </div>
