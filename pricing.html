@@ -146,11 +146,11 @@
       width:fit-content;
     }
     .calculator input {
-      margin-left: 5px;
+      margin-left: 2px;
       padding: 3px;
       border:2px solid black;
       background-color: #666;
-      width:89px;
+      width:105px;
       
       
     }
@@ -174,6 +174,9 @@
       border-collapse:collapse;
       border-spacing: 0;
       
+    }
+   #threeDayInput::placeholder, #sixDayInput::placeholder{
+      color: rgb(36, 36, 36);
     }
     .combination-box{
       text-align: left;
@@ -361,8 +364,8 @@
       <h2 style="margin-bottom: 10px;">Price Calcualtor</h2>
       <div class="calculator-r">
       <div class="calculator-inputs">
-        <label>6 D Cars: <input type="number" id="sixDayInput" value="1" min="0" ></label>
-        <label>3-Day Cars: <input type="number" id="threeDayInput" value="1" min="0" ></label>
+        <label>6 Days a week <input type="number" id="sixDayInput" placeholder="Number of cars" min="0" ></label>
+        <label>3 Days a week <input type="number" id="threeDayInput" placeholder="Number of cars"  min="0" ></label>
     </div>
     <div class="calculator-result" id="calcResult">
       <table id="calcTable" >
@@ -572,9 +575,9 @@
 
       const perWash = totalWashes ? (totalPrice / totalWashes).toFixed(2) : 0;
       if(originalPrice === 0){
-        document.getElementById("orgPrice").innerHTML = `<i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>`;
+        document.getElementById("orgPrice").innerHTML = `0<!-- <i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>-->`;
         document.getElementById("ofPrice").innerHTML = `<i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>`;
-        document.getElementById("pricePWash").innerHTML = `<i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>`;
+        document.getElementById("pricePWash").innerHTML = `0<!--<i class="fa-solid fa-xmark" style="color:rgb(150, 108, 2);font-size:1.1rem;" ></i>-->`;
       }else{
       
       if (totalPrice === originalPrice){
