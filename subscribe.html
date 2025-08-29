@@ -357,6 +357,21 @@ footer {
   border-radius: 5px;
   font-weight: 700;
 }
+.strike {
+    position: relative;
+    display: inline-block; /* Or block, depending on your layout */
+}
+
+.strike::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 48%; /* Adjust as needed for vertical centering */
+    border-top:  0.1rem solid black; /* Or background-color */
+    transform: rotate(0deg); /* Adjust the angle for tilt */
+    transform-origin: center center; /* Ensure rotation around the center */
+}
 
   </style>
 </head>
@@ -729,7 +744,7 @@ const endDateDisplay = document.getElementById("endDateDisplay");
 // Function to calculate end date
 function calculateEndDate(startDate, weeks) {
   const date = new Date(startDate);
-  const daysToAdd = (weeks * 7); // end date should be Thursday
+  const daysToAdd = (weeks * 7) ; // end date should be Thursday
   date.setDate(date.getDate() + daysToAdd);
   return date.toLocaleDateString("en-US", {
     
@@ -1140,12 +1155,24 @@ container.innerHTML += carHTML;
   }
 
   // Final price display
+  if(totalPrice===originalPrice){
   container.innerHTML += `
     <hr>
-    <div class="summary-item"><strong>Original Price:</strong> EGP ${originalPrice.toFixed(2)}</div>
-    <div class="summary-item"><strong>Offer Price:</strong> EGP ${totalPrice.toFixed(2)}</div>
+    <div class="summary-item"><strong>Original Price:</strong> EGP ${originalPrice}</div>
+    <div class="summary-item"><strong>Offer Price:</strong><i class="fa-solid fa-xmark" style="margin-left:10px;" ></i></div>
     <div class="summary-item"><strong>You Save:</strong> EGP ${saved}</div>
   `;
+  } else {
+    container.innerHTML += `
+    <hr>
+    <div class="summary-item"><strong>Original Price:</strong> <span class="strike">EGP ${originalPrice}</span></div>
+    <div class="summary-item"><strong>Offer Price:</strong> EGP ${totalPrice}</div>
+    <div class="summary-item"><strong>You Save:</strong> EGP ${saved.toFixed(2)}</div>
+  `;
+  }
+
+
+
     document.getElementById("policyCheckbox").addEventListener("change", () => {
   document.getElementById("nextBtn").disabled = !document.getElementById("policyCheckbox").checked;
 });
@@ -1380,5 +1407,3 @@ container.innerHTML += carHTML;
 </script>
 </body>
 </html>
-
-
