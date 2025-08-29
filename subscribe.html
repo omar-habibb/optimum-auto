@@ -1158,15 +1158,15 @@ container.innerHTML += carHTML;
   if(totalPrice===originalPrice){
   container.innerHTML += `
     <hr>
-    <div class="summary-item"><strong>Original Price:</strong> EGP ${originalPrice}</div>
-    <div class="summary-item"><strong>Offer Price:</strong><i class="fa-solid fa-xmark" style="margin-left:10px;" ></i></div>
+    <div class="summary-item"><strong>Standard Price:</strong> EGP ${originalPrice}</div>
+    <div class="summary-item"><strong>Special Price:</strong><i class="fa-solid fa-xmark" style="margin-left:10px;" ></i></div>
     <div class="summary-item"><strong>You Save:</strong> EGP ${saved}</div>
   `;
   } else {
     container.innerHTML += `
     <hr>
-    <div class="summary-item"><strong>Original Price:</strong> <span class="strike">EGP ${originalPrice}</span></div>
-    <div class="summary-item"><strong>Offer Price:</strong> EGP ${totalPrice}</div>
+    <div class="summary-item"><strong>Standard Price:</strong> <span class="strike">EGP ${originalPrice}</span></div>
+    <div class="summary-item"><strong>Special Price:</strong> EGP ${totalPrice}</div>
     <div class="summary-item"><strong>You Save:</strong> EGP ${saved}</div>
   `;
   }
