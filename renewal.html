@@ -197,6 +197,7 @@
       <p><strong>-Next Renewal:</strong> <span id="summary-end-date"></span><p id="endDateDisplay" style="display:none; padding:5px; margin-left: 10px;" ></p></p>
       <p><strong>-Standard Price:</strong> <span id="original-price">EGP 0</span></p>
       <p><strong>-Special Price:</strong> <span id="total-price">EGP 0</span></p>
+      <p><strong>-Per Wash Cost:</strong> <span id="perWcost">EGP 0</span></p>
       <p id="summary-note" style="display: none; color: gray; margin-top: 10px; font-size: 0.8rem;">
       Note: If you’d like to add or remove a car, please 
       <a href="https://wa.me/201123403403?text=Hello%2C%20I%20would%20like%20to%20add%2Fremove%20a%20car." style="color: goldenrod;">message us</a> before proceeding.
@@ -434,10 +435,14 @@ document.getElementById("year").textContent = new Date().getFullYear();
       originalPrice += 450 * threeDayCars.length;
     } 
     }
+    
+    const pricePW=totalPrice/((threeDayCars.length*12)+(sixDayCars.length*24));
+    
 
       return {
         totalPrice: parseFloat(totalPrice.toFixed(2)),
-        originalPrice: parseFloat(originalPrice.toFixed(2))
+        originalPrice: parseFloat(originalPrice.toFixed(2)),
+        pricePW: parseFloat(pricePW.toFixed(2))
       };
     }
 
@@ -487,8 +492,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
   const six = parseInt(params.get("six") || "0");
        
 
-      const { totalPrice, originalPrice } = calculatePrice(cars);
-      
+      const { totalPrice, originalPrice, pricePW } = calculatePrice(cars);
       document.getElementById("summary-user-id").textContent = userId;
       document.getElementById("summary-3day").textContent = threeDayCars;
       document.getElementById("summary-6day").textContent = sixDayCars;
@@ -508,10 +512,11 @@ document.getElementById("year").textContent = new Date().getFullYear();
       if(originalPrice === totalPrice){
       document.getElementById("original-price").textContent = `${originalPrice} EGP `;
       document.getElementById("total-price").innerHTML = `<i class="fa-solid fa-xmark" style="margin-left:10px;font-size:1.1rem;" ></i>`;
+      document.getElementById("perWcost").textContent = `${pricePW} EGP `;
       }else{
         document.getElementById("original-price").innerHTML = `<span class="strike">${originalPrice} EGP</span>`;
       document.getElementById("total-price").textContent = `${totalPrice} EGP `;
-      
+      document.getElementById("perWcost").textContent = `${pricePW} EGP `;
       }
       // Save data to localStorage
       localStorage.setItem("optimumUserId", userId);
@@ -545,7 +550,18 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
     async function proceedToPayment() {
   const id = document.getElementById("userId").value;
-  const totalPrice = document.getElementById("total-price").textContent.replace("EGP", "").trim();
+
+  const threeDayCars = parseInt(document.getElementById("threeDayCars").value) || 0;
+  const sixDayCars = parseInt(document.getElementById("sixDayCars").value) || 0;
+  const cars = [];
+      for (let i = 0; i < threeDayCars; i++) {
+        cars.push({ plan: "3" });
+      }
+      for (let i = 0; i < sixDayCars; i++) {
+        cars.push({ plan: "6" });
+      }
+  const { totalPrice } = calculatePrice(cars);
+  //const totalPrice = document.getElementById("total-price").textContent.replace("EGP", "").trim();
   const amount = parseFloat(totalPrice) * 100;
 
   try {
@@ -715,6 +731,7 @@ function updateEndDate() {
 // Update end date when either field changes
 durationSe.addEventListener("change", updateEndDate);
 startDateSe.addEventListener("change", updateEndDate);
+updateEndDate();
 
 
 function populateFridayOptions() {
