@@ -327,7 +327,7 @@
       <table id="calcTable" >
         <tr><th>Standard Price</th><td id="orgPrice"></td></tr>
         <tr><th>Special Price</th><td id="ofPrice"></td></tr>
-        <tr><th>Price Per Wash</th><td id="pricePWash"></td></tr>
+        <tr><th>Cost Per Wash</th><td id="pricePWash"></td></tr>
       </table>
     </div>
       </div>
@@ -509,7 +509,7 @@
       let totalPrice = 0;
       let totalWashes = (threeDay * 12) + (sixDay * 24);
       originalPrice = (threeDay * 450) + (sixDay * 750);
-      
+
       if (sixDay === 1 && threeDay === 1) {
         totalPrice = 1150;
       } else if (sixDay >= 2 && threeDay === 1) {
