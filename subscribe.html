@@ -372,6 +372,11 @@ footer {
     transform: rotate(0deg); /* Adjust the angle for tilt */
     transform-origin: center center; /* Ensure rotation around the center */
 }
+.note {
+      font-size: 0.95rem;
+      color: #666;
+      margin-top: 8px;
+    }
 
   </style>
 </head>
@@ -462,6 +467,7 @@ footer {
     <div id="step3" class="step hidden">
       <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
       <h3>Car Details</h3>
+      <p class="note">Note: The plan name reflects how many days per week your car will be washed.</p>
       <div id="carDetailsContainer"></div>
       <button type="button" class="btn" id="nxtbtn">Next</button>
       <button type="button" class="btn back">Back</button>
@@ -909,11 +915,11 @@ startDateSelect.addEventListener("change", updateEndDate);
         <input type="text" name="car[${i}][plate]" placeholder="Plate Number" value="${savedCars[i]?.plate || ''}" required />
 
         <label>
-          Wash Plan:
+          Wash Frequency:
           <select name="car[${i}][plan]" required>
             <option value="">Select Plan</option>
-            <option value="6" ${savedCars[i]?.plan === "6" ? "selected" : ""}>6 Days/Week</option>
-            <option value="3" ${savedCars[i]?.plan === "3" ? "selected" : ""}>3 Days/Week</option>
+            <option value="6" ${savedCars[i]?.plan === "6" ? "selected" : ""}>6 Days a Week</option>
+            <option value="3" ${savedCars[i]?.plan === "3" ? "selected" : ""}>3 Days a Week</option>
           </select>
         </label>
 
@@ -1073,6 +1079,8 @@ for (const key in car) {
     carHTML += `<div class="summary-item"><strong>Available From:</strong> ${car[key]}</div>`;
   }else if(key === "doneBy"){
     carHTML += `<div class="summary-item"><strong>Done By:</strong> ${car[key]}</div>`;
+  }else if(key === "plan"){
+     carHTML += `<div class="summary-item"><strong>Frequency:</strong> ${car[key]} Days a Week </div>`;
   }else if(car[key]){
     carHTML += `<div class="summary-item"><strong>${toTitleCase(key)}:</strong> ${car[key]}</div>`;
   }
