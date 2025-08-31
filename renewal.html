@@ -148,11 +148,11 @@
         <label for="userId">Your ID</label>
         <input type="text" id="userId" name="userId" required />
 
-        <label for="sixDayCars">Number of Cars (6-Day Plan)</label>
-        <input type="number" id="sixDayCars" name="sixDayCars" min="0"  />
+        <label for="sixDayCars">6 Days a Week  Plan</label>
+        <input type="number" id="sixDayCars" name="sixDayCars" placeholder="Number of cars in this plan" min="0"  />
 
-        <label for="threeDayCars">Number of Cars (3-Day Plan)</label>
-        <input type="number" id="threeDayCars" name="threeDayCars" min="0" />
+        <label for="threeDayCars">3 Days a Week  Plan</label>
+        <input type="number" id="threeDayCars" name="threeDayCars" placeholder="Number of cars in this plan" min="0" />
 
         <label for="durationSelect" id="rem">Duration:</label>
         <select id="durationSelect" name="duration" required>
@@ -185,8 +185,8 @@
       <p id="welcome-msg"></p>
       </div>
       <p><strong>-ID:</strong> <span id="summary-user-id">—</span></p>
-      <p><strong>-3-Day Plan Cars:</strong> <span id="summary-3day">0</span></p>
-      <p><strong>-6-Day Plan Cars:</strong> <span id="summary-6day">0</span></p>
+      <p><strong>-6 Days a Week Plan:</strong> <span id="summary-6day">0</span></p>
+      <p><strong>-3 Days a Week Plan:</strong> <span id="summary-3day">0</span></p>
       <p><strong>-Duration:</strong> <span id="summary-duration"></span></p>
       <select id="durationSelect" name="duration" required style="display:none;">
         <option value="">Select Duration</option>
@@ -494,8 +494,22 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
       const { totalPrice, originalPrice, pricePW } = calculatePrice(cars);
       document.getElementById("summary-user-id").textContent = userId;
-      document.getElementById("summary-3day").textContent = threeDayCars;
-      document.getElementById("summary-6day").textContent = sixDayCars;
+      if(sixDayCars === 0){
+         document.getElementById("summary-6day").textContent = `0`;
+      }else if(sixDayCars === 1){
+        document.getElementById("summary-6day").textContent = `1 Car`;
+      }else{
+         document.getElementById("summary-6day").textContent = `${sixDayCars} Cars`;
+      }
+      if(threeDayCars === 0){
+         document.getElementById("summary-3day").textContent = `0`;
+      }else if(threeDayCars === 1){
+        document.getElementById("summary-3day").textContent = `1 Car`;
+      }else{
+         document.getElementById("summary-3day").textContent = `${threeDayCars} Cars`;
+      }
+      //document.getElementById("summary-3day").textContent = threeDayCars;
+      //document.getElementById("summary-6day").textContent = sixDayCars;
       if (!(id && (three > 0 || six > 0))) {
       document.getElementById("summary-duration").textContent = `${durationInput} Weeks`;
       document.getElementById("summary-start-date").textContent = formattedDate;
