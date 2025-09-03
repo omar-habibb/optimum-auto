@@ -282,7 +282,7 @@
 .dropdown-content li a {
   display: block;
   color: lightgrey;
-  transition: background 0.3s;
+  
 }
 
 .dropdown-content li a:hover {
@@ -377,6 +377,10 @@ footer {
       color: #666;
       margin-top: 8px;
     }
+.note a{
+  text-decoration: none;
+  color: rgb(165, 119, 1);
+}
 
   </style>
 </head>
@@ -1179,7 +1183,7 @@ container.innerHTML += carHTML;
     <div class="summary-item"><strong>Per Wash Cost:</strong>  ${pricePW} EGP</div>
   `;
   }
-
+  container.innerHTML +=`<span class="note">*<a href="pricing.html" target="_blank">view pricing</a></span>`;
 
 
     document.getElementById("policyCheckbox").addEventListener("change", () => {
@@ -1416,4 +1420,3 @@ container.innerHTML += carHTML;
 </script>
 </body>
 </html>
-
