@@ -111,6 +111,17 @@
     transform: rotate(0deg); /* Adjust the angle for tilt */
     transform-origin: center center; /* Ensure rotation around the center */
 }
+.note {
+      font-size: 0.95rem;
+      color: #666;
+      margin-bottom: 10px;
+      
+
+    }
+.note a{
+  text-decoration: none;
+  color: rgb(165, 119, 1);
+}
 
   </style>
 </head>
@@ -186,7 +197,7 @@
       </div>
       <p><strong>-ID:</strong> <span id="summary-user-id">—</span></p>
       <p><strong>-6 Days a Week Plan:</strong> <span id="summary-6day">0</span></p>
-      <p><strong>-3 Days a Week Plan:</strong> <span id="summary-3day">0</span></p>
+      <p ><strong>-3 Days a Week Plan:</strong> <span id="summary-3day">0</span></p>
       <p><strong>-Duration:</strong> <span id="summary-duration"></span></p>
       <select id="durationSelect" name="duration" required style="display:none;">
         <option value="">Select Duration</option>
@@ -197,7 +208,8 @@
       <p><strong>-Next Renewal:</strong> <span id="summary-end-date"></span><p id="endDateDisplay" style="display:none; padding:5px; margin-left: 10px;" ></p></p>
       <p><strong>-Standard Price:</strong> <span id="original-price">EGP 0</span></p>
       <p><strong>-Special Price:</strong> <span id="total-price">EGP 0</span></p>
-      <p><strong>-Per Wash Cost:</strong> <span id="perWcost">EGP 0</span></p>
+      <p style="margin-bottom: 3px;"><strong>-Per Wash Cost:</strong> <span id="perWcost">EGP 0</span></p>
+      <p class="note" style="margin-top: 0px;">*<a href="pricing.html" target="_blank">view pricing</a></p>
       <p id="summary-note" style="display: none; color: gray; margin-top: 10px; font-size: 0.8rem;">
       Note: If you’d like to add or remove a car, please 
       <a href="https://wa.me/201123403403?text=Hello%2C%20I%20would%20like%20to%20add%2Fremove%20a%20car." style="color: goldenrod;">message us</a> before proceeding.
