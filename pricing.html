@@ -227,6 +227,20 @@
       width: 50px;
       padding-right: 5px;
     }
+    #pricing-action-btn{
+      background-color: goldenrod;
+      color: black;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
 
   </style>
 </head>
@@ -257,6 +271,12 @@
   <div class="pricing-container">
     <h1 style="margin-top: 20px;">Pricing</h1>
     <p style="margin-top: 20px;color:rgb(255, 255, 255);">At Optimum Auto, we believe in fair pricing for exceptional service.<br> We offer competitive prices with exclusive savings for multiple cars. Below, you’ll also find a price calculator to easily plan your total.</p>
+    <div class="pricing-action">
+
+  <button id="pricing-action-btn">Loading...</button>
+
+
+</div>
     <p class="note_1">Please note: All prices are based on a 4-week subscription. The plan name reflects how many days per week your car will be washed.</p>
 
     <div class="plan-section">
@@ -551,6 +571,27 @@
     document.getElementById("threeDayInput").addEventListener("input", calculateEstimate);
     document.getElementById("sixDayInput").addEventListener("input", calculateEstimate);
     calculateEstimate(); // Run once on load
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const from = urlParams.get("from");
+
+  const actionBtn = document.getElementById("pricing-action-btn");
+
+  if (from === "subscribe") {
+    actionBtn.textContent = "Continue Subscribe";
+    actionBtn.onclick = () => window.close();
+  } else if (from === "renewal") {
+    actionBtn.textContent = "Continue Renewal";
+    actionBtn.onclick = () => window.close();
+  } else {
+    // default behavior → show subscribe link
+    actionBtn.textContent = "Subscribe Now";
+    actionBtn.onclick = () => window.location.href = "subscribe.html";
+  }
+});
+
   </script>
 </body>
 </html>
