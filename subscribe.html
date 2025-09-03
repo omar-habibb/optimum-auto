@@ -377,9 +377,15 @@ footer {
       color: #666;
       margin-top: 8px;
     }
-.note a{
+.note button{
   text-decoration: none;
   color: rgb(165, 119, 1);
+  border: none;
+  width:fit-content;
+  padding:0px;
+  margin:0px;
+  font-size: 0.95rem;
+
 }
 
   </style>
@@ -1183,7 +1189,7 @@ container.innerHTML += carHTML;
     <div class="summary-item"><strong>Per Wash Cost:</strong>  ${pricePW} EGP</div>
   `;
   }
-  container.innerHTML +=`<span class="note">*<a href="pricing.html" target="_blank">view pricing</a></span>`;
+  container.innerHTML +=`<p class="note">*<button type="button" onclick="window.open('pricing.html?from=subscribe', '_blank')">View Pricing</button></p>`;
 
 
     document.getElementById("policyCheckbox").addEventListener("change", () => {
