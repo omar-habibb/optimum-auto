@@ -423,31 +423,24 @@ document.getElementById("year").textContent = new Date().getFullYear();
 
       const sixDayCars = cars.filter(c => c.plan === "6");
       const threeDayCars = cars.filter(c => c.plan === "3");
-
+      originalPrice = (sixDayCars.length * 700) + (threeDayCars.length * 400);
       if(sixDayCars.length === 1 && threeDayCars.length === 1 ){
-      totalPrice += 1150;
-      originalPrice += 1200;
+      totalPrice += 1000;
     } else if(sixDayCars.length >= 2 && threeDayCars.length === 1){
-      totalPrice +=  (sixDayCars.length * 600 ) + 400 ;
-      originalPrice += (sixDayCars.length * 750 ) + 450;
+      totalPrice +=  (sixDayCars.length * 550 ) + 350 ;
     }else if(sixDayCars.length === 1 && threeDayCars.length >= 2){
-      totalPrice += (threeDayCars.length * 350 ) + 700;
-      originalPrice += (threeDayCars.length * 450 ) + 750;
+      totalPrice += (threeDayCars.length * 300 ) + 650;
     }else{
     if (sixDayCars.length === 1) {
-      totalPrice += 750;
-      originalPrice += 750;
+      totalPrice += 700;
     } else if (sixDayCars.length >= 2) {
-      totalPrice += 600 * sixDayCars.length;
-      originalPrice += 750 * sixDayCars.length;
+      totalPrice += 550 * sixDayCars.length;
     } 
 
     if (threeDayCars.length === 1) {
-      totalPrice += 450;
-      originalPrice += 450;
+      totalPrice += 400;
     } else if (threeDayCars.length >= 2) {
-      totalPrice += 350 * threeDayCars.length;
-      originalPrice += 450 * threeDayCars.length;
+      totalPrice += 300 * threeDayCars.length;
     } 
     }
     
