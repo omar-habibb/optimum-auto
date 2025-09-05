@@ -1117,51 +1117,29 @@ container.innerHTML += carHTML;
   const totalCars = cars.length;
   let suggestion = "";
 
-  if (threeDayIndices.length > 0 && sixDayIndices.length > 0) {
+  if(threeDayIndices.length >= 1){
     const carsToSuggest = threeDayIndices.join(", ");
+  if(totalCars === 1 && threeDayIndices.length === 1){
+   suggestion = `
+       <div style="font-size:0.9rem;color:black;background:rgb(228, 228, 228); padding:15px; border-left: 4px solid black; margin-top:15px;">
+        <strong><i class="fa-regular fa-lightbulb" style="color:black;"></i> Recommendation:</strong>  If the car is part of your daily routine, the 6 Days a Week plan is made for it.
+      </div>
+    `;
+  }else if(totalCars === 2 && threeDayIndices.length === 1){
     suggestion = `
-      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
-        <strong>💡 Suggestion:</strong> You could save more by switching Car(${carsToSuggest}) to 6 Days/Week.
+       <div style="font-size:0.9rem;color:black;background:rgb(228, 228, 228); padding:15px; border-left: 4px solid black; margin-top:15px;">
+        <strong><i class="fa-regular fa-lightbulb" style="color:black;"></i> Tip:</strong> You can upgrade Car(${carsToSuggest}) to the 6 Days a Week plan, and also drop the cost per wash to 22.92 EGP for only +100 EGP. .
+      </div>
+    `;
+ }else if (totalCars > 2 && sixDayIndices.length === 1 && totalCars < 5) {
+    suggestion = `
+       <div style="font-size:0.9rem;color:black;background:rgb(228, 228, 228); padding:15px; border-left: 4px solid black; margin-top:15px;">
+        <strong><i class="fa-regular fa-lightbulb" style="color:black;"></i> Tip:</strong> You can reduce the per wash cost to 22.92 EGP instead of ${pricePW} EGP by upgrading cars(${carsToSuggest}) to 6 Days a Week plan.
       </div>
     `;
   }
+}
 
-  if (totalCars === 2 && threeDayIndices.length >= 1) {
-    const carsToSuggest = threeDayIndices.join(", ");
-    suggestion = `
-      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
-        <strong>💡 Tip:</strong> Switch Car(${carsToSuggest}) to 6 Days/Week — you’ll get a better rate!
-      </div>
-    `;
-  }
-
-  if (totalCars === 3 && threeDayIndices.length === 1) {
-    const carsToSuggest = threeDayIndices.join(", ");
-    suggestion = `
-      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
-        <strong>💡 Tip:</strong> Try switching Car(${carsToSuggest}) to 6 Days/Week — it may cost less per car.
-      </div>
-    `;
-  }
-
-  if (totalCars === 3 && threeDayIndices.length === 2) {
-    const carsToSuggest = threeDayIndices.join(", ");
-    suggestion = `
-      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
-        <strong>💡 Tip:</strong> Consider switching Car(${carsToSuggest}) to 6 Days/Week — it could be cheaper overall.
-      </div>
-    `;
-  }
-
-  if (totalCars >= 4 && threeDayIndices.length >= 1) {
-    const carsToSuggest = threeDayIndices.join(", ");
-    const savingsEstimate = threeDayIndices.length * (450 - 700) + (threeDayIndices.length * 50); // rough estimate
-    suggestion = `
-      <div style="background:#fefce8; padding:15px; border-left: 4px solid #eab308; margin-top:15px;">
-        <strong>💡 Pro Tip:</strong> You can save up to EGP ${Math.abs(savingsEstimate)} by switching Car(${carsToSuggest}) to 6 Days/Week.
-      </div>
-    `;
-  }
 
   // Add suggestion if any
   if (suggestion) {
