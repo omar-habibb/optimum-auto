@@ -795,6 +795,7 @@ durationSelect.addEventListener("change", updateEndDate);
 startDateSelect.addEventListener("change", updateEndDate);
 
   function generateFridays(selectElement) {
+    selectElement.options.length = 1;
     const today = new Date();
     let currentDate = new Date(today);
     const currentDay = today.getDay();
@@ -1066,8 +1067,10 @@ if (duration) {
   container.innerHTML += `<div class="summary-item"><strong>Duration :</strong> ${duration} Weeks</div>`;
 }//show start date
     const startDate = document.querySelector("[name='startDate']")?.value || "";
-if (startDate) {
-  container.innerHTML += `<div class="summary-item"><strong>Start Date:</strong> ${startDate}</div>`;
+    const sstartDate = new Date(startDate);
+    const fstartDate = sstartDate.toLocaleDateString("en-US", {year: "numeric",month: "long",day: "numeric"});
+    if (startDate) {
+  container.innerHTML += `<div class="summary-item"><strong>Start Date:</strong> ${fstartDate}</div>`;
 }//show end date
     const endDate =document.querySelector("[id='endDateDisplay']").textContent;
 if (endDate) {
