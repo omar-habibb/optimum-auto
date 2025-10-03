@@ -755,6 +755,25 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (el) el.value = formData[key];
   });
 
+function hasForbiddenStart(value) {
+  if (!value) return false;
+  const trimmed = value.trim();
+  return ["=", "+", "-", "@"].includes(trimmed.charAt(0));
+}
+
+function validateNoForbiddenStart() {
+  const inputs = document.querySelectorAll("input, textarea, select");
+  for (let input of inputs) {
+    if (hasForbiddenStart(input.value)) {
+      alert(`${input.name || input.id} cannot start with =, +, - or @`);
+      return false;
+    }
+  }
+  return true;
+}
+
+
+
   const durationSelect = document.getElementById("durationSelect");
 const startDateSelect = document.getElementById("startDateSelect");
 const endDateDisplay = document.getElementById("endDateDisplay");
@@ -823,6 +842,10 @@ startDateSelect.addEventListener("change", updateEndDate);
 
   document.querySelectorAll(".btn").forEach(btn => {
   btn.addEventListener("click", (e) => {
+
+    if (!validateNoForbiddenStart()) {
+  return; // stop here, don’t go to next step
+} 
     const direction = e.target.id === "nxtbtn" ? 1 : -1;
 
     if (direction === 1) {
