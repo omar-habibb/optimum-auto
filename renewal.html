@@ -126,6 +126,11 @@
   border: none;
 }
 
+.input-error {
+  border: 2px solid red !important;
+  background-color: #ffe6e6;
+}
+
   </style>
 </head>
 <body style="background-color: black;">
@@ -426,6 +431,39 @@ document.querySelectorAll(".footer-policy-btn").forEach((btn, index) => {
 //year
 document.getElementById("year").textContent = new Date().getFullYear();
 
+
+function hasForbiddenStart(value) {
+  if (!value) return false;
+  const trimmed = value.trim();
+  return ["=", "+", "-", "@"].includes(trimmed.charAt(0));
+}
+document.querySelectorAll("input").forEach(input => {
+  input.addEventListener("input", () => {
+    if (!hasForbiddenStart(input.value)) {
+      input.classList.remove("input-error");
+    }
+  });
+});
+
+function validateNoForbiddenStart() {
+  const inputs = document.querySelectorAll("#renewal-form input, #renewal-form select");
+  for (let input of inputs) {
+    if (hasForbiddenStart(input.value)) {
+      input.classList.add("input-error");
+      alert(`${input.name || input.id} cannot start with =, +, - or @`);
+      /*const warning = document.getElementById("form-warning");
+      warning.textContent = `🚫 "${input.name || input.id}" cannot start with =, +, - or @`;
+      warning.style.display = "block";*/
+      return false;
+    }
+  }
+  //document.getElementById("form-warning").style.display = "none";
+  inputs.forEach(input => input.classList.remove("input-error"));
+  return true;
+}
+
+
+
 // Your existing calculatePrice function
     function calculatePrice(cars = []) {
       let totalPrice = 0;
@@ -467,6 +505,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
     // Step handling logic
     document.getElementById("renewal-form").addEventListener("submit", function (e) {
       e.preventDefault();
+
+      if (!validateNoForbiddenStart()) return;
+
 
       const threeDayCars = parseInt(document.getElementById("threeDayCars").value) || 0;
       const sixDayCars = parseInt(document.getElementById("sixDayCars").value) || 0;
@@ -731,7 +772,7 @@ function handleProceed() {
     }
 
 
-    function getNextFridays(count = 15) {
+    function getNextFridays(count = 4) {
   const fridays = [];
   const now = new Date();
 
@@ -877,12 +918,19 @@ function getNextFridayDate() {
   return date.toISOString().split("T")[0];
 }
 
+
+
 function tryAutoRenewFromURL() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
   const three = parseInt(params.get("three") || "0");
   const six = parseInt(params.get("six") || "0");
   const name = params.get("name");
+
+
+ 
+
+
 
   if (id && (three > 0 || six > 0)) {
     // Pre-fill the form
@@ -907,6 +955,7 @@ function tryAutoRenewFromURL() {
     document.getElementById("startDate").addEventListener("change", updateEndDate);
     document.getElementById("durationSelect").addEventListener("change", updateEndDate);
 
+   
 
     // Store it
     localStorage.setItem("optimumUserId", id);
@@ -919,7 +968,7 @@ function tryAutoRenewFromURL() {
     document.getElementById("renewal-form").dispatchEvent(fakeEvent);
   }
   // ✅ Show welcome message if name is present
-    if (name) {
+    if (name && !hasForbiddenStart(name)) {
       setTimeout(() => showWelcomeMessage(name), 300); // Wait for summary to show
     }
     if(id){
