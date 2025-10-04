@@ -392,6 +392,11 @@ footer {
 
 }
 
+.input-error {
+  border: 2px solid red !important;
+  background-color: #ffe6e6;
+}
+
   </style>
 </head>
 <body>
@@ -760,15 +765,28 @@ function hasForbiddenStart(value) {
   const trimmed = value.trim();
   return ["=", "+", "-", "@"].includes(trimmed.charAt(0));
 }
+document.querySelectorAll("input").forEach(input => {
+  input.addEventListener("input", () => {
+    if (!hasForbiddenStart(input.value)) {
+      input.classList.remove("input-error");
+    }
+  });
+});
 
 function validateNoForbiddenStart() {
   const inputs = document.querySelectorAll("input, textarea, select");
   for (let input of inputs) {
     if (hasForbiddenStart(input.value)) {
+      input.classList.add("input-error");
       alert(`${input.name || input.id} cannot start with =, +, - or @`);
+      const firstInvalid = document.querySelector(".input-error");
+      firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+      firstInvalid.focus();
       return false;
     }
   }
+  
+  inputs.forEach(input => input.classList.remove("input-error"));
   return true;
 }
 
@@ -821,7 +839,7 @@ startDateSelect.addEventListener("change", updateEndDate);
     let daysToAdd = (5 - currentDay + 7) % 7 || 7;
     currentDate.setDate(today.getDate() + daysToAdd);
 
-    for (let i = 0; i < 52; i++) {
+    for (let i = 0; i < 4; i++) {
       const option = document.createElement("option");
       option.value = currentDate.toISOString().split("T")[0];
       option.textContent = currentDate.toLocaleDateString("en-US", {
@@ -985,6 +1003,14 @@ startDateSelect.addEventListener("change", updateEndDate);
       container.appendChild(div);
       setupTimeValidation(i);
     }
+
+    document.querySelectorAll("input").forEach(input => {
+  input.addEventListener("input", () => {
+    if (!hasForbiddenStart(input.value)) {
+      input.classList.remove("input-error");
+    }
+  });
+});
 
     // Restore time selections
     for (let i = 0; i < totalCars; i++) {
