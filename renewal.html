@@ -454,6 +454,9 @@ function validateNoForbiddenStart() {
       /*const warning = document.getElementById("form-warning");
       warning.textContent = `🚫 "${input.name || input.id}" cannot start with =, +, - or @`;
       warning.style.display = "block";*/
+     const firstInvalid = document.querySelector(".input-error");
+      firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+      firstInvalid.focus();
       return false;
     }
   }
