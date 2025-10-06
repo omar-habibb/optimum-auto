@@ -397,6 +397,37 @@ footer {
   background-color: #ffe6e6;
 }
 
+/* Loader logo shimmer */
+.loading-logo {
+  width: 130px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  animation: shimmerMove 1.5s infinite linear;
+  mask-image: linear-gradient(-60deg, 
+    rgba(0,0,0,0.4) 30%, 
+    rgba(0,0,0,1) 50%, 
+    rgba(0,0,0,0.4) 70%);
+  -webkit-mask-image: linear-gradient(-60deg, 
+    rgba(0,0,0,0.4) 30%, 
+    rgba(0,0,0,1) 50%, 
+    rgba(0,0,0,0.4) 70%);
+  mask-size: 200%;
+  -webkit-mask-size: 200%;
+}
+
+@keyframes shimmerMove {
+  0% {
+    mask-position: 150% 0;
+    -webkit-mask-position: 150% 0;
+  }
+  100% {
+    mask-position: -50% 0;
+    -webkit-mask-position: -50% 0;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -551,7 +582,8 @@ footer {
 
     <!-- Step 5: Confirmation -->
     <div id="step5" class="step hidden text-center">
-      <h2>LOADING PAYMENT GATEWAY....</h2>
+      <h2 style="padding-bottom: 3rem;">LOADING PAYMENT GATEWAY....</h2>
+      <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo">
     </div>
 
   </form>
@@ -1445,10 +1477,6 @@ container.innerHTML += carHTML;
     alert("Could not start checkout.");
   }
 }
-
-
-
-
 
 </script>
 </body>
