@@ -492,7 +492,7 @@ footer {
     <!-- Step 2: start date -->
     <div id="step2" class="step hidden">
   <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
-  <h3>Start Date & Duration</h3>
+  <h3 id="sd-fs">Start Date & Duration</h3>
   <!-- Duration Selection -->
   <label for="durationSelect">Duration:</label>
   <select id="durationSelect" name="duration" required>
@@ -517,7 +517,7 @@ footer {
     <div id="step3" class="step hidden">
       <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
       <h3>Car Details</h3>
-      <p class="note">Note: The plan name reflects how many days per week the car will be washed.</p>
+      <p class="note" id="cn-fs">Note: The plan name reflects how many days per week the car will be washed.</p>
       <div id="carDetailsContainer"></div>
       <p class="note" style="margin-bottom: 20px; margin-top: 0px;">*<button type="button" onclick="window.open('pricing.html?from=subscribe', '_blank')">View Pricing</button></p>
       <button type="button" class="btn" id="nxtbtn">Next</button>
@@ -583,7 +583,7 @@ footer {
     <!-- Step 5: Confirmation -->
     <div id="step5" class="step hidden text-center">
       <h2 style="padding-bottom: 3rem;">LOADING PAYMENT GATEWAY....</h2>
-      <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo">
+      <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo" id="log-fs">
     </div>
 
   </form>
@@ -929,8 +929,16 @@ startDateSelect.addEventListener("change", updateEndDate);
     steps[currentStep].classList.remove("hidden");
 
     // Run step-specific functions
-    if (currentStep === 1) generateFridays(select); // Start Date
-    if (currentStep === 2) generateCarFields(); // Car Details
+    if (currentStep === 1){
+      generateFridays(select);
+      const focs = document.getElementById("sd-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
+    }  // Start Date
+    if (currentStep === 2) {
+      generateCarFields();
+      const focs = document.getElementById("cn-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
+    } // Car Details
     if (currentStep === 3) {
       const cars = collectCars();
       generateSummary(cars); // Summary
@@ -944,8 +952,10 @@ startDateSelect.addEventListener("change", updateEndDate);
         steps[currentStep].classList.add("hidden")
        currentStep--; // Go back to summary step
         steps[currentStep].classList.remove("hidden");
+       
       }, 20000);
-      
+      const focs = document.getElementById("log-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
     }
     
   });
@@ -1132,7 +1142,7 @@ startDateSelect.addEventListener("change", updateEndDate);
       if (name === "firstName"){
        container.innerHTML += `<div class="summary-item"><strong>First Name:</strong> ${val}</div>`; 
       }else if(name === "lastName"){
-       container.innerHTML += `<div class="summary-item"><strong>Last Name:</strong> ${val}</div>`; 
+       container.innerHTML += `<div class="summary-item"><strong  id="s-fs">Last Name:</strong> ${val}</div>`; 
       }else if(name === "buildingNumber"){
        container.innerHTML += `<div class="summary-item"><strong>Building Number:</strong> ${val}</div>`; 
       }else if(name === "totalCars"){
@@ -1254,6 +1264,10 @@ container.innerHTML += carHTML;
     document.getElementById("policyCheckbox").addEventListener("change", () => {
   document.getElementById("nextBtn").disabled = !document.getElementById("policyCheckbox").checked;
 });
+
+const focs = document.getElementById("s-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
+
 }
 
   function buildSubmissionObject() {
@@ -1477,6 +1491,10 @@ container.innerHTML += carHTML;
     alert("Could not start checkout.");
   }
 }
+
+
+
+
 
 </script>
 </body>
