@@ -192,7 +192,7 @@
     <div class="fContainer">
     <!-- Step 1: Input -->
     <div id="renewal-step-1">
-      <h2 style="color: goldenrod; margin-bottom: 1.4rem;">Optimum Auto <br>Renewal form </h2>
+      <h2 style="text-align:center;color: goldenrod; margin-bottom: 1.4rem;">Optimum Auto <br>Renewal form </h2>
       
       <form id="renewal-form">
         <p id="start-note" style="display: none; color: gray; margin-top: 5px;margin-bottom: 10px; font-size: 0.8rem;">
@@ -234,7 +234,7 @@
     <!-- Step 2: Summary -->
     <div id="renewal-step-2" style="display: none;">
         <div style="text-align: center; margin-bottom: 20px;">
-      <h2>Renewal Summary</h2>
+      <h2 style="color: goldenrod;" >Renewal Summary</h2>
       <p id="welcome-msg"></p>
       
       </div>
@@ -249,7 +249,7 @@
         <option value="">Select Duration</option>
         <option value="4">4 Weeks</option>
         </select>
-      <p><strong>-Start Date:</strong> <span id="summary-start-date"></span></p>
+      <p><strong id="foc-s">-Start Date:</strong> <span id="summary-start-date"></span></p>
       <select id="startDate" name="startDate" required style="display:none;"></select>
       <p><strong>-Next Renewal:</strong> <span id="summary-end-date"></span><p id="endDateDisplay" style="display:none; padding:5px; margin-left: 10px;" ></p></p>
       <p><strong>-Standard Price:</strong> <span id="original-price">EGP 0</span></p>
@@ -269,7 +269,7 @@
     <!-- Payment loading screen -->
 <div id="payment-loading" style="display: none; align-items: center;">
   <h2 style="text-align: center;padding-bottom: 4rem;">Loading Payment Gateway...</h2>
-  <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo">
+  <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo" id="logfs">
 </div>
   </div>
 
@@ -665,6 +665,9 @@ function validateNoForbiddenStart() {
 
       document.getElementById("renewal-step-1").style.display = "none";
       document.getElementById("renewal-step-2").style.display = "block";
+    
+     const focs = document.getElementById("foc-s");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
     });
 
 
@@ -794,7 +797,8 @@ function handleProceed() {
 
   // Show the payment loading message
   document.getElementById("payment-loading").style.display = "block";
-
+      const focs = document.getElementById("logfs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
   // Optional: Add a loading spinner or delay here later
   }
 }
