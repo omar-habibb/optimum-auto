@@ -139,12 +139,21 @@
   min-height: 300px;
 }
 #step5{
-  background-color: #f5f5f5;
+  /*background-color: #f5f5f5;
   border: 1px solid #ddd;
   padding: 15px;
   border-radius: 8px;
   min-height: 300px;
-  font-weight: 900;
+  font-weight: 900;*/
+
+  background-color: #1a1a1a;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 8px;
+    min-height: 300px;
+    font-weight: 900;
+    color: goldenrod;
+    margin-top: 100px;
 }
     .summary-item strong {
   color: #333;
@@ -581,8 +590,11 @@ footer {
 
     <!-- Step 5: Confirmation -->
     <div id="step5" class="step hidden text-center">
-      <h2>Thank you</h2>
-      <button type="button"><a href="index.html">Home</a></button>
+      <h2>Welcome to Optimum Auto</h2>
+      <p id="log-fs" style="margin-bottom: 20px;">This free trial is your first step into a higher standard of car care.
+         Think of it as a taste — once you’ve experienced the consistency and quality we deliver, you’ll never want less.</p>
+        <p style="margin-bottom: 10px;">You’ll shortly receive a confirmation on WhatsApp with your trial details.</p>
+        <button type="button" style="background-color: goldenrod; border:none;"><a href="index.html"><i class="fa-solid fa-house" style="color: #1a1a1a;"></i></a></button>
     </div>
 
   </form>
@@ -870,7 +882,7 @@ startDateSelect.addEventListener("change", updateEndDate);
     let daysToAdd = (5 - currentDay + 7) % 7 || 7;
     currentDate.setDate(today.getDate() + daysToAdd);
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 1; i++) {
       const option = document.createElement("option");
       option.value = currentDate.toISOString().split("T")[0];
       option.textContent = currentDate.toLocaleDateString("en-US", {
@@ -947,12 +959,6 @@ startDateSelect.addEventListener("change", updateEndDate);
       saveData(); // Save + Send Data
       const submission = buildSubmissionObject();
       sendDataToGoogleSheet(submission);
-      setTimeout(() => {
-        steps[currentStep].classList.add("hidden")
-       currentStep--; // Go back to summary step
-        steps[currentStep].classList.remove("hidden");
-       
-      }, 200000);
       const focs = document.getElementById("log-fs");
       focs.scrollIntoView({ behavior: "smooth", block: "center" });
     }
