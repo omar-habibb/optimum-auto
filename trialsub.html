@@ -391,9 +391,41 @@ footer {
   font-size: 0.95rem;
 
 }
+
 .input-error {
   border: 2px solid red !important;
   background-color: #ffe6e6;
+}
+
+/* Loader logo shimmer */
+.loading-logo {
+  width: 130px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  animation: shimmerMove 1.5s infinite linear;
+  mask-image: linear-gradient(-60deg, 
+    rgba(0,0,0,0.4) 30%, 
+    rgba(0,0,0,1) 50%, 
+    rgba(0,0,0,0.4) 70%);
+  -webkit-mask-image: linear-gradient(-60deg, 
+    rgba(0,0,0,0.4) 30%, 
+    rgba(0,0,0,1) 50%, 
+    rgba(0,0,0,0.4) 70%);
+  mask-size: 200%;
+  -webkit-mask-size: 200%;
+}
+
+@keyframes shimmerMove {
+  0% {
+    mask-position: 150% 0;
+    -webkit-mask-position: 150% 0;
+  }
+  100% {
+    mask-position: -50% 0;
+    -webkit-mask-position: -50% 0;
+  }
 }
 
   </style>
@@ -460,17 +492,17 @@ footer {
     <!-- Step 2: start date -->
     <div id="step2" class="step hidden">
   <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
-  <h3>Start Date & Duration</h3>
+  <h3 id="sd-fs">Start Date & Duration</h3>
   <!-- Duration Selection -->
   <label for="durationSelect">Duration:</label>
   <select id="durationSelect" name="duration" required>
     <option value="">Select Duration</option>
-    <option value="1">1 Week</option>
+    <option value="1">1 Weeks</option>
     
   </select>
   <!-- Start Date Selection -->
   <label for="startDateSelect">Start Date:</label>
-  <select id="startDateSelect" name="startDate"  placeholder="Select a Friday" required>
+  <select id="startDateSelect" name="startDate" required>
     <option value="">Select a Friday</option>
   </select>
   <!-- End Date Display -->
@@ -485,7 +517,7 @@ footer {
     <div id="step3" class="step hidden">
       <h2 style="color:goldenrod;">Optimum Auto<br> Membership Form</h2>
       <h3>Car Details</h3>
-      <p class="note">Note: The plan name reflects how many days per week the car will be washed.</p>
+      <p class="note" id="cn-fs">Note: The plan name reflects how many days per week the car will be washed.</p>
       <div id="carDetailsContainer"></div>
       <button type="button" class="btn" id="nxtbtn">Next</button>
       <button type="button" class="btn back">Back</button>
@@ -759,8 +791,7 @@ document.getElementById("year").textContent = new Date().getFullYear();
     if (el) el.value = formData[key];
   });
 
-
-  function hasForbiddenStart(value) {
+function hasForbiddenStart(value) {
   if (!value) return false;
   const trimmed = value.trim();
   return ["=", "+", "-", "@"].includes(trimmed.charAt(0));
@@ -785,6 +816,8 @@ function validateNoForbiddenStart() {
       return false;
     }
   }
+  
+  inputs.forEach(input => input.classList.remove("input-error"));
   return true;
 }
 
@@ -830,14 +863,14 @@ durationSelect.addEventListener("change", updateEndDate);
 startDateSelect.addEventListener("change", updateEndDate);
 
   function generateFridays(selectElement) {
-    selectElement.options.length = 1; 
+    selectElement.options.length = 1;
     const today = new Date();
     let currentDate = new Date(today);
     const currentDay = today.getDay();
     let daysToAdd = (5 - currentDay + 7) % 7 || 7;
     currentDate.setDate(today.getDate() + daysToAdd);
 
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 4; i++) {
       const option = document.createElement("option");
       option.value = currentDate.toISOString().split("T")[0];
       option.textContent = currentDate.toLocaleDateString("en-US", {
@@ -861,7 +894,7 @@ startDateSelect.addEventListener("change", updateEndDate);
 
     if (!validateNoForbiddenStart()) {
   return; // stop here, don’t go to next step
-}
+} 
     const direction = e.target.id === "nxtbtn" ? 1 : -1;
 
     if (direction === 1) {
@@ -869,6 +902,7 @@ startDateSelect.addEventListener("change", updateEndDate);
     const checkbox = document.getElementById("policyCheckbox");
     if (!checkbox?.checked) {
       alert("You must agree to the policies before continuing.");
+      checkbox.scrollIntoView({ behavior: "smooth", block: "center" });
       return;
     }
   }
@@ -895,8 +929,16 @@ startDateSelect.addEventListener("change", updateEndDate);
     steps[currentStep].classList.remove("hidden");
 
     // Run step-specific functions
-    if (currentStep === 1) generateFridays(select); // Start Date
-    if (currentStep === 2) generateCarFields(); // Car Details
+    if (currentStep === 1){
+      generateFridays(select);
+      const focs = document.getElementById("sd-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
+    }  // Start Date
+    if (currentStep === 2) {
+      generateCarFields();
+      const focs = document.getElementById("cn-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
+    } // Car Details
     if (currentStep === 3) {
       const cars = collectCars();
       generateSummary(cars); // Summary
@@ -905,13 +947,14 @@ startDateSelect.addEventListener("change", updateEndDate);
       saveData(); // Save + Send Data
       const submission = buildSubmissionObject();
       sendDataToGoogleSheet(submission);
-      
       setTimeout(() => {
         steps[currentStep].classList.add("hidden")
        currentStep--; // Go back to summary step
         steps[currentStep].classList.remove("hidden");
-      }, 120000);
-      
+       
+      }, 200000);
+      const focs = document.getElementById("log-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
     }
     
   });
@@ -1052,39 +1095,7 @@ startDateSelect.addEventListener("change", updateEndDate);
     return cars;
   }
 
-  function calculatePrice(cars = []) {
-    let totalPrice = 0;
-    let originalPrice = 0;
-
-    const sixDayCars = cars.filter(c => c.plan === "6");
-    const threeDayCars = cars.filter(c => c.plan === "3");
-    originalPrice= (sixDayCars.length * 700)+(threeDayCars.length * 400);
-    if(sixDayCars.length === 1 && threeDayCars.length === 1 ){
-      totalPrice += 1000;
-    } else if(sixDayCars.length >= 2 && threeDayCars.length === 1){
-      totalPrice +=  (sixDayCars.length * 550 ) + 350 ;
-    }else if(sixDayCars.length === 1 && threeDayCars.length >= 2){
-      totalPrice += (threeDayCars.length * 300 ) + 650;
-    }else{
-    if (sixDayCars.length === 1) {
-      totalPrice += 700;
-    } else if (sixDayCars.length >= 2) {
-      totalPrice += 550 * sixDayCars.length;
-    } 
-    if (threeDayCars.length === 1) {
-      totalPrice += 400;
-    } else if (threeDayCars.length >= 2) {
-      totalPrice += 300 * threeDayCars.length;
-    } 
-    }
-     const pricePW=totalPrice/((threeDayCars.length*12)+(sixDayCars.length*24));
-    return {
-      totalPrice: parseFloat(totalPrice.toFixed(2)),
-      originalPrice: parseFloat(originalPrice.toFixed(2)),
-       pricePW: parseFloat(pricePW.toFixed(2))
-    };
-  }
-   
+  
   function generateSummary(cars) {
   
   const container = document.getElementById("summaryContainer");
@@ -1098,7 +1109,7 @@ startDateSelect.addEventListener("change", updateEndDate);
       if (name === "firstName"){
        container.innerHTML += `<div class="summary-item"><strong>First Name:</strong> ${val}</div>`; 
       }else if(name === "lastName"){
-       container.innerHTML += `<div class="summary-item"><strong>Last Name:</strong> ${val}</div>`; 
+       container.innerHTML += `<div class="summary-item"><strong  id="s-fs">Last Name:</strong> ${val}</div>`; 
       }else if(name === "buildingNumber"){
        container.innerHTML += `<div class="summary-item"><strong>Building Number:</strong> ${val}</div>`; 
       }else if(name === "totalCars"){
@@ -1114,7 +1125,7 @@ if (duration) {
   container.innerHTML += `<div class="summary-item"><strong>Duration :</strong> ${duration} Weeks</div>`;
 }//show start date
     const startDate = document.querySelector("[name='startDate']")?.value || "";
-   const sstartDate = new Date(startDate);
+    const sstartDate = new Date(startDate);
     const fstartDate = sstartDate.toLocaleDateString("en-US", {year: "numeric",month: "long",day: "numeric"});
     if (startDate) {
   container.innerHTML += `<div class="summary-item"><strong>Start Date:</strong> ${fstartDate}</div>`;
@@ -1150,45 +1161,16 @@ container.innerHTML += carHTML;
 
     
   });
-
-  // Calculate price
-  const { totalPrice, originalPrice, pricePW } = calculatePrice(cars);
-  const saved = (originalPrice - totalPrice).toFixed(2);
-
-  
-
-  // Generate suggestions based on car data
-  const threeDayIndices = [];
-  const sixDayIndices = [];
-
-  cars.forEach((car, index) => {
-    if (car.plan === "3") threeDayIndices.push(index + 1); // Car numbers start at 1
-    else if (car.plan === "6") sixDayIndices.push(index + 1);
-  });
-
-  const totalCars = cars.length;
-  let suggestion = "";
-
-  if(threeDayIndices.length >= 1){
-    const carsToSuggest = threeDayIndices.join(", ");
-  if(totalCars === 1 && threeDayIndices.length === 1){
-   suggestion = `
-       <div style="font-size:0.9rem;color:black;background:rgb(228, 228, 228); padding:15px; border-left: 4px solid black; margin-top:15px;">
-        <strong><i class="fa-regular fa-lightbulb" style="color:black;"></i> Recommendation:</strong>  If the car is part of your daily routine, the 6 Days a Week plan is made for it.
-      </div>
-    `;
-  }
-}
-
-
-  // Add suggestion if any
-  if (suggestion) {
-    container.innerHTML += suggestion;
-  }
+ 
+    
 
     document.getElementById("policyCheckbox").addEventListener("change", () => {
   document.getElementById("nextBtn").disabled = !document.getElementById("policyCheckbox").checked;
 });
+
+const focs = document.getElementById("s-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
+
 }
 
   function buildSubmissionObject() {
@@ -1355,14 +1337,6 @@ container.innerHTML += carHTML;
     });
 }
 
-
-   function calcorder(){
-    const cars = collectCars();
-    const { totalPrice, originalPrice } = calculatePrice(cars);
-    return totalPrice;
-
-   }
-   
 
 </script>
 </body>
