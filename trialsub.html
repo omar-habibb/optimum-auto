@@ -1180,6 +1180,10 @@ const focs = document.getElementById("s-fs");
 }
 
   function buildSubmissionObject() {
+  const amount="free";
+  const paymentMethod="free";
+  const rndmId ="00000"; 
+
   const customerInfo = {
     firstName: document.querySelector("[name='firstName']")?.value || "",
     lastName: document.querySelector("[name='lastName']")?.value || "",
@@ -1189,7 +1193,10 @@ const focs = document.getElementById("s-fs");
     buildingNumber: document.querySelector("[name='buildingNumber']")?.value || "",
     totalCars: document.querySelector("[name='totalCars']")?.value || "",
     startDate: document.querySelector("[name='startDate']")?.value || "",
-    duration: document.querySelector("[name='duration']")?.value || ""
+    duration: document.querySelector("[name='duration']")?.value || "",
+    amount ,
+    paymentMethod,
+    rndmId
   };
 
   const cars = collectCars();
