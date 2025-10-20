@@ -17,7 +17,7 @@
   .fContainer{
       width:100%;
      
-      min-height: 990px;
+      min-height: 1090px;
       padding: 25px;
       border-radius: 10px;
       flex: 1;
@@ -59,7 +59,7 @@
       font-size: 1rem;
     }
 
-    #renewal-step-1, #renewal-step-2, #payment-loading {
+    #renewal-step-1, #renewal-step-2, #payment-loading, #instaframe {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -162,10 +162,45 @@
   }
 }
 
+#overload {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  pointer-events: all;
+}
+#id-checking {
+  background-color: rgba(255, 255, 255, 0.845);
+  border-radius: 10px;
+  padding: 20px 10px;
+}
+#loadOrInsta {
+  color: goldenrod;
+    margin: 10px 0px;
+    padding: 5px 5px;
+    background-color: #1a1a1a;
+    border-radius: 5px;
+}
+
+
 
   </style>
 </head>
 <body style="background-color: black;">
+
+<div id="overload" style="display:none;">
+  <div id="id-checking" >
+  <h2 style="margin-bottom:15px;">Checking ID please wait...</h2>
+   <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo" >
+  </div>
+</div>
+
     <!-- Sticky Navigation -->
   <nav class="navbar">
     <div class="container">
@@ -262,8 +297,32 @@
       Note: If you’d like to add or remove a car, please 
       <a href="https://wa.me/201123403403?text=Hello%2C%20I%20would%20like%20to%20add%2Fremove%20a%20car." style="color: goldenrod;">message us</a> before proceeding.
       </p>-->
+
+      <div >
+    <p style="font-weight: bold; margin-top: 5px;font-size:1.2rem;"><strong>Payment Method:</strong></p>
+    <div class="paycolO" style="border: 2px solid black;border-radius: 5px;margin-top: 10px;margin-bottom: 10px;">
+    <label for="online" style="margin-left:0px;font-size: 1.1rem;font-weight: bold;display: block;">
+    <input type="radio" id="online" name="paq" value="online" style="width: fit-content;margin-right: 0;" />
+     Online(💳Card)</label>
+    </div>
+    <div class="paycolI" style="border: 2px solid black;border-radius: 5px;margin-bottom: 10px;">
+      <label for="insta" style="margin-left:0px;font-size: 1.1rem;font-weight: bold; display: block;">
+      <input type="radio" id="insta" name="paq" value="insta" style="width: fit-content;margin-right: 0;" />
+    InstaPay</label>
+    </div>
+    </div>
+
       <button onclick="handleProceed()" id="rbtn">Proceed to Payment</button>
       <button onclick="goBack()" id="bbtn">Back</button>
+    </div>
+ 
+    <div id="instaframe" style="display: none;">
+      <h2 style="text-align: center;margin-bottom: 10px;">Pay Via Instapay</h2>
+      <p style="font-weight:600;">Please transfer the amount below using the official InstaPay link.</p>
+      <p style="font-weight:600;">Before sending, tap "+ Add Reason of Transfer" and enter your Id in the notes section. This help us verify your payment quickly. </p>     
+      <div id="loadOrInsta"></div>
+      <p style="font-weight:600;">Once your payment is complete, our team will contact you on WhatsApp with confirmation.</p>
+      <p style="font-weight:600;">If you haven't heard from us within 12 hours, please message us directly there.</p>
     </div>
 
     <!-- Payment loading screen -->
@@ -499,6 +558,20 @@ function validateNoForbiddenStart() {
 }
 
 
+function colorpayment(){
+    addEventListener("change", ()=>{
+      const online = document.getElementById("online");
+      const insta = document.getElementById("insta");
+      if (online.checked){
+        online.parentElement.style.backgroundColor = "#fbc901d1";
+        insta.parentElement.style.backgroundColor = "white";
+      }else if (insta.checked){
+        insta.parentElement.style.backgroundColor = "#fbc901d1";
+        online.parentElement.style.backgroundColor = "white";
+      }
+    });
+  }
+
 
 // Your existing calculatePrice function
     function calculatePrice(cars = []) {
@@ -580,6 +653,7 @@ function validateNoForbiddenStart() {
       endDate.setDate(startDate.getDate() + daysToAdd);
       const formattedEndDate =endDate.toLocaleDateString("en-US", {year: "numeric",month: "long",day: "numeric"});
 
+      colorpayment();
 
       const params = new URLSearchParams(window.location.search);
   const id = params.get("id");
@@ -704,6 +778,7 @@ function validateNoForbiddenStart() {
   const { totalPrice } = calculatePrice(cars);
   //const totalPrice = document.getElementById("total-price").textContent.replace("EGP", "").trim();
   const amount = parseFloat(totalPrice) * 100;
+  
 
   try {
     const response = await fetch("https://ren-paymob-backend-production.up.railway.app/start-renewal", {
@@ -721,6 +796,53 @@ function validateNoForbiddenStart() {
       //window.open(result.checkout_url, "_blank");
     } else {
       alert("Payment failed: " + result.error);
+    }
+
+  } catch (err) {
+    console.error("Checkout error:", err);
+    alert("Could not start checkout.");
+    document.getElementById("renewal-step-2").style.display = "block";
+    document.getElementById("payment-loading").style.display = "none";
+  }
+
+
+}
+
+
+async function proceedToinsta() {
+  const id = document.getElementById("userId").value;
+
+  const threeDayCars = parseInt(document.getElementById("threeDayCars").value) || 0;
+  const sixDayCars = parseInt(document.getElementById("sixDayCars").value) || 0;
+  const cars = [];
+      for (let i = 0; i < threeDayCars; i++) {
+        cars.push({ plan: "3" });
+      }
+      for (let i = 0; i < sixDayCars; i++) {
+        cars.push({ plan: "6" });
+      }
+  const { totalPrice } = calculatePrice(cars);
+  //const totalPrice = document.getElementById("total-price").textContent.replace("EGP", "").trim();
+  const amount = parseFloat(totalPrice) * 100;
+  
+  
+  try {
+    const response = await fetch("https://ren-paymob-backend-production.up.railway.app/start-renewal", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ amount, id })
+    });
+
+    const result = await response.json();
+
+    if (result.checkout_url) {
+     
+      return "go";
+      //window.open(result.checkout_url, "_blank");
+    } else {
+      
     }
 
   } catch (err) {
@@ -749,6 +871,7 @@ async function sendDataToSheet() {
         cars.push({ plan: "6" });
       }
   const { totalPrice } = calculatePrice(cars);
+  const paymmeth = paymeth();
 
   const payload = {
     userId,
@@ -756,7 +879,8 @@ async function sendDataToSheet() {
     sixDayCars,
     duration,
     startDate: formattedStartDate,
-    totalPrice
+    totalPrice,
+    paymmeth
   };
   try {
       const response = await fetch("https://google-ren-back-production.up.railway.app/renew", {
@@ -779,28 +903,109 @@ async function sendDataToSheet() {
     }
   }
   
+function paymeth(){
+    const online = document.getElementById("online");
+    const insta = document.getElementById("insta");
+    if (online.checked){
+      return "online";
+    }else if (insta.checked){
+      return "insta";
+    }else{
+      return null;
+    }
+  }
 
-function handleProceed() {
+
+function copyId() {
+  const idElement = document.getElementById("userId");
+  const id = idElement.value;
+  const copI = document.getElementById("copI");
+
+  navigator.clipboard.writeText(id).then(() => {
+    copI.textContent = "Copied!";
+    setTimeout(() => {
+      copI.textContent = "Copy";
+    }, 4000);
+  }).catch(err => {
+    console.error("Could not copy ID: ", err);
+  });
+}
+
+
+async function handleProceed() {
   const endDateCheck =document.getElementById("endDateDisplay");
+  const paymentMethod = paymeth();
   if(!endDateCheck.textContent){
     alert("Please select a start date and duration first.");
     return;
+  }else if (!paymentMethod) {
+    alert("Please select a payment method.");
+    return;
   }else{
-  proceedToPayment();   // handles loading UI
-  sendDataToSheet();    // sends form data to Google Sheet
-  setTimeout(() => {
-      document.getElementById("renewal-step-2").style.display = "block";
-      document.getElementById("payment-loading").style.display = "none";
-      }, 20000/*3000000*/);
-  // Hide the summary step
-  document.getElementById("renewal-step-2").style.display = "none";
 
-  // Show the payment loading message
-  document.getElementById("payment-loading").style.display = "block";
+    if(paymentMethod === "online"){
+      proceedToPayment();
+      sendDataToSheet();    // sends form data to Google Sheet   
+      // Hide the summary step
+      document.getElementById("renewal-step-2").style.display = "none";
+      // Show the payment loading message
+      document.getElementById("payment-loading").style.display = "block";
       const focs = document.getElementById("logfs");
       focs.scrollIntoView({ behavior: "smooth", block: "center" });
-  // Optional: Add a loading spinner or delay here later
-  }
+      // Optional: Add a loading spinner or delay here later
+      setTimeout(() => {
+      document.getElementById("renewal-step-2").style.display = "block";
+      document.getElementById("payment-loading").style.display = "none";
+      }, /*200003000000*/5000);
+    }else if(paymentMethod === "insta"){
+      const idCheckDiv = document.getElementById("overload");
+      const body = document.body;
+      body.style.overflow = "hidden";
+      idCheckDiv.style.display = "flex";
+      const chkid = await proceedToinsta();
+      if(chkid === "go"){
+        idCheckDiv.style.display = "none";
+        body.style.overflow = "auto";
+      sendDataToSheet();    // sends form data to Google Sheet 
+       const id = document.getElementById("userId").value;
+      // Hide the summary step
+      document.getElementById("renewal-step-2").style.display = "none";
+      document.getElementById("instaframe").style.display = "block";
+
+      const threeDayCars = parseInt(document.getElementById("threeDayCars").value) || 0;
+  const sixDayCars = parseInt(document.getElementById("sixDayCars").value) || 0;
+  const cars = [];
+      for (let i = 0; i < threeDayCars; i++) {
+        cars.push({ plan: "3" });
+      }
+      for (let i = 0; i < sixDayCars; i++) {
+        cars.push({ plan: "6" });
+      }
+  const { totalPrice } = calculatePrice(cars);
+
+        const loadOrInsta = document.getElementById("loadOrInsta");
+        loadOrInsta.innerHTML =``;
+        loadOrInsta.innerHTML =`
+        <p style="margin-bottom:4px;"><strong>Amount:</strong> ${totalPrice} EGP</p>
+        <div style="display: flex;margin-bottom:4px;">
+        <p id="instaFS"><strong>ID:</strong> ${id}</p><button onclick="copyId()" style="margin-left: 15px;padding: 1px 6px;background-color: goldenrod;border-radius: 8px; border: none;"><span id="copI">Copy</span></button>
+        </div>
+        <p><strong>InstaPay Link: </strong> <a href="https://ipn.eg/S/ameer102928/instapay/5t1pLm" style="color:goldenrod;"> Open InstaPay</a></p>`;
+        const focsinsta = document.getElementById("instaFS");
+      focsinsta.scrollIntoView({ behavior: "smooth", block: "center" });
+      /*setTimeout(() => {
+      document.getElementById("renewal-step-2").style.display = "block";
+      document.getElementById("instaframe").style.display = "none";
+      }, /*200003000000500000);*/
+      
+      }else{
+        idCheckDiv.style.display = "none";
+        body.style.overflow = "auto";
+        alert("ID does not exist")
+      }
+      }
+  
+}
 }
 
 
