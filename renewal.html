@@ -956,7 +956,7 @@ async function handleProceed() {
       setTimeout(() => {
       document.getElementById("renewal-step-2").style.display = "block";
       document.getElementById("payment-loading").style.display = "none";
-      }, /*200003000000*/5000);
+      }, 20000/*30000005000*/);
     }else if(paymentMethod === "insta"){
       const idCheckDiv = document.getElementById("overload");
       const body = document.body;
