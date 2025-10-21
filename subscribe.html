@@ -1120,14 +1120,14 @@ startDateSelect.addEventListener("change", updateEndDate);
           </select>
         </label>
 
-        <label>
+        <label style="font-weight: 600;">
   Available From:
   <select name="car[${i}][availableFrom]" id="availableFrom-${i}" style="width:110px;">
     ${Array.from({ length: 5 }, (_, i) => i + 1).map(h => `<option value="${h}:00 AM">${h}:00 AM</option>`).join("")}
   </select>
 </label>
 
-<label>Need Done By:
+<label style="font-weight: 600;">Need Done By:
   <select name="car[${i}][doneBy]" id="doneBy-${i}" style="width:110px;">
     <option value="">Select done by</option>
     ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => 
