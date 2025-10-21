@@ -427,6 +427,24 @@ footer {
     -webkit-mask-position: -50% 0;
   }
 }
+input:focus {
+  outline:none;
+  box-shadow:0 0 0 2px rgba(90,46,138,0.4)
+}
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+  -webkit-text-fill-color:black !important;
+ 
+}
+#cplate{
+  width:110px;
+  background-image: linear-gradient(blue 30%, white 30%);
+    padding-left: 1px;
+    padding-right: 0px;
+    padding-bottom: 3px;
+    padding-top: 15px;
+    border: 2px solid black;
+}
 
   </style>
 </head>
@@ -574,6 +592,19 @@ footer {
     <a id="sbtn" href="#" onclick="togglePolicy(event)">Accept</a>
   </div>
 </div>
+<div >
+  <p style="font-weight: bold; margin-top: 5px;font-size:1.2rem;"><strong>Payment Method:</strong></p>
+  <div class="paycolO" style="border: 2px solid black;border-radius: 5px;margin-top: 10px;margin-bottom: 10px;">
+    <label for="online" style="margin-left:0px;font-size: 1.2rem;font-weight: bold;display: block;">
+    <input type="radio" id="online" name="paq" value="online" style="width: fit-content;margin-right: 0;" />
+    Online(💳Card)</label>
+    </div>
+    <div class="paycolI" style="border: 2px solid black;border-radius: 5px;margin-bottom: 10px;">
+      <label for="insta" style="margin-left:0px;font-size: 1.2rem;font-weight: bold; display: block;">
+      <input type="radio" id="insta" name="paq" value="insta" style="width: fit-content;margin-right: 0;" />
+    <span style="color:#5a2e8a;">Insta</span><span style="color:#ff6a00;">Pay</span></label>
+    </div>
+  </div>
 <button type="button" class="btn" id="nxtbtn">Proceed to Payment</button>
 <button type="button" class="btn back">Back</button>
 
@@ -582,8 +613,9 @@ footer {
 
     <!-- Step 5: Confirmation -->
     <div id="step5" class="step hidden text-center">
-      <h2 style="padding-bottom: 3rem;">LOADING PAYMENT GATEWAY....</h2>
-      <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo" id="log-fs">
+      <div id="loadOrInsta"></div>
+      <!--<h2 style="padding-bottom: 3rem;">LOADING PAYMENT GATEWAY....</h2>
+      <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo" id="log-fs">-->
     </div>
 
   </form>
@@ -823,6 +855,20 @@ function validateNoForbiddenStart() {
 }
 
 
+  function colorpayment(){
+    addEventListener("change", ()=>{
+      const online = document.getElementById("online");
+      const insta = document.getElementById("insta");
+      if (online.checked){
+        online.parentElement.style.backgroundColor = "#fbc901d1";
+        insta.parentElement.style.backgroundColor = "white";
+      }else if (insta.checked){
+        insta.parentElement.style.backgroundColor = "#fbc901d1";
+        online.parentElement.style.backgroundColor = "white";
+      }
+    });
+  }
+
 
   const durationSelect = document.getElementById("durationSelect");
 const startDateSelect = document.getElementById("startDateSelect");
@@ -890,6 +936,20 @@ startDateSelect.addEventListener("change", updateEndDate);
       } 
   }
 
+
+  function paymeth(){
+    
+    const online = document.getElementById("online");
+    const insta = document.getElementById("insta");
+    if (online.checked){
+      return "online";
+    }else if (insta.checked){
+      return "insta";
+    }else{
+      return null;
+    }
+  }
+
   document.querySelectorAll(".btn").forEach(btn => {
   btn.addEventListener("click", (e) => {
 
@@ -905,6 +965,12 @@ startDateSelect.addEventListener("change", updateEndDate);
       alert("You must agree to the policies before continuing.");
       return;
     }
+    const pcheck = paymeth();
+    if (pcheck === null){
+      alert("Please select a payment method to proceed.");
+      return; 
+    }
+    
   }
 
   if (!validateStep(currentStep)) return;
@@ -940,10 +1006,39 @@ startDateSelect.addEventListener("change", updateEndDate);
       focs.scrollIntoView({ behavior: "smooth", block: "center" });
     } // Car Details
     if (currentStep === 3) {
+      colorpayment();
       const cars = collectCars();
       generateSummary(cars); // Summary
     }
     if (currentStep === 4) {
+      saveData(); // Save + Send Data
+      const submission = buildSubmissionObject();
+      sendDataToGoogleSheet(submission);
+      const paymeh = paymeth();
+      const loadOrInsta = document.getElementById("loadOrInsta");
+      loadOrInsta.innerHTML = "";
+      if (paymeh === "online"){
+        
+        shitstart();
+        loadOrInsta.innerHTML = `<h2 style="padding-bottom: 3rem;">LOADING PAYMENT GATEWAY....</h2>
+      <img src="logo-Photoroom.png" alt="Optimum Auto Logo" class="loading-logo" id="log-fs">`
+      setTimeout(() => {
+        steps[currentStep].classList.add("hidden")
+       currentStep--; // Go back to summary step
+        steps[currentStep].classList.remove("hidden");
+       
+      }, 15000);
+    }else if(paymeh === "insta"){
+        
+        instastart();
+        
+      } 
+      
+      
+      const focs = document.getElementById("log-fs");
+      focs.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    /*if (currentStep === 4) {
       saveData(); // Save + Send Data
       const submission = buildSubmissionObject();
       sendDataToGoogleSheet(submission);
@@ -956,7 +1051,7 @@ startDateSelect.addEventListener("change", updateEndDate);
       }, 20000);
       const focs = document.getElementById("log-fs");
       focs.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
+    }*/
     
   });
 });
@@ -1006,13 +1101,16 @@ startDateSelect.addEventListener("change", updateEndDate);
     for (let i = 0; i < totalCars; i++) {
       const div = document.createElement("div");
       div.className = "car-section";
+      //div.style.display ="flex";
+      //div.style.flexWrap="wrap";
       div.innerHTML = `
-        <h4>Car ${i+1}</h4>
-        <input type="text" name="car[${i}][brand]" placeholder="Brand" value="${savedCars[i]?.brand || ''}" required />
-        <input type="text" name="car[${i}][model]" placeholder="Model" value="${savedCars[i]?.model || ''}" required />
-        <input type="text" name="car[${i}][color]" placeholder="Color" value="${savedCars[i]?.color || ''}" required />
-        <input type="text" name="car[${i}][plate]" placeholder="Plate Number" value="${savedCars[i]?.plate || ''}" required />
-
+        <h4 >Car ${i+1}</h4>
+        <div style="display:flex;flex-wrap:wrap;">
+        <input style="width:90px;" type="text" name="car[${i}][brand]" placeholder="Brand" value="${savedCars[i]?.brand || ''}" required />
+        <input style="width:90px;" type="text" name="car[${i}][model]" placeholder="Model" value="${savedCars[i]?.model || ''}" required />
+        <input style="width:90px;" type="text" name="car[${i}][color]" placeholder="Color" value="${savedCars[i]?.color || ''}" required />
+        <input type="text" name="car[${i}][plate]" placeholder="Plate" value="${savedCars[i]?.plate || ''}" id="cplate" required />
+          </div>
         <label>
           Wash Frequency:
           <select name="car[${i}][plan]" required>
@@ -1024,13 +1122,13 @@ startDateSelect.addEventListener("change", updateEndDate);
 
         <label>
   Available From:
-  <select name="car[${i}][availableFrom]" id="availableFrom-${i}">
+  <select name="car[${i}][availableFrom]" id="availableFrom-${i}" style="width:110px;">
     ${Array.from({ length: 5 }, (_, i) => i + 1).map(h => `<option value="${h}:00 AM">${h}:00 AM</option>`).join("")}
   </select>
 </label>
 
 <label>Need Done By:
-  <select name="car[${i}][doneBy]" id="doneBy-${i}">
+  <select name="car[${i}][doneBy]" id="doneBy-${i}" style="width:110px;">
     <option value="">Select done by</option>
     ${Array.from({ length: 7 }, (_, i) => i + 2).map(h => 
       h === 8 ? 
@@ -1280,7 +1378,10 @@ const focs = document.getElementById("s-fs");
     buildingNumber: document.querySelector("[name='buildingNumber']")?.value || "",
     totalCars: document.querySelector("[name='totalCars']")?.value || "",
     startDate: document.querySelector("[name='startDate']")?.value || "",
-    duration: document.querySelector("[name='duration']")?.value || ""
+    duration: document.querySelector("[name='duration']")?.value || "",
+    amount : calcorder(),
+    paymentMethod: paymeth(),
+    rndmId: rndmId
   };
 
   const cars = collectCars();
@@ -1441,11 +1542,44 @@ const focs = document.getElementById("s-fs");
     return totalPrice;
 
    }
-   //async function oplink(){
-     //var lnk = await shitstart();
-     //window.location.href = lnk;
-    //window.open(lnk);
-   //}
+
+   const rndmId = Math.floor(10000 + Math.random()*90000);
+
+   function copyId() {
+  
+  const id = rndmId;
+  const copI = document.getElementById("copI");
+
+  navigator.clipboard.writeText(id).then(() => {
+    copI.textContent = "Copied!";
+    setTimeout(() => {
+      copI.textContent = "Copy";
+    }, 4000);
+  }).catch(err => {
+    console.error("Could not copy ID: ", err);
+  });
+}
+
+   function instastart(){
+    const loadOrInsta = document.getElementById("loadOrInsta");
+    const amount = calcorder();
+    
+
+    loadOrInsta.innerHTML = `
+    <h2 style="text-align: center;margin-bottom: 10px;color:goldenrod;">Pay Via <span style="color:#5a2e8a;">Insta</span><span style="color:#ff6a00;">Pay</span></h2>
+      <p style="font-weight:600;">Please transfer the amount below using the official InstaPay link.</p>
+      <p style="font-weight:600;">Before sending, tap "+ Add Reason of Transfer" and enter your Payment Reference Code in the notes section. This help us verify your payment quickly. </p>
+   <div style="color: goldenrod;margin: 10px 0px;padding: 5px 5px;background-color: #1a1a1a;border-radius: 5px;"
+      <p style="margin-bottom:4px;"><strong>Amount:</strong> ${amount} EGP</p>
+        <div style="display: flex;margin-bottom:4px;">
+        <p id="log-fs"><strong style="line-height:1.2;">Reference Code:</strong> ${rndmId}</p><button type="button" onclick="copyId()" style="width: fit-content;margin-top: 0;margin-bottom: 0;margin-left: 15px;padding: 1px 6px;background-color: goldenrod;border-radius: 8px; border: none;"><span id="copI">Copy</span></button>
+        </div>
+        <p><strong>InstaPay Link: </strong> <a href="https://ipn.eg/S/ameer102928/instapay/5t1pLm" style="color:goldenrod;"> Open InstaPay</a></p>
+        </div>
+        <p style="font-weight:600;">Once your payment is complete, our team will contact you on WhatsApp with confirmation.</p>
+      <p style="font-weight:600;">If you haven't heard from us within 12 hours, please message us directly there.</p>`
+   }
+   
     
    async function shitstart() {
   const totalEGP = calcorder(); // use your existing calcorder() function
